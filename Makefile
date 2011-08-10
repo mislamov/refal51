@@ -15,6 +15,7 @@ AC = -g -O3 -Wall -pg
 $(BIN): $(OBJ)
 	$(CC) $(AC) $(INCLUDE) $(OBJ)  -o $(BIN) $(LNK)
 all: $(BIN)
+Debug: $(BIN)
 
 $(OP)\res.o: .\fn.ref .\fn2.ref
 	.\refal51 fn2.ref

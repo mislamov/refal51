@@ -19,6 +19,7 @@
 //#include <stdlib>
 //#include <stdlib.h>
 #include <time.h>
+#include <vector>
 
 #include "system.h"
 
@@ -96,10 +97,6 @@ infint Lenw_sys (DataCursor prebeg, DataCursor end, ExecContext *context){
 	lenw += (end.index+1);
 
 	return lenw;
-};
-
-DataChain* LCS (DataCursor prebeg, DataCursor end, ExecContext *context){
-	RUNTIMEERRORn("NYR");
 };
 
 DataChain* Lenw (DataCursor prebeg, DataCursor end, ExecContext *context){
@@ -211,3 +208,55 @@ DataChain* Eval  (DataCursor prebeg, DataCursor end, ExecContext *context){  SYS
 
 DataChain* DebugStart(DataCursor prebeg, DataCursor end, ExecContext *context){ debug = 1; return 0; }
 DataChain* DebugStop(DataCursor prebeg, DataCursor end, ExecContext *context){ debug = 0; return 0; }
+
+
+unistring GetLargestCommonSubstring(const unistring & a, const unistring & b)
+{
+    const int a_length = a.size();
+    const int b_length = b.size();
+
+    int max_length = 0;
+    int result_index = 0;
+
+    std::vector<int> solution(b_length + 1, 0);
+
+    for(int i = a_length - 1; i >= 0; i--)
+    {
+        const std::vector<int> prev_solution = solution;
+        for(int j = b_length - 1; j >= 0; j--)
+        {
+            if(a[i] != b[j])
+                solution[j] = 0;
+            else
+            {
+                const int length = 1 + prev_solution[j + 1];
+                if (length > max_length)
+                {
+                    max_length = length;
+                    result_index = i;
+                }
+
+                solution[j] = length;
+            }
+        }
+    }
+
+    return a.substr(result_index, max_length);
+}
+
+DataChain* LCS (DataCursor prebeg, DataCursor end, ExecContext *context){
+    if (prebeg==end || ++prebeg==end || prebeg.getType()!=struct_bracket) SYSTEMERRORn("LCS must have 2 bracket argument");
+    DataCursor a_br = prebeg;
+
+    if (prebeg==end || (++prebeg).getType()!=struct_bracket) SYSTEMERRORn("LCS must have 2 bracket argument");
+    DataCursor b_br = prebeg;
+
+    DataChain* chainA = a_br.container->value.bracket_data.chain;
+    DataChain* chainB = b_br.container->value.bracket_data.chain;
+
+    unistring a = chain_to_text(chainA->at_before_first(), chainA->at_last());
+    unistring b = chain_to_text(chainB->at_before_first(), chainB->at_last());
+
+	return (new DataChain())->append(newRefText(GetLargestCommonSubstring(a, b)));
+};
+
