@@ -31,6 +31,7 @@ class DataChain
         DataCursor after_last_cursor;
 };
 
+unistring buffer_to_unistring(char* buff, size_t len);
 DataChain* text_to_chain(unistring);
 unistring chain_to_text(DataCursor prebeg, DataCursor end);
 

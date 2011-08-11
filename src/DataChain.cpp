@@ -31,8 +31,8 @@ DataChain::~DataChain()
 	//dtor
 }
 
-bool DataChain::isEmpty(){ 
-	return before_first_cursor.container->next == after_last_cursor.container; 
+bool DataChain::isEmpty(){
+	return before_first_cursor.container->next == after_last_cursor.container;
 };
 
 
@@ -119,6 +119,12 @@ DataChain*  DataChain::append_copy(DataCursor cur_prefrom, DataCursor cur_to){
 		this->append(cur_to.container->copy());
 	}
 	return this;
+}
+
+unistring buffer_to_unistring(char* buff, size_t len){
+  //return new unistring(buff, len);
+    /// todo: rewrite this!!!
+    return std::string(buff);
 }
 
 DataChain* text_to_chain(unistring str)

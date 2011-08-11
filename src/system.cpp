@@ -114,9 +114,26 @@ DataChain* Compare (DataCursor prebeg, DataCursor end, ExecContext *context){   
 	if (prebeg.container->type != integer)  RUNTIMEERRORn("2 integers expected");
 	return (new DataChain())->append(newRefText( thecompare(prebeg.container->value.num, end.container->value.num) ));
 };
-DataChain* Implode (DataCursor prebeg, DataCursor end, ExecContext *context){  SYSTEMERRORn("NYR");  };
+
+
+DataChain* Implode (DataCursor prebeg, DataCursor end, ExecContext *context){
+    std::cout << "[[[" << std::flush;
+	DataChain *result =  new DataChain();
+
+	unistring chtxt = chain_to_text(prebeg, end);
+    std::cout << chtxt << std::flush;
+
+	result->append(newRefWord(chtxt));
+	std::cout << "]]]" << std::flush;
+	return result;
+};
+
+
+
 DataChain* Explode (DataCursor prebeg, DataCursor end, ExecContext *context){  SYSTEMERRORn("NYR");  };
 DataChain* ExplodeAll (DataCursor prebeg, DataCursor end, ExecContext *context){ SYSTEMERRORn("NYR"); };
+
+
 
 DataChain* Add   (DataCursor prebeg, DataCursor end, ExecContext *context){
 	++prebeg;
@@ -148,7 +165,43 @@ DataChain* Sub   (DataCursor prebeg, DataCursor end, ExecContext *context){
 	return result;
 };
 
-DataChain* Mount (DataCursor prebeg, DataCursor end, ExecContext *context){  SYSTEMERRORn("NYR");  };
+DataChain* Mount (DataCursor prebeg, DataCursor end, ExecContext *context){
+
+      size_t length;
+      char *buffer;
+
+      std::ifstream is;
+	  unistring filename = chain_to_text(prebeg, end);
+	  is.open ( filename.c_str(), std::ios::binary );
+
+	  if(! is.is_open()){
+		  RUNTIMEERRORs("Can`t open file: " << filename);
+	  }
+
+      // get length of file:
+      is.seekg (0, std::ios::end);
+      length = is.tellg();
+      is.seekg (0, std::ios::beg);
+	  if (length < 0) {
+		  std::cerr << "Can`t open file: " << filename << std::flush;
+		  return 0;
+	  }
+
+      // allocate memory:
+      buffer = new char[length+1];
+
+      // read data as a block:
+      is.read (buffer,length);
+      is.close();
+
+      DataChain *result = text_to_chain(buffer_to_unistring(buffer, length));
+
+      delete[] buffer;
+      return result;
+
+
+}
+
 DataChain* File  (DataCursor prebeg, DataCursor end, ExecContext *context){  SYSTEMERRORn("NYR");  };
 DataChain* Args  (DataCursor prebeg, DataCursor end, ExecContext *context){  SYSTEMERRORn("NYR");  };
 
@@ -190,8 +243,8 @@ DataChain* StdErr(DataCursor prebeg, DataCursor end, ExecContext *context){  SYS
 DataChain* Print (DataCursor prebeg, DataCursor end, ExecContext *context){
 	if (prebeg==end) return 0;
 	DataChain *chain = new DataChain();
-	chain->append_copy(prebeg+1, end);
-	std::cout << chain_to_text(prebeg, end) << '\n' << std::flush;
+	chain->append_copy(prebeg, end);
+	std::cout << chain_to_text(prebeg, end) << "\n" << std::flush;
 	return chain;
 };
 

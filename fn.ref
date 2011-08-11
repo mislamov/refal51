@@ -1,5 +1,17 @@
 $ENTRY Go {  = <Begin>; }
 
 Begin {  =
-	   <Prout <LCS ('nasha sasha luche vashej')('prosto sasha luchaja')>>;
+
+//<Print <Print '123456789'>>;
+
+	   <Prout <GetPairs <ParseFileNames <Mount 'store.txt'>>>>
+//	   <Prout <LCS ('nasha sasha luche vashej')('prosto sasha luchaja')>>;
 };
+
+ParseFileNames  {
+	e.1 '\\n' e.n = <Implode <Print e.1>> '+' <ParseFileNames <Print e.n>>;
+}
+
+GetPairs {
+	e.e = e.e;
+}
