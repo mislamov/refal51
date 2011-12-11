@@ -1,0 +1,114 @@
+/* Синтаксический анализ и парсинг кода в объектном виде */
+
+
+Template theword ::= (word e.value);
+Template theint  ::= (int e.value);
+Template varname ::= { theword. | theint. } ;
+
+Template FUNCTION ::=
+	{"$"(word ENTRY)' '|}
+	(word t.name) {' '|} ("{" BLOCK.body) {' '|};
+
+Template TEMPLATE ::=
+	(word Template) ' ' (word t.name) {' '|} ":" ":" "=" LEFT_PART.body ;
+
+//Template BLOCK ::= SENTENCE.head ";" {' '|} { BLOCK. |}.tail ;
+Template BLOCK ::= e.block ;
+Template SENTENCE   ::=  LEFT_PART.left_part "=" RIGHT_PART.right_part ;
+
+
+Template LEFT_PART  ::=  PATTERN.pattern { IFs. |}.conditions ;
+Template RIGHT_PART ::=  SUBSTIT.pattern ;
+
+Template IFs ::= {' '|} "," {' '|} IF.head {IFs.|}.tail;
+/*Template IF  ::= e.substitution ":" E.pattern,
+			<IsPattern  E.pattern>		: True,
+			<IsSubstit  e.substitution>	: True;
+*/
+Template IF  ::=
+	{ "$" ("word" {"NOT"|"not"}) ' ' | $empty }.isnot
+	SUBSTIT.substitution ":" PATTERN.pattern;
+
+Template PATTERN ::= e.e, <IsPattern @.e> : True ;
+Template SUBSTIT ::= e.e, <IsSubstit @.e> : True ;
+
+IsPattern_  { e.e, <IsPattern_ e.e> : e.res = e.res <Prout '<IsPattern  ' e.e '>   -->   ' e.res>; }
+IsPattern { = True; L_ITEM. E.tail, <IsPattern E.tail> : True = True; E.else = False; };
+
+IsSubstit_  { e.e, <IsSubstit_ e.e> : e.res = e.res <Prout '<IsSubstit  ' e.e '>   -->   ' e.res>; }
+IsSubstit { = True; R_ITEM. E.tail, <IsSubstit @.tail> : True = True; E.else = False; };
+
+Template L_ITEM ::=
+	{ ' '| ("(" PATTERN. ) | VAR. | SYMBOL. | "!" } ;
+
+Template R_ITEM ::=
+	{ ' '| ("(" SUBSTIT. ) | ("<" SUBSTIT. ) | VAR. | SYMBOL. } ;
+
+Template SYMBOL ::=
+	{ theword. | (int e.) | (real e.) | (text e.) | "$" (word empty) } ;
+
+
+/*
+Template VAR    ::= {
+	theword.type  	       SPECIFICATORS.specs  "." { varname. | }.name |
+	GROUP_OR_VARIANT.type  SPECIFICATORS.specs  { "." varname. | }.name
+};
+*/
+
+
+/*-----------------------------
+без пути:
+4	word.name
+3	word.
+4	word[x..y].name
+3	word[x..y].
+1	{...}
+4	{...}.name
+4	{...}[x..y].name
+1	{...}[x..y]
+2	@.name
+2	@word.name
+4	&.name
+3	&.
+4	&word.name
+3	&word.
+4	&[x..y].name
+3	&[x..y].
+4	&word[x..y].name
+3	&word[x..y].
+
+-------------------------------*/
+// открытые и закрытые переменные
+Template VAR    ::=
+	{ theword. | "@"{theword.|} | "&"{theword.|} | GROUP_OR_VARIANT. }.type  SPECIFICATORS.specs {"."|}.dot { varname. | }.name VAR_PATH.path,
+		// точка может отсутствовать только для безымянной группы/варианта
+		@.type @.specs @.dot @.name: {
+					("{" e.) @.specs  |					// 1
+					"@" {theword.|} "." t.termname  |			// 2
+					{ theword. | "&"{theword.|} | ("{" e.) } @.specs "." |	// 3
+					{ theword. | ("{" e.) | "&"{theword.|} } @.specs "." t.termname2 // 4
+					}
+;
+
+VarName {
+    = ;
+    (t. e.v) = @.v;
+    &VAR.v, @.v::name : (t. e.n) = e.n;
+    VAR.v, @.v::name : (t. e.n) = e.n;
+    &LNK.v, @.v::name : (t. e.n) = e.n;
+    VAR.v, @.v::name : $empty = <RandomIdName>;
+}
+
+
+
+Template LNK    ::= {'@'|'&'}.type '.' varname.name VAR_PATH.path;  // шаблон для работы с закрытими переменными-указателями
+Template VAR_PATH ::= { ":" ":" varname. VAR_PATH. | $empty } ;
+Template GROUP_OR_VARIANT ::= ("{" e.body) ; //todo: уточнить
+Template SPECIFICATORS ::= { { REPEATER. }.head SPECIFICATORS.tail |} ;
+Template REPEATER ::= ("[" e.); // todo: уточнить
+
+
+
+
+Template META_IF ::= ({"IF"|"IF-"}.tag {("RIGHT-PART" e.)}.rp {("LEFT-PART" e.)}.lp );
+

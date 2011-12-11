@@ -91,6 +91,37 @@ DataContainer* DataContainer::copy(){
 	return new DataContainer(type, value, leng);
 };
 
+// удаление контейнера
+void DataContainer::free(){
+    /*
+    byte,
+	bytes,
+	text,
+	integer,
+	real,
+	word,
+	struct_bracket,
+	exec_bracket,
+	dummy
+    */
+    //if (this->type == bytes) delete this->value.
+    //if (this->type == text) delete[] this->value.text;
+    //if (this->type == word) delete[] this->value.word.value;
+    DataChain *chain = 0;
+    if ((this->type == struct_bracket || this->type == exec_bracket) && (chain = this->value.bracket_data.chain) && chain){
+        ref_assert(chain!=0);
+        if (! chain->isEmpty()){
+            DataCursor cur = chain->at_first();
+            DataCursor cur_after_last = chain->at_last(); cur_after_last.next_container();
+            do {
+                cur.container->free();
+                cur.next_container();
+            } while (cur_after_last.container!=cur.container);
+        }
+        //delete chain; - нельзя удалять, так как мог быть скопирован в другую скобку
+    };
+    //delete this;
+};
 
 bool equal(DataChain *ch1, DataChain *ch2){
 	if (ch1==ch2) return true;

@@ -14,4 +14,8 @@ enum DataContainerType {
 	dummy
 };
 
+inline bool isComplexData(DataContainerType arg){
+    return arg==bytes || arg==text || arg==word || arg==struct_bracket || arg==exec_bracket;
+};
+
 #endif

@@ -52,6 +52,8 @@ public:
 
 	size_t leng;
 	DataContainer* copy();
+	void free();
+
 protected:
 
 

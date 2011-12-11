@@ -20,6 +20,8 @@
 #define SYSTEM_H_INCLUDED
 
 #include <sstream>
+#include <stdio.h>
+#include <string.h>
 
 //#include "symbols.h"
 #include "DataChain.h"

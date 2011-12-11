@@ -1,0 +1,14 @@
+Go {
+	= 
+	<PrepareCodeFiles>
+	<WriteCodeToFile
+        	<TreeToCode <TokensToTree <DelComments <RefalTokens <Mount 'fn.ref'>>>>>>;
+}
+
+DelComments {
+	{' '|} (comment e.comm) {' '|} e.e = <DelComments ' ' e.e>;
+	( {"("|"{"|"["|"<"}.sig  e.1 ) e.e = (@.sig <DelComments e.1>) <DelComments e.e>;
+	t.1 e.e = @.1 <DelComments e.e>;
+	=;
+}
+

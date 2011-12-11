@@ -12,7 +12,7 @@ class DataChain;
 class DataCursor {
 public:
     DataContainer *container; // элемент содержится в этом контейнере
-    size_t index; // index=, когда container простой; index = порядковому номеру элемента, когда container составной
+    size_t index; // index=? когда container простой; index = порядковому номеру элемента, когда container составной. Нумерация от 0
     DataCursor& operator++ ();
     DataCursor& operator-- ();
     DataCursor operator-(const int&);
@@ -20,7 +20,7 @@ public:
     bool operator!=(const DataCursor);
     bool operator==(const DataCursor);
     bool operator! ();
-	void next_container();
+	void next_container(); // передвигает текущий курсор на начало следующего контейнера
 
     DataCursor (DataContainer* c, size_t idx = 0);
     DataCursor (int i=0);
@@ -28,6 +28,9 @@ public:
 	void replaceBy(DataChain *chain);
 
 	DataContainerType getType();
+
+	//bool isFirstInComplexData();
+	//bool isLastInComplexData();
 };
 
 inline bool DataCursor::operator==(const DataCursor cur){

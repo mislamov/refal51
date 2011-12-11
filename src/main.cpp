@@ -70,9 +70,10 @@ int main ( int , char **)
 		ref_assert( b.container->type == exec_bracket );
 
 		BracketData  exb = b.container->value.bracket_data;
+		//std::cout << "::: " << exb.fname << "\n";
 		execContext.prepareExecute();
 		ch = exb.fn(exb.chain->at_before_first(), exb.chain->at_last(), &execContext);
-		//if (ch) std::cout << ch->debug() << "\n";
+		//if (ch) std::cout << "[" << ch->debug() << "]\n";
 		b.replaceBy( ch );
 
 		//delete result; // опусташенная цепочка

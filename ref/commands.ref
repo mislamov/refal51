@@ -1,0 +1,186 @@
+/* перевод метакода в конечный исполнимый код */
+
+DefFunction {
+	t.name (e.code) = 
+			<AppendFunction  t.name>
+
+			'\n' 'DataChain* ' t.name '(DataCursor arg_from, DataCursor arg_to, ExecContext *context){' '\n'
+			'DataChain *result = new DataChain(); \n'
+  			'DataChain *tmp_chain = new DataChain(); \n'
+			
+			e.code
+
+			'\n' '}' '\n';
+}
+
+DefTemplate {
+	t.name (e.rollback_label)(e.subvars)(e.code) =  
+		'\n' 'struct ' t.name '{' '\n' 
+		'DataCursor var_' t.name '_l; ' '\n'
+		'DataCursor var_' t.name '_r; ' '\n'
+		'\\' e.subvars '\n'
+		'\n' '}' '\n' 
+				
+		'\n' 'bool parse_' t.name '(DataCursor arg_from, DataCursor arg_to, RefMap *map){' '\n'
+		'// подготовка к сопоставлению шаблона' '\n'
+		'if (map!=0){ goto ' e.rollback_label '; }' '\n'
+		'map = new RefMap(); //malloc(sizeof(RefMap));' '\n'
+		e.code
+		'fail: ' '\n'
+		'// обработка неуспеха \n'
+		'printf("fail!!!");' '\n'
+		'return false;' '\n\n'
+		'\n' '}' '\n';
+}
+
+/** объ€вление функции пользовател€ */
+AppendFunction {
+	e.fname  = 
+		<File "include/res.h" 
+			<Mount "include/res.h"> '\n' 
+			'DataChain* ' @.fname '(DataCursor arg_from, DataCursor arg_to, ExecContext *context);' '\n'
+		>;
+}
+
+DefSentence {
+	t.order (e.left_code)(e.rigth_code)  =
+			'\n' '{' '\n' 
+			'// сопоставление \n'
+			e.left_code
+			'\n'
+			'// подстановка \n'
+			e.rigth_code
+			'return ' 'result' ';' '\n'
+			'}' '\n' 
+			'sentence_after_' t.order ': ' '\n'
+}
+
+ReturnFail {
+	=	'\n'  '// подготовка к возвращению неуспеха' '\n' 'std::cout << "fail!";' '\n' 'return 0;' '\n';
+
+}
+
+
+
+
+/**
+* код передвижени€ переменной по цепочке, ограниченной значением e.border
+*/
+INC {	(e.var)(e.border)(e.rollback_label) = '/*INC*/	if (!INC(' e.var ', ' e.border ')) goto ' e.rollback_label ';' '\n'}
+
+/**
+* код проверки завершени€ сопоставлени€
+*/
+ISEMPTY {	(e.l)(e.r)(e.rollback_label) = '/*ISEMPTY*/	if ('e.l'!=0 && ' e.r ' != ' e.l ') goto ' e.rollback_label ';' '\n'}
+
+
+EQ {
+    (e.v1)(e.v2)(e.roll)  =   'if (' e.v1 '!=' e.v2 ') goto ' e.roll;
+}
+
+CHAIN_FIRST {
+	e.chain_var = e.chain_var'->at_before_first()';
+}
+
+CHAIN_LAST {
+	e.chain_var = e.chain_var'->at_last()';
+}
+
+/*
+* код проверки совпадени€ символаов по типу и значению
+*/
+EQSYM {
+	("text" e.val)(e.var)(e.border)(e.rollback_label),
+		<Compare <Lenw e.val> 1> : '+',
+		<RandomIdName> : e.alphas,
+		<RandomIdName> : e.texttmp
+	=
+		'\t' 'static DataChain *' e.texttmp ' = text_to_chain("' e.val '");' '\n'
+		'\t' 'static DataCursor ' e.texttmp '_l = ' <CHAIN_FIRST e.texttmp> ';' '\n'
+		'\t' 'static DataCursor ' e.texttmp '_r = ' <CHAIN_LAST e.texttmp> ';' '\n'
+		<SLIDE (e.var)(e.border)(e.texttmp '_l')(e.texttmp '_r')(e.rollback_label)>;
+
+	("text" s.value)(e.var)(e.border)(e.rollback_label),
+		<RandomIdName> : e.alphas
+	=
+                '\t' 'if (' e.var '.container->type != text || *(' e.var '.container->value.text + 'e.var'.index) != \'' @.value '\') goto ' e.rollback_label ';\n';
+
+	("int" e.value)(e.var)(e.border)(e.rollback_label)
+	=
+                '\t' 'if ('e.var '.container->type != integer || 'e.var '.container->value.num != ' e.value ') goto ' e.rollback_label ';\n';
+
+	("word" e.value)(e.var)(e.border)(e.rollback_label)
+	=
+                '\t' 'if ('e.var '.container->type != word || !memcmp('e.var '.container->value.word.value, "' e.value '", 'e.var '.container->value.word.leng)) goto ' e.rollback_label ';\n';
+
+/*
+	(t.type e.val)(e.var)(e.border)(e.rollback_label)
+			=	'\t' 'if (('<TYPEP t.type e.var> ') || !(**' e.var ' == ' e.val ')) goto ' e.rollback_label ';\n';
+*/
+}
+
+
+/*
+* код проверки аргумента на то, €вл€етс€ ли он структурной скобкой.
+* ≈сли да, то e.newfrom и e.newto - это смотр€щие внутрь скобки переменные-границы'
+*/
+JMP_BRACKET {
+	( e.br )(e.newfrom)(e.newto) =
+			'//// JMP_BRACKET \n'
+			'\t' e.newfrom' = 'e.br'.container->value.bracket_data.chain->at_before_first();' '\n'
+			'\t' e.newto'   = 'e.br'.container->value.bracket_data.chain->at_last();' '\n'
+}
+
+ISBRACKET {
+    (e.var)(e.rollback_label) =
+	    '//// ISBRACKET \n'
+	    '\t' 'if (' e.var '.container->type != struct_bracket) goto ' e.rollback_label ';' '\n';
+}
+
+
+/* простое присваивание */
+SET {
+    (e.var)(e.value) = '/*SET*/\t' e.var ' = ' e.value ';' '\n';
+}
+
+JMP {
+    e.label = '/*JMP*/\t' 'goto ' e.label ';' '\n';
+}
+
+SYMBOLP {
+    (e.var)(e.rollback) = '\t' 'if (! isSymbolType(' e.var '.container->type)) goto ' e.rollback ';\n';
+}
+
+
+DEF {
+    e.var =
+        '/*DEF*/\t' 'DataCursor ' e.var ';\n'
+}
+
+LABEL {
+	e.lab = e.lab ': \n';
+}
+/* сравнение известной подцепочки с текущей */
+SLIDE {
+	(e.curr)(e.end)(e.l)(e.r)(e.rollback) = ' if (!SLIDE('e.curr', 'e.end', ' e.l ', ' e.r ')) goto ' e.rollback ';\n';
+}
+
+
+
+PrepareCodeFiles {
+	=
+	<File "include/res.h"
+        '#include "direfal.h" \n'
+        '#include "system.h" \n'	
+	>
+}
+WriteCodeToFile {
+	e.asm = 
+
+	<File "src/res.cc"
+        '#include "direfal.h" \n'
+        '#include "commands.h" \n'
+        '#include "system.h" \n'
+        '#include "res.h" \n'
+	e.asm>;
+}

@@ -1,0 +1,280 @@
+/* Построение низкоуровнего мета-кода */
+
+TreeToCode {
+	("FUNCTION" e.funk) e.next =
+				<TreeToCode_function e.funk>
+				<TreeToCode e.next>;
+	("TEMPLATE" e.templ) e.next =
+				<TreeToCode_template e.templ>
+				<TreeToCode e.next>;
+
+	=;
+}
+
+TreeToCode_function {
+	t.name e.e  =  <DefFunction t.name (<TreeToCode_sentences 1 e.e>)>
+}
+
+TreeToCode_template {
+	t.name ("LEFT-PART" e.leftpart),
+				<TreeToCode_Pattern (e.leftpart)('arg_from')('arg_to')('fail')> : (e.code)(e.rollback_label) =
+					<DefTemplate t.name 
+						( e.rollback_label )
+						( <DelDoubles <GetVars e.leftpart>> )
+						( e.code )
+					>
+}
+
+TreeToCode_sentences {
+	t.order ("SENTENCE" ("LEFT-PART" e.leftpart)("RIGHT-PART" e.result)) e.e,
+				<TreeToCode_Pattern (e.leftpart)('arg_from')('arg_to')('sentence_after_' t.order)> : (e.code)(e.rollback_label) =
+
+						<DefSentence t.order (e.code)(<SubstCompile ('result') e.result>)>
+						<TreeToCode_sentences <Add 1 t.order> e.e>;
+
+	0 = <Prout 'ERROR! EMPTY SENTENCE LIST'><Exit>;
+	t.else	=	<ReturnFail>;
+}
+
+
+/**
+* (метакод) (переменная_от) (переменная_по) (метка_для_отката_если_не_сопоставится) -> (код)(точка_отката)
+*
+*  метакод - метакод исходной программы, по которому строится результатный код
+*  переменная_от - переменная, в которой хранится левый край сопостовляемой цепочки данных (перед первым элементом)
+*  переменная_по -  --||-- правый край --||-- (последний элемент)
+
+Если пусто, то переменная_от==переменная_по
+
+*  метка_для_отката_если_не_сопоставится - метка кода, в которую нужно перейти, если текущий метакод не выполним для данных
+*  ->
+*  код - результатный код, для 'метакод'
+*  точка_отката - точка возврата для всего метакода (в последний элемент)
+*
+
+l_varname и r_varname - границы значения переменной: перед левым элементом и правый элемент соответственно
+Если значение пусто, то l_varname = r_varname - "перед пусто"
+**/
+//TreeToCode_Pattern { (e.meta) e.e = <Prout e.meta> <Build_ (e.meta) e.e>}
+TreeToCode_Pattern {
+
+	/*  [ e. ]   [ E. ] */
+	(&VAR.v)( e.arg_prefrom )( e.arg_to )( e.rollback_label ),
+		@.v::type : (word {"e"|"E"}),
+		@.v::name : $empty
+	=	
+		( '//// e. \n' )( e.rollback_label );
+		
+	/*  [ e.1 ]   [ E.1 ] */
+	(&VAR.v)( e.arg_prefrom )( e.arg_to )( e.rollback_label ),
+		@.v::type : (word {"e"|"E"})
+	=
+		(
+		'//// [ e.1 ] \n'
+                <DEF 'l_' <VarName @.v>>
+                <DEF 'r_' <VarName @.v>>
+                <SET ('l_' <VarName @.v>)(e.arg_prefrom)>
+                <SET ('r_' <VarName @.v>)(e.arg_to)>
+		)(e.rollback_label);
+
+
+	/*  [ e.1 <any> ] */
+	(&VAR.v e.next)( e.arg_prefrom )( e.arg_to )( e.rollback_label ),
+		@.v::type : (word "e"),
+		<VarName @.v> : e.vname,
+		<RandomIdName> : e.lbl,
+		<TreeToCode_Pattern (e.next)('r_' e.vname)(e.arg_to)('label_' @.lbl)> : (e.next_code)(e.next_rollback)			=
+		(
+		'//// [ e.1 <any> ] \n'
+                <DEF 'l_' e.vname>
+                <DEF 'r_' e.vname>
+                <SET ('l_' e.vname)(e.arg_prefrom)> // перед первым
+                <SET ('r_' e.vname)(e.arg_prefrom)> // перед первым
+                <JMP 'label_' @.lbl '_firststep'>
+                <LABEL 'label_' @.lbl>
+		<INC ('r_' e.vname)(e.arg_to)(e.rollback_label)>
+		<LABEL 'label_' @.lbl '_firststep'>
+		@.next_code
+		)(e.next_rollback);
+
+
+	/*  [ E.1 <any> ] */
+	(&VAR.v e.next)( e.arg_prefrom )( e.arg_to )( e.rollback_label ),
+		@.v::type : (word "E"),
+		<VarName @.v> : e.vname,
+		<RandomIdName> : e.lbl,
+		<TreeToCode_Pattern (e.next)('r_' e.vname)(e.arg_to)('label_' @.lbl)> : (e.next_code)(e.next_rollback)
+			=
+		(
+		'//// [ E.1 <any> ] \n'
+                <DEF 'l_' e.vname>
+                <DEF 'r_' e.vname>
+
+                <SET ('l_' e.vname)(e.arg_prefrom)> // перед первым
+                <SET ('r_' e.vname)(e.arg_to)> // последний
+                <JMP 'label_' @.lbl '_firststep'>
+                <LABEL 'label_' @.lbl>
+		<DEC ('r_' e.vname)(e.arg_to)(e.rollback_label)>
+		<LABEL 'label_' @.lbl '_firststep'>
+		@.next_code
+		)(e.next_rollback);
+
+
+	/*  [ s.1 <any> ] */
+	(&VAR.v e.next)( e.arg_from )( e.arg_to )( e.rollback_label ),
+		@.v::type : (word "s"),
+		<VarName @.v> : e.vname,
+		<RandomIdName> : e.l_tmp,
+		<TreeToCode_Pattern (e.next)('r_' e.vname)(e.arg_to)(e.rollback_label)> : (e.next_code)(e.next_rollback)
+			=
+		(
+		'//// [ s.1 <any> ] \n'
+		<DEF e.l_tmp>
+                <DEF 'l_' e.vname>
+                <DEF 'r_' e.vname>
+                <SET ('l_' e.vname)(e.arg_from)>
+                <SET (e.l_tmp)(e.arg_from)>
+                <INC (e.l_tmp)(e.arg_to)(e.rollback_label)>
+                <SYMBOLP (e.l_tmp)(e.rollback_label)>
+                <SET ('r_' e.vname)(e.l_tmp)>
+		@.next_code
+                )(e.next_rollback);
+
+
+	/*  [ {...}.varname <any> ] */
+	(&VAR.v e.next)( e.arg_from )( e.arg_to )( e.rollback_label ),
+		@.v::type : GROUP_OR_VARIANT. ,
+		<VarName @.v> : e.vname,
+		<RandomIdName> : e.l_tmp,
+		<TreeToCode_Pattern (e.next)('r_' e.vname)(e.arg_to)(e.rollback_label)> : (e.next_code)(e.next_rollback)
+			=
+		(
+		'//// [ s.1 <any> ] \n'
+		<DEF e.l_tmp>
+                <DEF 'l_' e.vname>
+                <DEF 'r_' e.vname>
+                <SET ('l_' e.vname)(e.arg_from)>
+                <SET (e.l_tmp)(e.arg_from)>
+                <INC (e.l_tmp)(e.arg_to)(e.rollback_label)>
+                <SYMBOLP (e.l_tmp)(e.rollback_label)>
+                <SET ('r_' e.vname)(e.l_tmp)>
+		@.next_code
+                )(e.next_rollback);
+
+
+	/* [ &.name <any> ]  */
+	(&LNK.l e.next)( e.arg_from )( e.arg_to )( e.rollback_label ),
+		@.l::path : $empty,
+		@.l::name : (t. e.vname),
+		<RandomIdName> : e.r_tmp,
+		<TreeToCode_Pattern (e.next)(e.r_tmp)(e.arg_to)(e.rollback_label)> : (e.next_code)(e.next_rollback)
+		=
+		(
+		'//// [ &.name <any> ] \n'
+		<DEF e.r_tmp>
+                <SET (e.r_tmp)(e.arg_from)>
+                <SLIDE (e.r_tmp)(e.arg_to)('l_'@.vname)('r_'@.vname)(e.rollback_label)>
+		@.next_code
+                )(e.next_rollback);
+
+	/* [ 'a' <any> ] */
+	(&SYMBOL.s e.next)( e.arg_from )( e.arg_to )( e.rollback_label ),
+		@.s : (t.type e.value),
+		<RandomIdName> : e.r_tmp,
+		<TreeToCode_Pattern (e.next)(e.r_tmp)(e.arg_to)(e.rollback_label)> : (e.next_code)(e.next_rollback)
+	=
+		(
+		'//// [ `a` <any> ] \n'
+		<DEF e.r_tmp>
+                <SET (e.r_tmp)(e.arg_from)>
+                <INC (e.r_tmp)(e.arg_to)(e.rollback_label)>
+                <EQSYM @.s ( e.r_tmp )(e.arg_to)( e.rollback_label )>
+		@.next_code
+                )(e.next_rollback);
+
+
+
+	/* [ ( <any> ) <any> ] */
+	(("(" e.into) e.next)( e.arg_from )( e.arg_to )( e.rollback_label ),
+        <RandomIdName> : e.lrand,
+        <RandomIdName> : e.l_tmp0,
+        <RandomIdName> : e.r_tmp0,	
+		<TreeToCode_Pattern  (e.into )(e.l_tmp0)(e.r_tmp0)(e.rollback_label)> : (e.bracket_code)(e.bracket_rollback),
+		<TreeToCode_Pattern  (e.next)( e.lrand )( e.arg_to )(e.bracket_rollback)> : (e.next_code)(e.next_rollback)  /* возможно, откат идет от рефал-условия и нужно переопределить внутренности скобок */
+//		<TreeToCode_Pattern  (e.next)( e.arg_from )( e.arg_to )(e.bracket_rollback)> : (e.next_code)(e.next_rollback)  /* возможно, откат идет от рефал-условия и нужно переопределить внутренности скобок */
+	=
+		(
+		'//// [ (<any>) <any> ] \n'
+                <DEF e.lrand>
+                <DEF e.l_tmp0>
+                <DEF e.r_tmp0>
+                <SET (e.lrand)(e.arg_from)>
+                <INC (e.lrand)(e.arg_to)(e.rollback_label)>
+                <ISBRACKET (e.lrand)(e.rollback_label)>
+		<JMP_BRACKET ( e.lrand)(e.l_tmp0)(e.r_tmp0)>
+		e.bracket_code
+                //<INC ('l_tmp')(e.arg_to)(e.rollback_label)>
+		e.next_code
+		)(e.next_rollback);
+
+	/* empty */
+	(  )( e.arg_from )( e.arg_to )( e.rollback_label ) =
+		(
+		'//// [ empty ] \n'
+		<ISEMPTY ( e.arg_from )( e.arg_to )( e.rollback_label )>
+		)( e.rollback_label );
+
+}
+
+Fname {
+	"-"  = "Dec";
+	"+"  = "Add";
+	"*"  = "Mul";
+	"/" = "Div";
+	e.else = e.else;
+}
+
+SubstCompile {
+	//t.ord e.e = 'printf("success ' t.ord '!");' '\n' 'return 0; \n';
+    (e.ch) = ;
+    (e.ch) &LNK.lnk e.next     =
+                            e.ch'->append_copy(l_' <VarName &LNK.lnk> ', r_' <VarName &LNK.lnk> '); \n'
+                            <SubstCompile (e.ch) @.next>;
+    (e.ch) ("<" &SYMBOL.fn e.in) e.next,
+        <RandomIdName> : e.v,
+        @.fn : (t. e.fname) =
+                            'DataChain* ' e.v ' = new DataChain(); \n'
+                            'DataContainer* ' e.v'_execbr = newRefExecBrackets(' <Fname e.fname> ', ' e.v ', "'e.fname'");' '\n'
+                            e.ch'->append('e.v'_execbr);' '\n'
+                            <SubstCompile (e.v) e.in>
+                            'context->pushExecuteCall(' e.v'_execbr);' '\n'
+                            <SubstCompile (e.ch) e.next>;
+    (e.ch) ("(" e.in) e.next,
+        <RandomIdName> : e.v   =
+                            'DataChain* ' e.v ' = new DataChain(); \n'
+                            e.ch'->append(newRefStructBrackets(' e.v ')); \n'
+                            <SubstCompile (e.v) e.in>
+                            <SubstCompile (e.ch) e.next>;
+    (e.ch) &SYMBOL.s e.next   =
+                            e.ch'->append(' <SubstCompileSYMBOL @.s> '); \n'
+                            <SubstCompile (e.ch) e.next>;
+}
+
+SubstCompileSYMBOL {
+    ("word" t.w) =  'newRefWord("' <Escape <Explode t.w>> '")' ;
+    ("int" t.w)  =  'newRefInteger(' t.w ')' ;
+    ("text" e.t) =  'newRefText("' <Escape e.t> '")' ;
+}
+
+Escape {
+	'\n' e.e = '\\n' <Escape e.e>;
+	'\t' e.e = '\\t' <Escape e.e>;
+	'\\' e.e = '\\\\' <Escape e.e>;
+	'\'' e.e = '\\\'' <Escape e.e>;
+	'"' e.e = '\\"' <Escape e.e>;
+	s.s e.e = s.s  <Escape e.e>;
+	= ;
+}
+
+
+

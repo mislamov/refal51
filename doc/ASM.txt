@@ -1,0 +1,55 @@
+СОПОСТАВЛЕНИЕ:
+
+...<F ... <F ... <G   ...  > ...> ... <F ...> ...> ...
+
+                    AF   AT
+
+Регистры:
+  AF = arg_from
+  AT = arg_to
+  L[i] = value_from for variable i
+  R[i] = value_to for variable i
+  OB = Object expression before
+  OA = Object expression after
+  
+
+Вычисление выражения (EVAL):
+  START_EVAL
+  FIND_EXEC
+
+Execute (EXEC):
+  EXEC  register register
+
+_ Cопостовление (COMPARE):
+  /* базис */
+  OPEN_SESSION
+  JMP label
+  :lable
+  INC register
+  DEC register
+  SET register register
+  COMPV register value lable
+  COMPR register register lable
+  /* условия */
+  BUILD register register
+  EVAL register
+  /* блоки */
+  // уже все есть
+  /* встроеные подстановки */
+  COMPARE + lazy embedded BUILD
+  /* повторы */
+  
+  /* UserType-переменные */
+  COMPARE
+  .
+  .
+_ Построение (BUILD):
+  PUSHB :register = push new bracket expr
+  PUSHE function :register = push new function-execute expr
+  LOOK register
+  VALUE object
+  COPY register register :register
+  RETURNTO register register
+  CLEAN_EVAL
+  .
+  .

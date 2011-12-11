@@ -23,6 +23,7 @@ class DataChain
        	DataCursor at_after_last(){ return after_last_cursor; };
 
         bool isEmpty();
+        void free(/*DataCursor cur_prefrom, DataCursor cur_to*/);
 
         unistring debug();
     protected:

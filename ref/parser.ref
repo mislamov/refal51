@@ -1,0 +1,159 @@
+/* Синтаксический анализ и парсинг кода в объектном виде */
+
+
+TokensToTree {
+	FUNCTION.f  {";" |} E.next = <Prout 'Function: ' @.f::name>  <SEMANTIC &FUNCTION.f > <TokensToTree @.next>;
+	TEMPLATE.tm  ";"  E.next   = <Prout 'Template: ' @.tm::name> <SEMANTIC &TEMPLATE.tm> <TokensToTree @.next>;
+	' ' e.e = <TokensToTree e.e>;
+	$empty = $empty;
+
+	// ОШИБКИ
+	e.error { TEMPLATE. ";" | FUNCTION.}.fnd E.next = <TokensToTree e.error> <TokensToTree @.fnd @.next>;
+	//e.A TEMPLATE.tm  ";" E.next = <TokensToTree e.A> &TEMPLATE.tm <TokensToTree @.next>;
+	//e.A FUNCTION.f   {";"|} E.next = <TokensToTree e.A> &FUNCTION.f <TokensToTree @.next>;
+	e.else = <ProutError 'Error Function or Template definition:\n\n' e.else '\n\n'><Exit 9>;
+};
+
+// Семантический анализ функций и шаблонов
+SEMANTIC {
+	&FUNCTION.f  e.next
+			=
+				("FUNCTION" @.f::name
+					<Sentences FUNCTION.f::body>
+				)
+				<SEMANTIC e.next>;
+
+	&TEMPLATE.t  e.next,
+		<PatternAnalise     ( )( )         TEMPLATE.t::body::pattern>    : (e.variables)(e.resultPattern),
+		<ConditionsAnalise  (e.variables)()  <CondToList TEMPLATE.t::body::conditions>> : (e.variables2)(e.resultConditions)
+			=
+				("TEMPLATE" @.t::name
+					("LEFT-PART"
+						@.resultPattern
+						@.resultConditions
+					)
+				)
+				<SEMANTIC e.next>;
+
+	$empty = $empty;
+};
+
+// Семантический анализ списка предложений
+Sentences_ { e.e, <Sentences_ e.e> : e.result = e.result <Prout '<Sentences  ' e.e '> -->  ' e.result>; }
+Sentences {
+	{' '|} =;
+
+	SENTENCE.sent ";" E.next,
+		@.sent : LEFT_PART.left_part "=" RIGHT_PART.right_part,
+		<PatternAnalise     ( )( )         LEFT_PART.left_part::pattern>    : (e.variables)(e.resultPattern),
+		<ConditionsAnalise  (e.variables)()  <CondToList LEFT_PART.left_part::conditions>> : (e.variables2)(e.resultConditions),
+		<SubstitutAnalise   (e.variables2)() RIGHT_PART.right_part> : (e.variables3)(e.resultConstitute)
+		=	("SENTENCE" ("LEFT-PART" e.resultPattern  e.resultConditions)("RIGHT-PART" e.resultConstitute)) <Sentences E.next>;
+
+	e.sent ";" E.else =
+			<ProutError 'bad sentence: ' @.sent>
+			<ProutError <FindErrorInSentence e.sent>>
+			<Exit 9>
+			<Sentences @.else>;
+
+	SENTENCE.sent = <Sentences  @.sent ";">;
+
+	e.else = <ProutError 'bad sentence: ' @.else><Exit 9>;
+};
+
+// получение из списка условий - списка ссылок на условия
+CondToList { =; IFs.conds = &IFs.conds::head <CondToList IFs.conds::tail> ; IF.c = &IF.c; e.else = <ProutError 'bad conditions: ' e.else><Exit 9>; }
+
+
+// семантический анализ шаблона
+//(e.vars)( ) e.leftpart = (e.vars) (e.leftpart);
+PatternAnalise_ { e.e, <PatternAnalise_ e.e> : e.res = <Prout '<PatternAnalise ' e.e '>  --->  'e.res> e.res; }
+PatternAnalise {
+	// скобка
+	(e.vars) (e.result) ("(" e.data) e.next,
+		<PatternAnalise (e.vars)() e.data> : (e.mkvars)(e.mkdata)
+		=	<PatternAnalise (e.mkvars)(e.result ("(" e.mkdata)) e.next>;
+
+	// закрытая переменная
+	(e.vars1 &VAR.exsvar e.vars2) (e.result) VAR.var e.otherpart,
+		VAR.exsvar::name		 : VAR.var::name,
+		<GetLnkType VAR.exsvar::type> '.' VAR.var::name VAR.var::path : LNK.lnk
+		=
+			<ErrorIfNotClosedVariable &VAR.var>
+			<ErrorIfNotEqualType (VAR.exsvar::type)(VAR.var::type)('Different variables with the same name [2]: ' VAR.exsvar '  &  ' VAR.var)>
+			<PatternAnalise (e.vars1 &VAR.exsvar e.vars2)(e.result &LNK.lnk) e.otherpart>;
+
+	////// ОТКРЫТЫЕ ПЕРЕМЕННЫЕ:
+	// открытая переменная с именем
+	(e.vars) (e.result) VAR.var e.otherpart,
+		$NOT VAR.var::name : $empty,
+		<PatternAnaliseVar (e.vars) &VAR.var> : (e.mkvars) &VAR.mkvar
+		=
+			<ErrorIfNotOpenedVariable &VAR.var>
+			<PatternAnalise (e.mkvars &VAR.var)(e.result &VAR.mkvar) e.otherpart>;
+
+	// открытая безымянная переменная
+	(e.vars) (e.result) VAR.var e.otherpart,
+		VAR.var::name : $empty,
+		<PatternAnaliseVar (e.vars) &VAR.var> : (e.mkvars) &VAR.mkvar
+		=	<PatternAnalise (e.mkvars)(e.result &VAR.mkvar) e.otherpart>;
+
+	(e.vars) (e.result) VAR.var e.otherpart	=	<ProutError 'unparsed variable: ' @.var>;
+	(e.vars) (e.result) ' ' e.next		=	<PatternAnalise (e.vars) (e.result) e.next>;
+	(e.vars) (e.result) SYMBOL.s e.next	=	<PatternAnalise (e.vars) (e.result &SYMBOL.s) e.next>;
+	(e.vars) (e.result)			=	(e.vars) (e.result);
+	(e.vars) (e.result) "!" e.next		=	<PatternAnalise (e.vars) (e.result "$cutter") e.next>;
+	(e.vars) (e.result) e.else		=
+							//<ProutError 'Unknown item for PatternAnalise: [' e.else ']'>
+							(e.vars) (e.result "$ERROR" 'Unknown item for pattern here: \t' e.else);
+}
+
+// семантический анализ рефал-условия
+// (e.vars)() &IF[...]   =  (e.vars-result)(e.result)
+ConditionsAnalise_ { e.e, <ConditionsAnalise_ e.e> : e.res = e.res <Prout '<ConditionsAnalise ' e.e '>   -->  ' e.res>; }
+ConditionsAnalise  {
+	(e.vars)(e.result) = (e.vars)(e.result);
+
+	(e.vars)(e.result) &IF.cond e.ifs,
+		//<Prout '\n' &IF.cond '=\t'  IF.cond::substitution '\t:\t' IF.cond::pattern>:,
+		<SubstitutAnalise (e.vars )( ) IF.cond::substitution> : (e.vars1)(e.subst1),
+		<PatternAnalise   (e.vars1)( ) IF.cond::pattern     > : (e.vars2)(e.pattn2),
+		<IF equal ( $empty )( IF.cond::isnot )  /* если нет отрицания условия */
+			THEN  (e.vars2)(e.result ("IF" ("RIGHT-PART" e.subst1) ("LEFT-PART" e.pattn2)))
+			ELSE  (e.vars )(e.result ("IF-"("RIGHT-PART" e.subst1) ("LEFT-PART" e.pattn2)))
+		> : e.newarg
+			=	<ConditionsAnalise e.newarg e.ifs>;
+}
+
+// семантический анализ подстановки
+//(e.vars)( ) e.substitution  =  (e.vars) (e.result);
+SubstitutAnalise_ { e.e = <Prout '<SubstitutAnalise ' e.e '>'><SubstitutAnalise_ e.e>; };
+SubstitutAnalise {
+	// закрытая переменная
+	(e.vars1 &VAR.exstvar e.vars2) (e.result) VAR.var e.otherpart,
+		VAR.exstvar::name   		 : VAR.var::name,
+		<GetLnkType VAR.var::type> '.' VAR.var::name VAR.var::path : LNK.lnk
+		=
+			<ErrorIfNotClosedVariable &VAR.var>
+			<ErrorIfNotEqualType (VAR.exstvar::type)(VAR.var::type)('Different variables with the same name [1]: ' VAR.exstvar '  &  ' VAR.var ' . Types: '(VAR.exstvar::type)(VAR.var::type))>
+			<SubstitutAnalise (e.vars1 &VAR.exstvar e.vars2)(e.result &LNK.lnk) e.otherpart>;
+
+	(e.vars) (e.result) VAR.lnk e.otherpart
+		=	//<ProutError  'Unexpected opened-variable in substitution: ' VAR.lnk '. Expected closed variables: '<UnPoint e.vars>>
+			<SubstitutAnalise (e.vars)(e.result "$ERROR" 'Unexpected opened-variable in substitution: ' VAR.lnk '. Expected closed variables: '<UnPoint e.vars>) e.otherpart ' .'>;
+
+	(e.vars)(e.result) ({"<"|"("}.sig SUBSTIT.subs ) e.otherpart,
+		<SubstitutAnalise (e.vars)() SUBSTIT.subs> : (e.vars1)(e.res1)
+		=	<SubstitutAnalise (e.vars1)(e.result (@.sig e.res1)) e.otherpart>;
+
+	(e.vars)(e.result) ' ' e.otherpart
+		=	<SubstitutAnalise (e.vars)(e.result) e.otherpart>;
+
+	(e.vars) (e.result) SYMBOL.s e.next	=	<SubstitutAnalise (e.vars) (e.result &SYMBOL.s) e.next>;
+	(e.vars) (e.result)			=	(e.vars) (e.result);
+	(e.vars) (e.result) e.else		=
+							//<ProutError  'Unknown item for SubstitutAnalise: \n\t' e.else >
+							(e.vars)(e.result "$ERROR"  'Unknown item for substitution expression here: \t' e.else);
+
+}
+
