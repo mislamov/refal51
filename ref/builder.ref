@@ -27,9 +27,10 @@ TreeToCode_template {
 
 TreeToCode_sentences {
 	t.order ("SENTENCE" ("LEFT-PART" e.leftpart)("RIGHT-PART" e.result)) e.e,
-				<TreeToCode_Pattern (e.leftpart)('arg_from')('arg_to')('sentence_after_' t.order)> : (e.code)(e.rollback_label) =
-
-						<DefSentence t.order (e.code)(<SubstCompile ('result') e.result>)>
+				<TreeToCode_Pattern (e.leftpart)('arg_from')('arg_to')('sentence_after_' t.order)> : (e.code)(e.rollback_label),
+				<PrepareSubstitutionBeforeCompile () e.result> : (e.vars) e.prepared_result
+				=
+						<DefSentence t.order (e.code)( <SubstCompile ('result') e.prepared_result> )>
 						<TreeToCode_sentences <Add 1 t.order> e.e>;
 
 	0 = <Prout 'ERROR! EMPTY SENTENCE LIST'><Exit>;
@@ -234,47 +235,54 @@ Fname {
 	e.else = e.else;
 }
 
+/*
+   (e.строящаяся_цепочка) e.метакод = <код>
+*/
 SubstCompile {
 	//t.ord e.e = 'printf("success ' t.ord '!");' '\n' 'return 0; \n';
     (e.ch) = ;
-    (e.ch) &LNK.lnk e.next     =
-                            e.ch'->append_copy(l_' <VarName &LNK.lnk> ', r_' <VarName &LNK.lnk> '); \n'
-                            <SubstCompile (e.ch) @.next>;
+    (e.ch) &LNK.lnk e.next	=
+				<VCOPY (e.ch)(<VarName &LNK.lnk>)>
+				<SubstCompile (e.ch) @.next>;
+
     (e.ch) ("<" &SYMBOL.fn e.in) e.next,
         <RandomIdName> : e.v,
-        @.fn : (t. e.fname) =
-                            'DataChain* ' e.v ' = new DataChain(); \n'
-                            'DataContainer* ' e.v'_execbr = newRefExecBrackets(' <Fname e.fname> ', ' e.v ', "'e.fname'");' '\n'
-                            e.ch'->append('e.v'_execbr);' '\n'
-                            <SubstCompile (e.v) e.in>
-                            'context->pushExecuteCall(' e.v'_execbr);' '\n'
-                            <SubstCompile (e.ch) e.next>;
+        @.fn : (t. e.fname)	=				
+				<EXEC (e.ch)(e.fname)(e.v) <SubstCompile (e.v) e.in> >
+				<SubstCompile (e.ch) e.next>;
+
     (e.ch) ("(" e.in) e.next,
-        <RandomIdName> : e.v   =
-                            'DataChain* ' e.v ' = new DataChain(); \n'
-                            e.ch'->append(newRefStructBrackets(' e.v ')); \n'
-                            <SubstCompile (e.v) e.in>
-                            <SubstCompile (e.ch) e.next>;
-    (e.ch) &SYMBOL.s e.next   =
-                            e.ch'->append(' <SubstCompileSYMBOL @.s> '); \n'
-                            <SubstCompile (e.ch) e.next>;
-}
+        <RandomIdName> : e.v	=
+				<BRACKET (e.ch)(e.v) <SubstCompile (e.v) e.in>>
+				<SubstCompile (e.ch) e.next>;
 
-SubstCompileSYMBOL {
-    ("word" t.w) =  'newRefWord("' <Escape <Explode t.w>> '")' ;
-    ("int" t.w)  =  'newRefInteger(' t.w ')' ;
-    ("text" e.t) =  'newRefText("' <Escape e.t> '")' ;
-}
-
-Escape {
-	'\n' e.e = '\\n' <Escape e.e>;
-	'\t' e.e = '\\t' <Escape e.e>;
-	'\\' e.e = '\\\\' <Escape e.e>;
-	'\'' e.e = '\\\'' <Escape e.e>;
-	'"' e.e = '\\"' <Escape e.e>;
-	s.s e.e = s.s  <Escape e.e>;
-	= ;
+    (e.ch) &SYMBOL.s e.next	=
+				<VALUE (e.ch) @.s>
+				<SubstCompile (e.ch) e.next>;
 }
 
 
+// подготовка метакода подстановки перед генерацией кода.
+// <PrepareSubstitutionBeforeCompile () e.result> --> (e.vars) e.prepared_result 
+// 1. разделение ссылок на значения переменных на копирующие и вырезающие
+PrepareSubstitutionBeforeCompile {
+	E.next = @.next;
+}
+/*PrepareSubstitutionBeforeCompile {
+    (e.vars) E.next &LNK.lnk, 
+			<Substitution_CanCut &LNK.lnk e.vars> : T 
+			=   <PrepareSubstitutionBeforeCompile (@.vars) @.next> ("$cut" &LNK.lnk);
+
+    (e.vars) E.next &LNK.lnk
+			=	<PrepareSubstitutionBeforeCompile (@.vars) @.next> &LNK.lnk;
+
+    (e.vars) E.next ( {"<"|"("}.br e.in),   
+			<PrepareSubstitutionBeforeCompile (@.vars) @.in> : (@.newvars) @.newin
+			=	<PrepareSubstitutionBeforeCompile (@.newvars) @.next> (@.br @.newin);
+
+    (e.vars) E.next &SYMBOL.s 
+			=	<PrepareSubstitutionBeforeCompile (@.vars) @.next> &SYMBOL.s;
+
+    (e.vars) = (@.vars);
+}*/
 

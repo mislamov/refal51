@@ -243,7 +243,7 @@ DataChain* StdErr(DataCursor prebeg, DataCursor end, ExecContext *context){  SYS
 DataChain* Print (DataCursor prebeg, DataCursor end, ExecContext *context){
 	if (prebeg==end) return 0;
 	DataChain *chain = new DataChain();
-	chain->append_copy(prebeg, end);
+	chain->append_copy(prebeg, end, context);
 	std::cout << chain_to_text(prebeg, end) << "\n" << std::flush;
 	return chain;
 };

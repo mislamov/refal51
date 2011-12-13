@@ -4,6 +4,7 @@
 
 #include <sstream>
 #include <cstring>
+#include <set>
 
 
 
@@ -53,8 +54,11 @@ DataChain*  DataChain::append(DataContainer *con)
     return this;
 }
 
-void DataChain::free(/*DataCursor cur_prefrom, DataCursor cur_to*/)
+// физическое удаление тела цепочки. В chains - исключения
+void DataChain::free(std::set<DataChain*> &chains)
 {
+    int i=chains.size();
+
     ref_assert(this!=0);
     if (! isEmpty())
     {
@@ -63,16 +67,27 @@ void DataChain::free(/*DataCursor cur_prefrom, DataCursor cur_to*/)
         do
         {
             DataContainer *cont = cur.container;
-            cont->free();
+
+            DataChain *chain = 0;
+            if ((cont->type == struct_bracket || cont->type == exec_bracket) && (chain = cont->value.bracket_data.chain) && chain)
+            {
+                ref_assert(chain!=0);
+                if (chains.find(chain) == chains.end())
+                {
+                    chain->free(chains);
+                    delete chain;
+                }
+            };
+
             cur.next_container();
-            delete cont;
+//            delete cont;
         }
         while (cur_after_last.container!=cur.container);
     }
     //delete this;
 }
 
-DataChain*  DataChain::append_copy(DataCursor cur_prefrom, DataCursor cur_to)
+DataChain*  DataChain::append_copy(DataCursor cur_prefrom, DataCursor cur_to, ExecContext *context)
 {
     if (cur_prefrom==cur_to) return this;
 
@@ -87,11 +102,11 @@ DataChain*  DataChain::append_copy(DataCursor cur_prefrom, DataCursor cur_to)
     {
         if (i.container->leng==1 /*&& cur_to.container->leng==1*/)
         {
-            this->append(i.container->copy());
+            this->append(i.container->copy(context));
             return this;
         }
 
-        DataContainer *cc = i.container->copy();
+        DataContainer *cc = i.container->copy(context);
         cc->leng = cur_to.index-i.index+1;
         if (i.container->type==bytes)
         {
@@ -138,7 +153,7 @@ DataChain*  DataChain::append_copy(DataCursor cur_prefrom, DataCursor cur_to)
     // начинка цепочки
     while(i.container!=cur_to.container)
     {
-        this->append(i.container->copy());
+        this->append(i.container->copy(context));
         i.next_container();
     };
 
@@ -155,7 +170,7 @@ DataChain*  DataChain::append_copy(DataCursor cur_prefrom, DataCursor cur_to)
     }
     else
     {
-        this->append(cur_to.container->copy());
+        this->append(cur_to.container->copy(context));
     }
     return this;
 }
@@ -215,7 +230,8 @@ unistring chain_to_text(DataCursor prebeg, DataCursor end)
             str << ") ";
             break;
         case exec_bracket:
-            str << " <" << i.container->value.bracket_data.fname << " ";
+            str << " <";
+            str << i.container->value.bracket_data.fname << " ";
             str << i.container->value.bracket_data.chain->debug();
             str << "> ";
             break;
@@ -271,7 +287,8 @@ unistring DataChain::debug()
             str << " ) ";
             break;
         case exec_bracket:
-            str << " < " << i.container->value.bracket_data.fname << " ";
+            str << " < ";
+            str << i.container->value.bracket_data.fname << " ";
             ref_assert(i.container);
             ref_assert(i.container->value.bracket_data.chain);
             str << i.container->value.bracket_data.chain->debug();

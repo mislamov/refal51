@@ -22,6 +22,7 @@
 #include "direfal.h"
 
 #include "ExecStack.h"
+#include <list>
 
 struct ExecQueue {
 	DataContainer* fn_call;
@@ -35,15 +36,17 @@ class ExecContext  {
 	ExecQueue* pre_active;
 	ExecQueue* topOfExecQueue;
 
-public: 
+public:
 	ExecContext();
 
 	void prepareExecute(); // подготовка перед очередным функциональным вызовом
+	void prepareSubstitute(); // подготовка перед постановкой
 	void pushExecuteCall(DataContainer*); // добавление вызова в очередь выполнения
 
 	DataCursor getCurrentExec(); // возвращает указатель на ближайший функциональный вызов
 
 	void print_debug();
+	std::set<DataChain*> savedChains;
 };
 
 #endif

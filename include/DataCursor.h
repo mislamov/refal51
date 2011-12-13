@@ -4,6 +4,7 @@
 #include "DataContainerType.h"
 
 #include <stddef.h>
+#include <set>
 
 class DataContainer;
 class DataChain;
@@ -25,7 +26,7 @@ public:
     DataCursor (DataContainer* c, size_t idx = 0);
     DataCursor (int i=0);
 
-	void replaceBy(DataChain *chain);
+	void replaceBy(DataChain *chain, std::set<DataChain*> &chains);
 
 	DataContainerType getType();
 

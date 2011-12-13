@@ -63,7 +63,7 @@ int main ( int , char **)
 	while (true)
 	{
 		if (debug)
-			std::cout << (result ? result->debug() : "null") << "\n";
+			std::cout << "all::: " << (result ? result->debug() : "null") << "\n";
 
 		b = execContext.getCurrentExec();
 		if (!b) break;
@@ -73,8 +73,8 @@ int main ( int , char **)
 		//std::cout << "::: " << exb.fname << "\n";
 		execContext.prepareExecute();
 		ch = exb.fn(exb.chain->at_before_first(), exb.chain->at_last(), &execContext);
-		//if (ch) std::cout << "[" << ch->debug() << "]\n";
-		b.replaceBy( ch );
+		//std::cout << "<" << b.container->value.bracket_data.fname << " ...>  -> " << "[" << (ch?ch->debug():"") << "]\n";
+		b.replaceBy( ch , execContext.savedChains );
 
 		//delete result; // опусташенная цепочка
 		//delete b.container->value.bracket_data.chain; // <...>

@@ -18,7 +18,7 @@ inline bool isSymbolType(DataContainerType type){
 struct BracketData {
 	rf_function fn;
 	DataChain *chain;
-	char fname[256]; //todo: убрать
+	char fname[100]; //todo: убрать
 };
 
 
@@ -51,8 +51,8 @@ public:
 	DataContainerValue  value;
 
 	size_t leng;
-	DataContainer* copy();
-	void free();
+	DataContainer* copy(ExecContext *context);
+	//void free();
 
 protected:
 

@@ -7,7 +7,6 @@ DefFunction {
 			'\n' 'DataChain* ' t.name '(DataCursor arg_from, DataCursor arg_to, ExecContext *context){' '\n'
 			'DataChain *result = new DataChain(); \n'
   			'DataChain *tmp_chain = new DataChain(); \n'
-			
 			e.code
 
 			'\n' '}' '\n';
@@ -21,7 +20,7 @@ DefTemplate {
 		'\\' e.subvars '\n'
 		'\n' '}' '\n' 
 				
-		'\n' 'bool parse_' t.name '(DataCursor arg_from, DataCursor arg_to, RefMap *map){' '\n'
+		'\n' 'bool parse_' t.name '(DataCursor arg_from, DataCursor arg_to, RefMap *map, std::list<DataChain*> &chains){' '\n'
 		'// подготовка к сопоставлению шаблона' '\n'
 		'if (map!=0){ goto ' e.rollback_label '; }' '\n'
 		'map = new RefMap(); //malloc(sizeof(RefMap));' '\n'
@@ -49,8 +48,10 @@ DefSentence {
 			e.left_code
 			'\n'
 			'// подстановка \n'
+			'context->prepareSubstitute(); \n'
 			e.rigth_code
-			'return ' 'result' ';' '\n'
+
+			'return result;' '\n'
 			'}' '\n' 
 			'sentence_after_' t.order ': ' '\n'
 }
@@ -171,7 +172,8 @@ PrepareCodeFiles {
 	=
 	<File "include/res.h"
         '#include "direfal.h" \n'
-        '#include "system.h" \n'	
+        '#include "system.h" \n'
+	'#include <list> \n'	
 	>
 }
 WriteCodeToFile {
@@ -184,3 +186,47 @@ WriteCodeToFile {
         '#include "res.h" \n'
 	e.asm>;
 }
+
+
+
+VCOPY {
+	(e.ch)(e.varname)	=	e.ch'->append_copy(l_' @.varname ', r_' @.varname ', context); \n'
+}
+
+EXEC {
+	(e.chain)(e.fname)(e.var) e.code	=
+		'DataChain* ' e.var ' = new DataChain(); \n'
+		'DataContainer* ' e.var'_execbr = newRefExecBrackets(' <Fname e.fname> ', ' e.var ', "'e.fname'");' '\n'
+		e.chain'->append('e.var'_execbr);' '\n'
+		e.code
+		'context->pushExecuteCall(' e.var'_execbr);' '\n'
+}
+
+BRACKET {
+	(e.chain)(e.var) e.code	=
+		'DataChain* ' e.var ' = new DataChain(); \n'
+		e.chain'->append(newRefStructBrackets(' e.var ')); \n'
+		e.code
+}
+
+VALUE {
+	(e.chain) e.symbol	=
+		e.chain'->append(' <SubstCompileSYMBOL @.symbol> '); \n'
+}
+
+SubstCompileSYMBOL {
+    ("word" t.w) =  'newRefWord("' <Escape <Explode t.w>> '")' ;
+    ("int" t.w)  =  'newRefInteger(' t.w ')' ;
+    ("text" e.t) =  'newRefText("' <Escape e.t> '")' ;
+}
+
+Escape {
+	'\n' e.e = '\\n' <Escape e.e>;
+	'\t' e.e = '\\t' <Escape e.e>;
+	'\\' e.e = '\\\\' <Escape e.e>;
+	'\'' e.e = '\\\'' <Escape e.e>;
+	'"' e.e = '\\"' <Escape e.e>;
+	s.s e.e = s.s  <Escape e.e>;
+	= ;
+}
+

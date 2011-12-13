@@ -1,5 +1,6 @@
 #include "DataContainer.h"
 #include "DataChain.h"
+#include "ExecContext.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -87,10 +88,14 @@ DataContainer* newRefText(unistring str){
 
 };
 
-DataContainer* DataContainer::copy(){
+DataContainer* DataContainer::copy(ExecContext *context){
+    if (type==struct_bracket || type==exec_bracket){
+        context->savedChains.insert(value.bracket_data.chain);
+    }
 	return new DataContainer(type, value, leng);
 };
 
+/*
 // удаление контейнера
 void DataContainer::free(){
     /*
@@ -103,7 +108,7 @@ void DataContainer::free(){
 	struct_bracket,
 	exec_bracket,
 	dummy
-    */
+    * /
     //if (this->type == bytes) delete this->value.
     //if (this->type == text) delete[] this->value.text;
     //if (this->type == word) delete[] this->value.word.value;
@@ -122,7 +127,7 @@ void DataContainer::free(){
     };
     //delete this;
 };
-
+*/
 bool equal(DataChain *ch1, DataChain *ch2){
 	if (ch1==ch2) return true;
 	DataCursor a = ch1->at_before_first();

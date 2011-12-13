@@ -82,7 +82,7 @@ bool DataCursor::isLastInComplexData(){
 
 }*/
 
-void DataCursor::replaceBy(DataChain *chain)
+void DataCursor::replaceBy(DataChain *chain, std::set<DataChain*> &chains)
 {
     ref_assert(container!=0);
     ref_assert(container->type==exec_bracket); // пока используется только для замены <> на результат
@@ -112,11 +112,10 @@ void DataCursor::replaceBy(DataChain *chain)
     }
 
     // очистка от ненужных данных
-    if (chain) delete chain;
+    if (chain) delete chain; // удаление обертки результата функции
     DataChain * oldChain = container->value.bracket_data.chain;
-    //std::cout << "-- " << oldChain->debug() << "\n";
     ref_assert(oldChain);
-    oldChain->free();
+    oldChain->free(chains); // удаление старой цепочки
     delete oldChain;
     delete container;
 }

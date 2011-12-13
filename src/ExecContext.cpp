@@ -28,12 +28,16 @@ void ExecContext::prepareExecute(){
 	active = pre_active->next;
 }
 
-DataCursor ExecContext::getCurrentExec(){	
+void ExecContext::prepareSubstitute(){
+    savedChains.clear();
+}
+
+DataCursor ExecContext::getCurrentExec(){
 	ExecQueue *act = topOfExecQueue->next;
 	DataContainer *result = act->fn_call;
 	if (!result) return 0;
 	topOfExecQueue->next = act->next;
-	delete act;	
+	delete act;
 	return DataCursor(result);
 }
 
