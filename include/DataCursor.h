@@ -26,7 +26,7 @@ public:
     DataCursor (DataContainer* c, size_t idx = 0);
     DataCursor (int i=0);
 
-	void replaceBy(DataChain *chain, std::set<DataChain*> &chains);
+	void replaceBy(DataChain *chain);
 
 	DataContainerType getType();
 

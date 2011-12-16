@@ -67,8 +67,8 @@ CondToList { =; IFs.conds = &IFs.conds::head <CondToList IFs.conds::tail> ; IF.c
 
 // семантический анализ шаблона
 //(e.vars)( ) e.leftpart = (e.vars) (e.leftpart);
-PatternAnalise_ { e.e, <PatternAnalise_ e.e> : e.res = <Prout '<PatternAnalise ' e.e '>  --->  'e.res> e.res; }
-PatternAnalise {
+PatternAnalise { e.e, <PatternAnalise_ e.e> : e.res = <Prout '<PatternAnalise ' e.e '>  --->  'e.res> e.res; }
+PatternAnalise_ {
 	// скобка
 	(e.vars) (e.result) ("(" e.data) e.next,
 		<PatternAnalise (e.vars)() e.data> : (e.mkvars)(e.mkdata)
@@ -100,12 +100,17 @@ PatternAnalise {
 
 	(e.vars) (e.result) VAR.var e.otherpart	=	<ProutError 'unparsed variable: ' @.var>;
 	(e.vars) (e.result) ' ' e.next		=	<PatternAnalise (e.vars) (e.result) e.next>;
-	(e.vars) (e.result) SYMBOL.s e.next	=	<PatternAnalise (e.vars) (e.result &SYMBOL.s) e.next>;
+	(e.vars) (e.result) SYMBOL.s e.next	=	<PatternAnalise (e.vars) (e.result <VerifyEmpty &SYMBOL.s>) e.next>;
 	(e.vars) (e.result)			=	(e.vars) (e.result);
 	(e.vars) (e.result) "!" e.next		=	<PatternAnalise (e.vars) (e.result "$cutter") e.next>;
 	(e.vars) (e.result) e.else		=
 							//<ProutError 'Unknown item for PatternAnalise: [' e.else ']'>
 							(e.vars) (e.result "$ERROR" 'Unknown item for pattern here: \t' e.else);
+}
+
+VerifyEmpty {
+	&SYMBOL.s, @.s : (text) = ;
+	e.else = e.else;
 }
 
 // семантический анализ рефал-условия

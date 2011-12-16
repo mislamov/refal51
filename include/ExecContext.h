@@ -46,7 +46,6 @@ public:
 	DataCursor getCurrentExec(); // возвращает указатель на ближайший функциональный вызов
 
 	void print_debug();
-	std::set<DataChain*> savedChains;
 };
 
 #endif

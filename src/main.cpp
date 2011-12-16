@@ -74,7 +74,7 @@ int main ( int , char **)
 		execContext.prepareExecute();
 		ch = exb.fn(exb.chain->at_before_first(), exb.chain->at_last(), &execContext);
 		//std::cout << "<" << b.container->value.bracket_data.fname << " ...>  -> " << "[" << (ch?ch->debug():"") << "]\n";
-		b.replaceBy( ch , execContext.savedChains );
+		b.replaceBy(ch );
 
 		//delete result; // опусташенная цепочка
 		//delete b.container->value.bracket_data.chain; // <...>

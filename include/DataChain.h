@@ -13,7 +13,9 @@ class ExecContext;
 class DataChain
 {
     public:
-        DataChain();
+		long links;
+
+		DataChain();
         ~DataChain();
 
        	DataChain*  append(DataContainer *con);
@@ -25,7 +27,7 @@ class DataChain
        	DataCursor at_after_last(){ return after_last_cursor; };
 
         bool isEmpty();
-        void free(std::set<DataChain*> &chains);
+        void free();
 
         unistring debug();
     protected:

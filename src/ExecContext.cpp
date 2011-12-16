@@ -29,7 +29,6 @@ void ExecContext::prepareExecute(){
 }
 
 void ExecContext::prepareSubstitute(){
-    savedChains.clear();
 }
 
 DataCursor ExecContext::getCurrentExec(){

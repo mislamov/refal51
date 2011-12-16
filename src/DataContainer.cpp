@@ -15,11 +15,23 @@ DataContainer::DataContainer(const DataContainerType ttype, const DataContainerV
     this->leng = len;
 
     this->next = this->prev = 0;
+	// todo: вынести из конструктора в те точки, в которых создаеся скобка (убрать проверку)
+	if (ttype==struct_bracket || ttype==exec_bracket){
+		ref_assert(vvalue.bracket_data.chain);
+		vvalue.bracket_data.chain->links++;
+	}
 }
 
 DataContainer::~DataContainer()
 {
-    //dtor
+	// todo: вынести из конструктора в те точки, в которых удаляется скобка (убрать проверку)
+	if (type==struct_bracket || type==exec_bracket){
+		ref_assert(value.bracket_data.chain);
+		value.bracket_data.chain->links--;
+		if (value.bracket_data.chain->links == 0){
+			value.bracket_data.chain->free();
+		}
+	}
 }
 
 
@@ -88,46 +100,10 @@ DataContainer* newRefText(unistring str){
 
 };
 
-DataContainer* DataContainer::copy(ExecContext *context){
-    if (type==struct_bracket || type==exec_bracket){
-        context->savedChains.insert(value.bracket_data.chain);
-    }
+DataContainer* DataContainer::copy(ExecContext *context){    
 	return new DataContainer(type, value, leng);
 };
 
-/*
-// удаление контейнера
-void DataContainer::free(){
-    /*
-    byte,
-	bytes,
-	text,
-	integer,
-	real,
-	word,
-	struct_bracket,
-	exec_bracket,
-	dummy
-    * /
-    //if (this->type == bytes) delete this->value.
-    //if (this->type == text) delete[] this->value.text;
-    //if (this->type == word) delete[] this->value.word.value;
-    DataChain *chain = 0;
-    if ((this->type == struct_bracket || this->type == exec_bracket) && (chain = this->value.bracket_data.chain) && chain){
-        ref_assert(chain!=0);
-        if (! chain->isEmpty()){
-            DataCursor cur = chain->at_first();
-            DataCursor cur_after_last = chain->at_last(); cur_after_last.next_container();
-            do {
-                cur.container->free();
-                cur.next_container();
-            } while (cur_after_last.container!=cur.container);
-        }
-        //delete chain; - нельзя удалять, так как мог быть скопирован в другую скобку
-    };
-    //delete this;
-};
-*/
 bool equal(DataChain *ch1, DataChain *ch2){
 	if (ch1==ch2) return true;
 	DataCursor a = ch1->at_before_first();

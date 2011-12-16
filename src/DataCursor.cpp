@@ -7,6 +7,7 @@
 void DataCursor::next_container()
 {
     ref_assert(container && container->type!=dummy);
+	ref_assert(container->next);
     container=container->next;
     index=0;
     ref_assert(container->leng!=0 || container->type==dummy);
@@ -82,10 +83,14 @@ bool DataCursor::isLastInComplexData(){
 
 }*/
 
-void DataCursor::replaceBy(DataChain *chain, std::set<DataChain*> &chains)
+// курсор смотрит на контейнер с <>-функциональным вызовом
+// данная функция заменяет данный контеней подцепочкой chain, затем удаляет старый контейнер вместе со всем содержимым,
+// за исключением цепочек из chains
+void DataCursor::replaceBy(DataChain *chain)
 {
     ref_assert(container!=0);
     ref_assert(container->type==exec_bracket); // пока используется только для замены <> на результат
+    ref_assert(!chain || (chain->at_before_first().getType()==dummy && chain->at_after_last().getType()==dummy));
 
     DataContainer *aa = container->prev;
     DataContainer *ab = container->next;
@@ -94,11 +99,9 @@ void DataCursor::replaceBy(DataChain *chain, std::set<DataChain*> &chains)
     {
         aa->next = ab;
         ab->prev = aa;
-        //return;
     }
     else
     {
-
         DataContainer *ba = chain->at_first().container;
         DataContainer *bb = chain->at_last().container;
 
@@ -111,12 +114,18 @@ void DataCursor::replaceBy(DataChain *chain, std::set<DataChain*> &chains)
         chain->at_after_last().container->prev = chain->at_before_first().container;
     }
 
+	ref_assert(aa->next->prev == aa);
+	ref_assert(ab->prev->next == ab);
+	
     // очистка от ненужных данных
-    if (chain) delete chain; // удаление обертки результата функции
+    if (chain) {
+		//std::cout << "del-ch*: " << chain << "\n";
+		delete chain; // удаление обертки результата функции
+	}
     DataChain * oldChain = container->value.bracket_data.chain;
     ref_assert(oldChain);
-    oldChain->free(chains); // удаление старой цепочки
-    delete oldChain;
+    oldChain->free(); // удаление старой цепочки
+	//std::cout << "del-cont*: " << container << "\n";
     delete container;
 }
 
