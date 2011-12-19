@@ -1,9 +1,15 @@
-FN {
-                         0 ( s.1  s.2 )     =   s.1;
-                         s.1 ( s.2  s.3 )   = s.2 <FN <Sub s.1 1 > (s.3 <Add s.2 s.3> ) > ;
-                         s.1    =   <FN s.1 (0 1 ) > ;
-}
+$ENTRY Go {= <Han '1 2 3' (3)>; }
 
-$ENTRY Go {
-                         =   <Prout <FN 10 > > ;
-}
+	Han{
+	e.1 ' ' e.2 ' ' e.3 (e.7), 
+		e.7 : 1 
+			= <Prout e.1 '->' e.3>;
+
+	e.1 ' ' e.2 ' ' e.3 (e.7) 
+			= 
+			<Han e.1 ' ' e.3 ' ' e.2 ( <Sub e.7 1> ) > 
+			<Prout e.1 '->' e.3> 
+			<Han e.2 ' ' e.1 ' ' e.3 ( <Sub e.7 1> )>
+	}
+	
+	

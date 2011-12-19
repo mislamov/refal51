@@ -17,7 +17,7 @@ TreeToCode_function {
 
 TreeToCode_template {
 	t.name ("LEFT-PART" e.leftpart),
-				<TreeToCode_Pattern (e.leftpart)('arg_from')('arg_to')('fail')> : (e.code)(e.rollback_label) =
+				<TreeToCode_LeftPart (e.leftpart)('arg_from')('arg_to')('fail')> : (e.code)(e.rollback_label) =
 					<DefTemplate t.name 
 						( e.rollback_label )
 						( <DelDoubles <GetVars e.leftpart>> )
@@ -27,15 +27,66 @@ TreeToCode_template {
 
 TreeToCode_sentences {
 	t.order ("SENTENCE" ("LEFT-PART" e.leftpart)("RIGHT-PART" e.result)) e.e,
-				<TreeToCode_Pattern (e.leftpart)('arg_from')('arg_to')('sentence_after_' t.order)> : (e.code)(e.rollback_label),
-				<PrepareSubstitutionBeforeCompile () e.result> : (e.vars) e.prepared_result
+				<TreeToCode_LeftPart (e.leftpart)('arg_from')('arg_to')('sentence_after_' t.order)> : (e.code)(e.rollback_label)
 				=
-						<DefSentence t.order (e.code)( <SubstCompile ('result') e.prepared_result> )>
+						<DefSentence t.order (e.code)( <SubstCompile ('result') e.result> )>
 						<TreeToCode_sentences <Add 1 t.order> e.e>;
 
 	0 = <Prout 'ERROR! EMPTY SENTENCE LIST'><Exit>;
 	t.else	=	<ReturnFail>;
 }
+
+
+
+TreeToCode_LeftPart {
+	(e.pattern ("IF" e.if) e.tail) ( e.arg_prefrom )( e.arg_to ) (e.rollback_label),
+		<TreeToCode_Pattern (e.pattern)( e.arg_prefrom )( e.arg_to ) (e.rollback_label)> : (e.pattern_code)(e.rollback_pattern_label),
+		<TreeToCode_AfterPattern (("IF" e.if) e.tail)(e.rollback_pattern_label)> : (e.tail_code)(e.rollback_tail_label)
+		=	
+			(
+			'// pattern \n'
+			e.pattern_code
+			e.tail_code
+			)(e.rollback_tail_label);
+
+
+	(e.pattern) ( e.arg_prefrom )( e.arg_to ) (e.rollback_label)
+		=
+			<TreeToCode_Pattern (e.pattern)( e.arg_prefrom )( e.arg_to ) (e.rollback_label)>;
+	
+}
+
+
+TreeToCode_AfterPattern {
+	(("IF" ("RIGHT-PART" e.rp)("LEFT-PART" e.lp)) e.tail) (e.rollback_label),
+		<GetNewSubstitutionChain> : (e.chain_name)(e.chain_prepare_code)(e.chain_rollback_code)(e.preform)(e.to),
+                <TreeToCode_Pattern (e.lp)(e.preform)(e.to) (e.rollback_label)> : (e.lp_code)(e.rollback_lp_label),
+		<TreeToCode_AfterPattern (e.tail)(e.rollback_lp_label)> : (e.tail_code)(e.tail_rollback_label)
+
+		=	(
+			'// substitute rigth part \n'
+			e.chain_prepare_code
+			
+			<SubstCompile (e.chain_name) e.rp>
+			'// left part \n'
+			e.lp_code
+			e.tail_code
+			
+			???
+			e.chain_rollback_code
+			???
+			
+			
+			) (e.tail_rollback_label);
+
+	( )(e.rollback)
+		=
+			('// END TreeToCode_AfterPattern \n')(e.rollback);
+}
+			
+		
+		
+
 
 
 /**
@@ -262,12 +313,6 @@ SubstCompile {
 }
 
 
-// подготовка метакода подстановки перед генерацией кода.
-// <PrepareSubstitutionBeforeCompile () e.result> --> (e.vars) e.prepared_result 
-// 1. разделение ссылок на значения переменных на копирующие и вырезающие
-PrepareSubstitutionBeforeCompile {
-	E.next = @.next;
-}
 /*PrepareSubstitutionBeforeCompile {
     (e.vars) E.next &LNK.lnk, 
 			<Substitution_CanCut &LNK.lnk e.vars> : T 
@@ -286,3 +331,10 @@ PrepareSubstitutionBeforeCompile {
     (e.vars) = (@.vars);
 }*/
 
+
+GetVars {
+	&VAR.v e.e = @.v::name <GetVars e.e>;
+	(e.1) e.e  = <GetVars e.1> <GetVars e.e>;
+	t.1 e.e = <GetVars e.e>;
+	=;
+}
