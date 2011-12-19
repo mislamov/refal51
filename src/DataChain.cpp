@@ -30,6 +30,7 @@ DataChain::DataChain()
 
 DataChain::~DataChain()
 {
+	//return;
 	ref_assert(links==0);
 	//dtor
 	ref_assert(
@@ -37,9 +38,9 @@ DataChain::~DataChain()
 		after_last_cursor.container &&
 		before_first_cursor.container->type==dummy &&
 		after_last_cursor.container->type==dummy);
-	delete before_first_cursor.container;
+	before_first_cursor.container->free();
 	before_first_cursor.container = 0; // todo: убрать
-	delete after_last_cursor.container;
+	after_last_cursor.container->free();
 	after_last_cursor.container = 0; // todo: убрать
 }
 
@@ -88,7 +89,7 @@ void DataChain::free()
 				DataContainer *cont = cur.container;
 				cur.next_container();
 				//std::cout << "del-cont: " << cont << "\n";
-				delete cont;
+				cont->free();
 			}
 			while (cur_after_last.container!=cur.container);
 

@@ -13,5 +13,5 @@ type ref\builder.ref >> fn2.ref
 type ref\commands.ref >> fn2.ref
 
 mingw32-make
-del fn2.ref
+rem del fn2.ref
 refal2

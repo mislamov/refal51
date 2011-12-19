@@ -7,6 +7,13 @@
 #include <algorithm>
 #include <cstdio>
 
+
+void DataContainer::free(){
+	//return;
+	//std::cout << "::: del-cont: " << this << "\n";
+	delete this;
+}
+
 DataContainer::DataContainer(const DataContainerType ttype, const DataContainerValue vvalue, const size_t len)
 {
     //ctor
@@ -100,7 +107,7 @@ DataContainer* newRefText(unistring str){
 
 };
 
-DataContainer* DataContainer::copy(ExecContext *context){    
+DataContainer* DataContainer::copy(ExecContext *context){
 	return new DataContainer(type, value, leng);
 };
 

@@ -16,7 +16,6 @@ class DataChain
 		long links;
 
 		DataChain();
-        ~DataChain();
 
        	DataChain*  append(DataContainer *con);
        	DataChain*  append_copy(DataCursor cur_from, DataCursor cur_to, ExecContext* context);
@@ -34,6 +33,7 @@ class DataChain
     private:
         DataCursor before_first_cursor;
         DataCursor after_last_cursor;
+        ~DataChain();
 };
 
 unistring buffer_to_unistring(char* buff, size_t len);

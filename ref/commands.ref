@@ -27,7 +27,7 @@ DefTemplate {
 		e.code
 		'fail: ' '\n'
 		'// обработка неуспеха \n'
-		'printf("fail!!!");' '\n'
+		'std::cout << "fail!" << __LINE__ << std::endl;' '\n'
 		'return false;' '\n\n'
 		'\n' '}' '\n';
 }
@@ -57,7 +57,7 @@ DefSentence {
 }
 
 ReturnFail {
-	=	'\n'  '// подготовка к возвращению неуспеха' '\n' 'std::cout << "fail!";' '\n' 'return 0;' '\n';
+	=	'\n'  '// подготовка к возвращению неуспеха' '\n' 'std::cout << "fail!" << __LINE__ << "\\n";' '\n' 'return 0;' '\n';
 
 }
 

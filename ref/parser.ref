@@ -67,8 +67,8 @@ CondToList { =; IFs.conds = &IFs.conds::head <CondToList IFs.conds::tail> ; IF.c
 
 // семантический анализ шаблона
 //(e.vars)( ) e.leftpart = (e.vars) (e.leftpart);
-PatternAnalise { e.e, <PatternAnalise_ e.e> : e.res = <Prout '<PatternAnalise ' e.e '>  --->  'e.res> e.res; }
-PatternAnalise_ {
+PatternAnalise_ { e.e, <PatternAnalise_ e.e> : e.res = <Prout '<PatternAnalise ' e.e '>  --->  'e.res> e.res; }
+PatternAnalise {
 	// скобка
 	(e.vars) (e.result) ("(" e.data) e.next,
 		<PatternAnalise (e.vars)() e.data> : (e.mkvars)(e.mkdata)

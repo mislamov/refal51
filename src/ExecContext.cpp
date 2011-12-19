@@ -35,6 +35,8 @@ DataCursor ExecContext::getCurrentExec(){
 	ExecQueue *act = topOfExecQueue->next;
 	DataContainer *result = act->fn_call;
 	if (!result) return 0;
+	//std::cout << "::current exec-function:: " << result->value.bracket_data.fname << "\n" << std::flush;
+	//std::cout << "::current exec-container->chain:: " << result->value.bracket_data.chain->debug() << "\n" << std::flush;
 	topOfExecQueue->next = act->next;
 	delete act;
 	return DataCursor(result);
@@ -44,14 +46,15 @@ void ExecContext::print_debug(){
 	ExecQueue
 		*iter = topOfExecQueue->next;
 
+	std::cout << "\n[[[[\n";
 	while(iter->fn_call){
 		std::cout << " ###  " << iter->fn_call->value.bracket_data.fname << "\n";
 		iter = iter->next;
 	}
-	std::cout << "\n\n\n\n";
+	std::cout << "\n]]]]\n";
 }
 
 void ExecContext::pushExecuteCall(DataContainer* exec){
-	//std::cout << "push: " << exec->value.bracket_data.fname << "\n";
+	//std::cout << "push to function stack: " << exec->value.bracket_data.fname << " {" << exec->value.bracket_data.chain << "}\n";
 	pre_active = pre_active->next = new ExecQueue(exec, active);
 }

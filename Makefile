@@ -10,7 +10,7 @@ OBJ = $(OP)\main.o   $(OP)\commands.o   $(OP)\system.o   $(OP)\DataCursor.o   $(
 SRC = $(SP)\main.cpp $(SP)\commands.cpp $(SP)\system.cpp $(SP)\DataCursor.cpp $(SP)\DataChain.cpp $(SP)\DataContainer.cpp $(SP)\ExecContext.cpp $(SP)\res.cc
 LNK = 
 INCLUDE = -I.\include
-AC = -g -O3 -Wall -pg
+AC = -g -O1 -Wall -pg
 
 $(BIN): $(OBJ)
 	$(CC) $(AC) $(INCLUDE) $(OBJ)  -o $(BIN) $(LNK)

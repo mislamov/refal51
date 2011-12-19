@@ -42,7 +42,6 @@ class DataContainer
 public:
 	DataContainer(const DataContainerType, const DataContainerValue, const size_t len=1);
 	DataContainer(const DataContainerType tp){ ref_assert(tp==dummy); type=dummy; leng=1; };
-	~DataContainer();
 
 	DataContainer *prev;
 	DataContainer *next;
@@ -52,13 +51,12 @@ public:
 
 	size_t leng;
 	DataContainer* copy(ExecContext *context);
-	//void free();
+	void free();
 
 protected:
 
-
-
 private:
+	~DataContainer();
 };
 
 DataContainer* newRefWord(unistring wr);

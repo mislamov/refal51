@@ -63,25 +63,19 @@ int main ( int , char **)
 	while (true)
 	{
 		if (debug)
-			std::cout << "all::: " << (result ? result->debug() : "null") << "\n";
+			std::cout << "active-memory ::: " << (result ? result->debug() : "null") << "\n";
 
 		b = execContext.getCurrentExec();
+
 		if (!b) break;
 		ref_assert( b.container->type == exec_bracket );
 
 		BracketData  exb = b.container->value.bracket_data;
-		//std::cout << "::: " << exb.fname << "\n";
+		//std::cout << "::: selected function : " << exb.fname << "\n";
 		execContext.prepareExecute();
 		ch = exb.fn(exb.chain->at_before_first(), exb.chain->at_last(), &execContext);
-		//std::cout << "<" << b.container->value.bracket_data.fname << " ...>  -> " << "[" << (ch?ch->debug():"") << "]\n";
+		//std::cout << "::: replacing : <" << b.container->value.bracket_data.fname << " ...>  -> " << "[" << (ch?ch->debug():"") << "]\n";
 		b.replaceBy(ch );
-
-		//delete result; // опусташенная цепочка
-		//delete b.container->value.bracket_data.chain; // <...>
-		//delete b.container; // <...>
-
-		//std::cout << result->debug() << "\n\n";
-		//execContext.print_debug();
 	}
 
 	std::getchar();

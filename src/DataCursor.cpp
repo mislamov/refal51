@@ -33,7 +33,8 @@ DataCursor::DataCursor (int i)
 
 
 
-DataCursor& DataCursor::operator-- ()
+DataCursor&
+ DataCursor::operator-- ()
 {
     ref_assert( container!=0 && container->leng>0);
     if (container->leng==1 || index==0)
@@ -75,13 +76,6 @@ bool DataCursor::operator! ()
     return container==0;
 }
 
-/*bool DataCursor::isFirstInComplexData(){
-    if (index==)
-}
-
-bool DataCursor::isLastInComplexData(){
-
-}*/
 
 // курсор смотрит на контейнер с <>-функциональным вызовом
 // данная функция заменяет данный контеней подцепочкой chain, затем удаляет старый контейнер вместе со всем содержимым,
@@ -116,17 +110,15 @@ void DataCursor::replaceBy(DataChain *chain)
 
 	ref_assert(aa->next->prev == aa);
 	ref_assert(ab->prev->next == ab);
-	
+
     // очистка от ненужных данных
     if (chain) {
-		//std::cout << "del-ch*: " << chain << "\n";
-		delete chain; // удаление обертки результата функции
+		chain->free(); // удаление обертки результата функции
 	}
     DataChain * oldChain = container->value.bracket_data.chain;
     ref_assert(oldChain);
     oldChain->free(); // удаление старой цепочки
-	//std::cout << "del-cont*: " << container << "\n";
-    delete container;
+    container->free();
 }
 
 
