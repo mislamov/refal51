@@ -31,21 +31,51 @@ struct ExecQueue {
 	inline ExecQueue(DataContainer* dc, ExecQueue* willnext=0){ fn_call=dc; next=willnext; }
 };
 
+struct ChainQueue {
+	DataChain* ch;
+	ChainQueue* next;
+	inline ChainQueue (DataChain *chain=0) {ch=chain; next=0;}
+};
+
 class ExecContext  {
 	ExecQueue* active;
 	ExecQueue* pre_active;
 	ExecQueue* topOfExecQueue;
 
+	ChainQueue* chains;
+
 public:
+	static long sys;
+
 	ExecContext();
+	ExecContext(const ExecContext&);
+	~ExecContext();
 
 	void prepareExecute(); // подготовка перед очередным функциональным вызовом
 	void prepareSubstitute(); // подготовка перед постановкой
 	void pushExecuteCall(DataContainer*); // добавление вызова в очередь выполнения
 
 	DataCursor getCurrentExec(); // возвращает указатель на ближайший функциональный вызов
+	void cleanChains(); // очищает данные, накопившиеся вов ремя вычисления функц.вызова
 
 	void print_debug();
+
+	// создает новую цепочку для построения подстановки (как для условий, так и для правой части предложения)
+	inline DataChain* putChain(){
+		DataChain *ch = new DataChain();
+		ChainQueue *chainQueue = new ChainQueue(ch);
+		chainQueue->next = chains;
+		chains = chainQueue;
+		return ch;
+	}
+
+	// удаляет цепочку последней подстановки (если произошел откат)
+	inline void popChain(){
+		ChainQueue *chainQueue = chains;
+		chains = chains->next;
+		chainQueue->ch->free();
+		delete chainQueue;
+	}
 };
 
 #endif

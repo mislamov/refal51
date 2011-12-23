@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cstdio>
 
+long DataContainer::sys = 0;
 
 void DataContainer::free(){
 	//return;
@@ -16,6 +17,7 @@ void DataContainer::free(){
 
 DataContainer::DataContainer(const DataContainerType ttype, const DataContainerValue vvalue, const size_t len)
 {
+	sys++;
     //ctor
     this->type = ttype;
     this->value = vvalue;
@@ -31,6 +33,8 @@ DataContainer::DataContainer(const DataContainerType ttype, const DataContainerV
 
 DataContainer::~DataContainer()
 {
+	sys--; 
+
 	// todo: вынести из конструктора в те точки, в которых удаляется скобка (убрать проверку)
 	if (type==struct_bracket || type==exec_bracket){
 		ref_assert(value.bracket_data.chain);

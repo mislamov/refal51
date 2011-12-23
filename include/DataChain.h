@@ -13,6 +13,7 @@ class ExecContext;
 class DataChain
 {
     public:
+		static long sys;
 		long links;
 
 		DataChain();

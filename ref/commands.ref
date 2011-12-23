@@ -5,8 +5,6 @@ DefFunction {
 			<AppendFunction  t.name>
 
 			'\n' 'DataChain* ' t.name '(DataCursor arg_from, DataCursor arg_to, ExecContext *context){' '\n'
-			'DataChain *result = new DataChain(); \n'
-  			'DataChain *tmp_chain = new DataChain(); \n'
 			e.code
 
 			'\n' '}' '\n';
@@ -42,22 +40,24 @@ AppendFunction {
 }
 
 DefSentence {
-	t.order (e.left_code)(e.rigth_code)  =
+	t.order (e.left_code)(e.rigth_code)(e.chainname)  =
 			'\n' '{' '\n' 
 			'// сопоставление \n'
 			e.left_code
 			'\n'
 			'// подстановка \n'
-			'context->prepareSubstitute(); \n'
 			e.rigth_code
 
-			'return result;' '\n'
+			'return ' e.chainname ';' '\n'
 			'}' '\n' 
 			'sentence_after_' t.order ': ' '\n'
 }
 
 ReturnFail {
-	=	'\n'  '// подготовка к возвращению неуспеха' '\n' 'std::cout << "fail!" << __LINE__ << "\\n";' '\n' 'return 0;' '\n';
+	=	
+	'\n'  
+	'fail: \n'
+	'// подготовка к возвращению неуспеха' '\n' 'std::cout << "fail!" << __LINE__ << "\\n";' '\n' 'return 0;' '\n';
 
 }
 
@@ -173,6 +173,7 @@ PrepareCodeFiles {
 	<File "include/res.h"
         '#include "direfal.h" \n'
         '#include "system.h" \n'
+	'#include "evalutor.h" \n'
 	'#include <list> \n'	
 	>
 }
@@ -194,12 +195,12 @@ VCOPY {
 }
 
 EXEC {
-	(e.chain)(e.fname)(e.var) e.code	=
+	(e.chain)(e.fname)(e.var)(e.context) e.code	=
 		'DataChain* ' e.var ' = new DataChain(); \n'
 		'DataContainer* ' e.var'_execbr = newRefExecBrackets(' <Fname e.fname> ', ' e.var ', "'e.fname'");' '\n'
 		e.chain'->append('e.var'_execbr);' '\n'
 		e.code
-		'context->pushExecuteCall(' e.var'_execbr);' '\n'
+		e.context '.pushExecuteCall(' e.var'_execbr);' '\n'
 }
 
 BRACKET {
@@ -224,10 +225,47 @@ SubstCompileSYMBOL {
 Escape {
 	'\n' e.e = '\\n' <Escape e.e>;
 	'\t' e.e = '\\t' <Escape e.e>;
-	'\\' e.e = '\\\\' <Escape e.e>;
+	'\\' e.e = '//' <Escape e.e>;
 	'\'' e.e = '\\\'' <Escape e.e>;
 	'"' e.e = '\\"' <Escape e.e>;
 	s.s e.e = s.s  <Escape e.e>;
 	= ;
 }
 
+/*
+	 $void -> (e.newcontext) (e.chname) e.init_chain_code
+*/
+NEW_CHAIN {
+	$empty, 'chain_'<RandomIdName> : e.chname, 
+	'context_' <RandomIdName> : e.context
+	=	(e.context) 
+		(e.chname)
+		'ExecContext ' e.context '; \n'
+		'// new chain \n'
+		'DataChain *' e.chname ' = context->putChain(); \n'
+}
+
+/*
+	(e.имя_цепочки)(e.new_prefrom)(e.new_to) -> e.code
+*/
+SET_CHAIN_CURSORS {
+	(e.chname)(e.new_prefrom)(e.new_to) = 
+		'// SET_CHAIN_CURSORS \n'
+		e.new_prefrom ' = ' e.chname '->at_before_first(); \n'
+		e.new_to ' = ' e.chname '->at_last(); \n'
+}
+
+FREE_CHAIN {
+	e.chname	=
+		'// FREE_CHAIN ' e.chname '\n'
+		'context->popChain(); \n'
+}
+
+/*
+	вычисляет объектное выражение
+*/
+EVAL_CHAIN {
+	(e.chname)(e.context)  =
+		'// exeute' '\n'
+		'execute(' @.context ', ' @.chname ');' '\n'
+}

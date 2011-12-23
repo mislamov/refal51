@@ -40,8 +40,11 @@ typedef union {
 class DataContainer
 {
 public:
+	static long sys;
+
 	DataContainer(const DataContainerType, const DataContainerValue, const size_t len=1);
-	DataContainer(const DataContainerType tp){ ref_assert(tp==dummy); type=dummy; leng=1; };
+	DataContainer(const DataContainerType tp){ ref_assert(tp==dummy); type=dummy; leng=1; sys++; };
+
 
 	DataContainer *prev;
 	DataContainer *next;
@@ -58,6 +61,7 @@ protected:
 private:
 	~DataContainer();
 };
+
 
 DataContainer* newRefWord(unistring wr);
 

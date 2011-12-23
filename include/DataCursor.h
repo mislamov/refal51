@@ -12,6 +12,8 @@ class DataChain;
 // указатель на элемент цепочки
 class DataCursor {
 public:
+	static long sys;
+
     DataContainer *container; // элемент содержится в этом контейнере
     size_t index; // index=? когда container простой; index = порядковому номеру элемента, когда container составной. Нумерация от 0
     DataCursor& operator++ ();
@@ -25,6 +27,14 @@ public:
 
     DataCursor (DataContainer* c, size_t idx = 0);
     DataCursor (int i=0);
+	~DataCursor(){ 
+		sys--; 
+	};
+	DataCursor(const DataCursor& dc) {
+		sys++;
+		container = dc.container;
+		index = dc.index;
+	}
 
 	void replaceBy(DataChain *chain);
 
@@ -33,6 +43,7 @@ public:
 	//bool isFirstInComplexData();
 	//bool isLastInComplexData();
 };
+
 
 inline bool DataCursor::operator==(const DataCursor cur){
 	return container==cur.container && index==cur.index;

@@ -3,6 +3,7 @@
 #include "config.h"
 #include "DataContainer.h"
 
+long DataCursor::sys = 0;
 
 void DataCursor::next_container()
 {
@@ -22,6 +23,7 @@ DataCursor::DataCursor (DataContainer* c, size_t idx)
 {
     container = c;
     index = idx;
+	sys++;
 };
 
 DataCursor::DataCursor (int i)
@@ -29,6 +31,7 @@ DataCursor::DataCursor (int i)
     ref_assert(i==0);
     container=0;
     index=0;
+	sys++;
 };
 
 

@@ -17,6 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "direfal.h"
+#include "evalutor.h"
 
 #include "ExecContext.h"
 
@@ -49,34 +50,19 @@ extern DataChain* Go(DataCursor arg_from, DataCursor arg_to, ExecContext *contex
 //extern DataChain* FN(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
 
-int debug = 0;
-
 int main ( int , char **)
 {
+	DataChain::sys = 0;
+	DataContainer::sys = 0;
+	DataCursor::sys = 0;
+
 	ExecContext execContext;
 	DataChain *ch = text_to_chain("");
 
 	execContext.prepareExecute();
 	DataChain* result = Go(ch->at_before_first(), ch->at_last(), &execContext);
-    DataCursor b = 0, bb = 0;
 
-	while (true)
-	{
-		if (debug)
-			std::cout << "active-memory ::: " << (result ? result->debug() : "null") << "\n";
-
-		b = execContext.getCurrentExec();
-
-		if (!b) break;
-		ref_assert( b.container->type == exec_bracket );
-
-		BracketData  exb = b.container->value.bracket_data;
-		//std::cout << "::: selected function : " << exb.fname << "\n";
-		execContext.prepareExecute();
-		ch = exb.fn(exb.chain->at_before_first(), exb.chain->at_last(), &execContext);
-		//std::cout << "::: replacing : <" << b.container->value.bracket_data.fname << " ...>  -> " << "[" << (ch?ch->debug():"") << "]\n";
-		b.replaceBy(ch );
-	}
+	execute(execContext, result);
 
 	std::getchar();
 	return 0;

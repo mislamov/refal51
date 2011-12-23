@@ -27,9 +27,10 @@ TreeToCode_template {
 
 TreeToCode_sentences {
 	t.order ("SENTENCE" ("LEFT-PART" e.leftpart)("RIGHT-PART" e.result)) e.e,
-				<TreeToCode_LeftPart (e.leftpart)('arg_from')('arg_to')('sentence_after_' t.order)> : (e.code)(e.rollback_label)
+				<TreeToCode_LeftPart (e.leftpart)('arg_from')('arg_to')('sentence_after_' t.order)> : (e.code)(e.rollback_label),
+				<SubstitutionBuild (e.result)('fail')(<RandomIdName>)(<RandomIdName>)> : (e.code_rp)(e.fail)(e.result_name)
 				=
-						<DefSentence t.order (e.code)( <SubstCompile ('result') e.result> )>
+						<DefSentence t.order (e.code)(e.code_rp)(e.result_name)>
 						<TreeToCode_sentences <Add 1 t.order> e.e>;
 
 	0 = <Prout 'ERROR! EMPTY SENTENCE LIST'><Exit>;
@@ -59,24 +60,17 @@ TreeToCode_LeftPart {
 
 TreeToCode_AfterPattern {
 	(("IF" ("RIGHT-PART" e.rp)("LEFT-PART" e.lp)) e.tail) (e.rollback_label),
-		<GetNewSubstitutionChain> : (e.chain_name)(e.chain_prepare_code)(e.chain_rollback_code)(e.preform)(e.to),
-                <TreeToCode_Pattern (e.lp)(e.preform)(e.to) (e.rollback_label)> : (e.lp_code)(e.rollback_lp_label),
-		<TreeToCode_AfterPattern (e.tail)(e.rollback_lp_label)> : (e.tail_code)(e.tail_rollback_label)
-
+	    <RandomIdName> : e.prefrom,
+	    <RandomIdName> : e.to,    
+	    <SubstitutionBuild (e.rp)(e.rollback_label)(e.prefrom)(e.to)>  : (e.rp_code) (e.rollback_RP) (e.chainname),
+	    <TreeToCode_Pattern (e.lp)(e.prefrom)(e.to) (e.rollback_RP)>   : (e.lp_code) (e.rollback_lp_label),
+	    <TreeToCode_AfterPattern (e.tail)(e.rollback_lp_label)>           : (e.tail_code) (e.tail_rollback_label)
 		=	(
 			'// substitute rigth part \n'
-			e.chain_prepare_code
-			
-			<SubstCompile (e.chain_name) e.rp>
+			e.rp_code
 			'// left part \n'
 			e.lp_code
-			e.tail_code
-			
-			???
-			e.chain_rollback_code
-			???
-			
-			
+			e.tail_code			
 			) (e.tail_rollback_label);
 
 	( )(e.rollback)
@@ -173,7 +167,7 @@ TreeToCode_Pattern {
 
 
 	/*  [ s.1 <any> ] */
-	(&VAR.v e.next)( e.arg_from )( e.arg_to )( e.rollback_label ),
+	(&VAR.v e.next)( e.arg_prefrom )( e.arg_to )( e.rollback_label ),
 		@.v::type : (word "s"),
 		<VarName @.v> : e.vname,
 		<RandomIdName> : e.l_tmp,
@@ -184,8 +178,8 @@ TreeToCode_Pattern {
 		<DEF e.l_tmp>
                 <DEF 'l_' e.vname>
                 <DEF 'r_' e.vname>
-                <SET ('l_' e.vname)(e.arg_from)>
-                <SET (e.l_tmp)(e.arg_from)>
+                <SET ('l_' e.vname)(e.arg_prefrom)>
+                <SET (e.l_tmp)(e.arg_prefrom)>
                 <INC (e.l_tmp)(e.arg_to)(e.rollback_label)>
                 <SYMBOLP (e.l_tmp)(e.rollback_label)>
                 <SET ('r_' e.vname)(e.l_tmp)>
@@ -194,7 +188,7 @@ TreeToCode_Pattern {
 
 
 	/*  [ {...}.varname <any> ] */
-	(&VAR.v e.next)( e.arg_from )( e.arg_to )( e.rollback_label ),
+	(&VAR.v e.next)( e.arg_prefrom )( e.arg_to )( e.rollback_label ),
 		@.v::type : GROUP_OR_VARIANT. ,
 		<VarName @.v> : e.vname,
 		<RandomIdName> : e.l_tmp,
@@ -205,8 +199,8 @@ TreeToCode_Pattern {
 		<DEF e.l_tmp>
                 <DEF 'l_' e.vname>
                 <DEF 'r_' e.vname>
-                <SET ('l_' e.vname)(e.arg_from)>
-                <SET (e.l_tmp)(e.arg_from)>
+                <SET ('l_' e.vname)(e.arg_prefrom)>
+                <SET (e.l_tmp)(e.arg_prefrom)>
                 <INC (e.l_tmp)(e.arg_to)(e.rollback_label)>
                 <SYMBOLP (e.l_tmp)(e.rollback_label)>
                 <SET ('r_' e.vname)(e.l_tmp)>
@@ -215,7 +209,7 @@ TreeToCode_Pattern {
 
 
 	/* [ &.name <any> ]  */
-	(&LNK.l e.next)( e.arg_from )( e.arg_to )( e.rollback_label ),
+	(&LNK.l e.next)( e.arg_prefrom )( e.arg_to )( e.rollback_label ),
 		@.l::path : $empty,
 		@.l::name : (t. e.vname),
 		<RandomIdName> : e.r_tmp,
@@ -224,13 +218,13 @@ TreeToCode_Pattern {
 		(
 		'//// [ &.name <any> ] \n'
 		<DEF e.r_tmp>
-                <SET (e.r_tmp)(e.arg_from)>
+                <SET (e.r_tmp)(e.arg_prefrom)>
                 <SLIDE (e.r_tmp)(e.arg_to)('l_'@.vname)('r_'@.vname)(e.rollback_label)>
 		@.next_code
                 )(e.next_rollback);
 
 	/* [ 'a' <any> ] */
-	(&SYMBOL.s e.next)( e.arg_from )( e.arg_to )( e.rollback_label ),
+	(&SYMBOL.s e.next)( e.arg_prefrom )( e.arg_to )( e.rollback_label ),
 		@.s : (t.type e.value),
 		<RandomIdName> : e.r_tmp,
 		<TreeToCode_Pattern (e.next)(e.r_tmp)(e.arg_to)(e.rollback_label)> : (e.next_code)(e.next_rollback)
@@ -238,7 +232,7 @@ TreeToCode_Pattern {
 		(
 		'//// [ `a` <any> ] \n'
 		<DEF e.r_tmp>
-                <SET (e.r_tmp)(e.arg_from)>
+                <SET (e.r_tmp)(e.arg_prefrom)>
                 <INC (e.r_tmp)(e.arg_to)(e.rollback_label)>
                 <EQSYM @.s ( e.r_tmp )(e.arg_to)( e.rollback_label )>
 		@.next_code
@@ -247,20 +241,20 @@ TreeToCode_Pattern {
 
 
 	/* [ ( <any> ) <any> ] */
-	(("(" e.into) e.next)( e.arg_from )( e.arg_to )( e.rollback_label ),
+	(("(" e.into) e.next)( e.arg_prefrom )( e.arg_to )( e.rollback_label ),
         <RandomIdName> : e.lrand,
         <RandomIdName> : e.l_tmp0,
         <RandomIdName> : e.r_tmp0,	
 		<TreeToCode_Pattern  (e.into )(e.l_tmp0)(e.r_tmp0)(e.rollback_label)> : (e.bracket_code)(e.bracket_rollback),
 		<TreeToCode_Pattern  (e.next)( e.lrand )( e.arg_to )(e.bracket_rollback)> : (e.next_code)(e.next_rollback)  /* возможно, откат идет от рефал-условия и нужно переопределить внутренности скобок */
-//		<TreeToCode_Pattern  (e.next)( e.arg_from )( e.arg_to )(e.bracket_rollback)> : (e.next_code)(e.next_rollback)  /* возможно, откат идет от рефал-условия и нужно переопределить внутренности скобок */
+//		<TreeToCode_Pattern  (e.next)( e.arg_prefrom )( e.arg_to )(e.bracket_rollback)> : (e.next_code)(e.next_rollback)  /* возможно, откат идет от рефал-условия и нужно переопределить внутренности скобок */
 	=
 		(
 		'//// [ (<any>) <any> ] \n'
                 <DEF e.lrand>
                 <DEF e.l_tmp0>
                 <DEF e.r_tmp0>
-                <SET (e.lrand)(e.arg_from)>
+                <SET (e.lrand)(e.arg_prefrom)>
                 <INC (e.lrand)(e.arg_to)(e.rollback_label)>
                 <ISBRACKET (e.lrand)(e.rollback_label)>
 		<JMP_BRACKET ( e.lrand)(e.l_tmp0)(e.r_tmp0)>
@@ -270,10 +264,10 @@ TreeToCode_Pattern {
 		)(e.next_rollback);
 
 	/* empty */
-	(  )( e.arg_from )( e.arg_to )( e.rollback_label ) =
+	(  )( e.arg_prefrom )( e.arg_to )( e.rollback_label ) =
 		(
 		'//// [ empty ] \n'
-		<ISEMPTY ( e.arg_from )( e.arg_to )( e.rollback_label )>
+		<ISEMPTY ( e.arg_prefrom )( e.arg_to )( e.rollback_label )>
 		)( e.rollback_label );
 
 }
@@ -286,30 +280,55 @@ Fname {
 	e.else = e.else;
 }
 
+
+/*
+    (e.метакод)(e.точка_отката)  =  (e.код)(e.новая_точка_отката)(e.chainname)
+*/
+SubstitutionBuild {
+	(e.code) (e.rollback)(e.new_prefrom)(e.new_to),
+		'label_del_'<RandomIdName> : e.new_del_rollback, // 
+		'label_nodel_'<RandomIdName> : e.new_label_nodel_rollback,
+		<NEW_CHAIN> : (e.context) (e.chname) e.init_chain_code
+		=
+		(
+			e.init_chain_code  // new chain(); Context context;
+			<SubstituteCompile (e.context)(e.chname) e.code>  // append; append;
+			<EVAL_CHAIN (e.chname)(e.context)> // execute(chain)
+			<DEF e.new_prefrom>	
+			<DEF e.new_to>
+			<SET_CHAIN_CURSORS (e.chname)(e.new_prefrom)(e.new_to)>  // Cursor prefrom = chain->prefrom; to = chain->to;
+			<JMP e.new_label_nodel_rollback>
+			<LABEL e.new_del_rollback>  //  : del
+			<FREE_CHAIN e.chname>  // chain->free; delete chain
+			<JMP e.rollback> // goto last matching
+			<LABEL e.new_label_nodel_rollback> // :next matching
+		)(e.new_del_rollback)(e.chname);
+}
+
 /*
    (e.строящаяся_цепочка) e.метакод = <код>
 */
-SubstCompile {
+SubstituteCompile {
 	//t.ord e.e = 'printf("success ' t.ord '!");' '\n' 'return 0; \n';
-    (e.ch) = ;
-    (e.ch) &LNK.lnk e.next	=
+    (e.context)(e.ch) = ;
+    (e.context)(e.ch) &LNK.lnk e.next	=
 				<VCOPY (e.ch)(<VarName &LNK.lnk>)>
-				<SubstCompile (e.ch) @.next>;
+				<SubstituteCompile (e.context)(e.ch) @.next>;
 
-    (e.ch) ("<" &SYMBOL.fn e.in) e.next,
+    (e.context)(e.ch) ("<" &SYMBOL.fn e.in) e.next,
         <RandomIdName> : e.v,
         @.fn : (t. e.fname)	=				
-				<EXEC (e.ch)(e.fname)(e.v) <SubstCompile (e.v) e.in> >
-				<SubstCompile (e.ch) e.next>;
+				<EXEC (e.ch)(e.fname)(e.v)(e.context) <SubstituteCompile (e.context)(e.v) e.in> >
+				<SubstituteCompile (e.context)(e.ch) e.next>;
 
-    (e.ch) ("(" e.in) e.next,
+    (e.context)(e.ch) ("(" e.in) e.next,
         <RandomIdName> : e.v	=
-				<BRACKET (e.ch)(e.v) <SubstCompile (e.v) e.in>>
-				<SubstCompile (e.ch) e.next>;
+				<BRACKET (e.ch)(e.v) <SubstituteCompile (e.context)(e.v) e.in>>
+				<SubstituteCompile (e.context)(e.ch) e.next>;
 
-    (e.ch) &SYMBOL.s e.next	=
+    (e.context)(e.ch) &SYMBOL.s e.next	=
 				<VALUE (e.ch) @.s>
-				<SubstCompile (e.ch) e.next>;
+				<SubstituteCompile (e.context)(e.ch) e.next>;
 }
 
 

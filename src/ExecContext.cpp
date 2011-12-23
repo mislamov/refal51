@@ -19,9 +19,30 @@
 #include "ExecContext.h"
 
 ExecContext::ExecContext(){
+	sys++;
 	topOfExecQueue = pre_active = new ExecQueue( 0 );
 	topOfExecQueue->next = active = new ExecQueue( 0 );
+	chains = new ChainQueue();
 }
+
+ExecContext::ExecContext(const ExecContext& ctx){
+	sys++;
+	active = ctx.active;
+	chains = ctx.chains;
+	pre_active = ctx.pre_active;
+	topOfExecQueue = ctx.topOfExecQueue;
+}
+
+ExecContext::~ExecContext(){
+	sys--;
+	while (topOfExecQueue){
+		pre_active = topOfExecQueue->next;
+		delete topOfExecQueue;
+		topOfExecQueue = pre_active;
+	}
+}
+
+long ExecContext::sys = 0;
 
 void ExecContext::prepareExecute(){
 	pre_active = topOfExecQueue;
@@ -29,6 +50,23 @@ void ExecContext::prepareExecute(){
 }
 
 void ExecContext::prepareSubstitute(){
+}
+
+void ExecContext::cleanChains(){
+	ChainQueue *chq;
+	if (chains->next==0) return;
+	if (chains->next->next!=0){
+		while (chains->next->next->ch){
+			chq = chains->next;
+			chains->ch->free();
+			std::cout << "\n\n\n\ndelete chains;\n\n\n\n";
+			delete chains;
+			chains = chq;
+		}
+	}
+	chq = chains->next;
+	chains = chains->next;
+	delete chq;
 }
 
 DataCursor ExecContext::getCurrentExec(){

@@ -6,10 +6,12 @@
 #include <cstring>
 #include <set>
 
-
+long DataChain::sys = 0;
 
 DataChain::DataChain()
 {
+	sys++;
+
 	links = 0;
 	//ctor
 	//before_first_cursor = new DataCursor();
@@ -30,6 +32,8 @@ DataChain::DataChain()
 
 DataChain::~DataChain()
 {
+	sys--;
+
 	//return;
 	ref_assert(links==0);
 	//dtor

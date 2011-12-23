@@ -6,8 +6,8 @@ CC = g++
 BIN = refal2
 OP = .\src#  #Object path
 SP = .\src#  #Source path
-OBJ = $(OP)\main.o   $(OP)\commands.o   $(OP)\system.o   $(OP)\DataCursor.o   $(OP)\DataChain.o $(OP)\DataContainer.o $(OP)\ExecContext.o $(OP)\res.o
-SRC = $(SP)\main.cpp $(SP)\commands.cpp $(SP)\system.cpp $(SP)\DataCursor.cpp $(SP)\DataChain.cpp $(SP)\DataContainer.cpp $(SP)\ExecContext.cpp $(SP)\res.cc
+OBJ = $(OP)\main.o   $(OP)\commands.o   $(OP)\system.o   $(OP)\DataCursor.o   $(OP)\DataChain.o $(OP)\DataContainer.o $(OP)\ExecContext.o $(OP)\evalutor.o $(OP)\res.o
+SRC = $(SP)\main.cpp $(SP)\commands.cpp $(SP)\system.cpp $(SP)\DataCursor.cpp $(SP)\DataChain.cpp $(SP)\DataContainer.cpp $(SP)\ExecContext.cpp $(SP)\evalutor.cpp $(SP)\res.cc
 LNK = 
 INCLUDE = -I.\include
 AC = -g -O1 -Wall -pg
@@ -39,6 +39,9 @@ $(OP)\DataContainer.o: $(SP)\DataContainer.cpp
 $(OP)\system.o: $(SP)\system.cpp
 	$(CC) $(AC) $(INCLUDE) -c $(SP)\system.cpp -o $(OP)\system.o
 	
+$(OP)\evalutor.o: $(SP)\evalutor.cpp
+	$(CC) $(AC) $(INCLUDE) -c $(SP)\evalutor.cpp -o $(OP)\evalutor.o
+
 $(OP)\main.o: $(SP)\main.cpp
 	$(CC) $(AC) $(INCLUDE) -c $(SP)\main.cpp -o $(OP)\main.o
 	
