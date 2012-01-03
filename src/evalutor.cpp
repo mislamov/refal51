@@ -11,7 +11,7 @@ void execute(ExecContext &execContext, DataChain* expression){
 
 	while (true)
 	{
-		if (debug)
+		//if (debug)
 			std::cout << "active-memory ::: " << (expression ? expression->debug() : "null") << "\n";
 
 		std::cout << DataChain::sys << " :: " << DataCursor::sys << " :: " << DataContainer::sys << " :: " << ExecContext::sys << "\n";
@@ -25,7 +25,7 @@ void execute(ExecContext &execContext, DataChain* expression){
 		//std::cout << "::: selected function : " << exb.fname << "\n";
 		execContext.prepareExecute();
 		DataChain* ch = exb.fn(exb.chain->at_before_first(), exb.chain->at_last(), &execContext);
-		//std::cout << "::: replacing : <" << b.container->value.bracket_data.fname << " ...>  -> " << "[" << (ch?ch->debug():"") << "]\n";
+		std::cout << "::: replacing : <" << br_exec.container->value.bracket_data.fname << " ...>  -> " << "[" << (ch?ch->debug():"") << "]\n";
 		br_exec.replaceBy(ch );
 		execContext.cleanChains();
 	}
