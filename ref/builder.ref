@@ -28,7 +28,7 @@ TreeToCode_template {
 TreeToCode_sentences {
 	t.order ("SENTENCE" ("LEFT-PART" e.leftpart)("RIGHT-PART" e.result)) e.e,
 				<TreeToCode_LeftPart (e.leftpart)('arg_from')('arg_to')('sentence_after_' t.order)> : (e.code_lp)(e.rollback_label),
-				<SubstitutionBuildNoEval e.result> : (e.result_name) e.code_rp
+				<SubstitutionBuildNoEval ('context') e.result> : (e.result_name) e.code_rp
 				=
 						<DefSentence t.order (e.code_lp)(e.code_rp)(e.result_name)>
 						<TreeToCode_sentences <Add 1 t.order> e.e>;
@@ -310,12 +310,12 @@ SubstitutionBuild {
    e.meta-code  -> (e.chname) e.code
 */
 SubstitutionBuildNoEval {
-	e.code,
+	(e.cxt) e.code,
 		<NEW_CHAIN> : (e.context) (e.chname) e.init_chain_code
 		=
 			(e.chname)
 			e.init_chain_code  // new chain(); Context context;
-			<SubstituteCompile (e.context)(e.chname) e.code>  // append; append;
+			<SubstituteCompile ('(*' e.cxt ')')(e.chname) e.code>  // append; append;
 		;
 }
 

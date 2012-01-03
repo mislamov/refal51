@@ -200,7 +200,7 @@ EXEC {
 		'DataContainer* ' e.var'_execbr = newRefExecBrackets(' <Fname e.fname> ', ' e.var ', "'e.fname'");' '\n'
 		e.chain'->append('e.var'_execbr);' '\n'
 		e.code
-		e.context '.pushExecuteCall(' e.var'_execbr);' '\n'
+		<Print e.context '.pushExecuteCall(' e.var'_execbr);' '\n'>
 }
 
 BRACKET {

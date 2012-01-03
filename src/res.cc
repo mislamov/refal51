@@ -17,7 +17,7 @@ DataChain *chain_NWLRBBMQBHCDAR = context->putChain();
 DataChain* XRJMOWFRXSJYBL = new DataChain(); 
 DataContainer* XRJMOWFRXSJYBL_execbr = newRefExecBrackets(Go2, XRJMOWFRXSJYBL, "Go2");
 chain_NWLRBBMQBHCDAR->append(XRJMOWFRXSJYBL_execbr);
-context_ZOWKKYHIDDQSCD.pushExecuteCall(XRJMOWFRXSJYBL_execbr);
+(*context).pushExecuteCall(XRJMOWFRXSJYBL_execbr);
 return chain_NWLRBBMQBHCDAR;
 }
 sentence_after_1: 
@@ -43,7 +43,7 @@ DataChain *chain_DBEFSARCBYNECD = context->putChain();
 DataChain* MPAPQFWKHOPKMC = new DataChain(); 
 DataContainer* MPAPQFWKHOPKMC_execbr = newRefExecBrackets(Go2, MPAPQFWKHOPKMC, "Go2");
 chain_DBEFSARCBYNECD->append(MPAPQFWKHOPKMC_execbr);
-context_YGGXXPKLORELLN.pushExecuteCall(MPAPQFWKHOPKMC_execbr);
+(*context).pushExecuteCall(MPAPQFWKHOPKMC_execbr);
 return chain_DBEFSARCBYNECD;
 }
 sentence_after_1: 
