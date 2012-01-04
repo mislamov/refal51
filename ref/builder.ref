@@ -62,7 +62,7 @@ TreeToCode_AfterPattern {
 	(("IF" ("RIGHT-PART" e.rp)("LEFT-PART" e.lp)) e.tail) (e.rollback_label),
 	    <RandomIdName> : e.prefrom,
 	    <RandomIdName> : e.to,    
-	    <SubstitutionBuild (e.rp)(e.rollback_label)(e.prefrom)(e.to)>  : (e.rp_code) (e.rollback_RP) (e.chainname),
+	    <SubstitutionBuildAndEval (e.rp)(e.rollback_label)(e.prefrom)(e.to)>  : (e.rp_code) (e.rollback_RP) (e.chainname),
 	    <TreeToCode_Pattern (e.lp)(e.prefrom)(e.to) (e.rollback_RP)>   : (e.lp_code) (e.rollback_lp_label),
 	    <TreeToCode_AfterPattern (e.tail)(e.rollback_lp_label)>           : (e.tail_code) (e.tail_rollback_label)
 		=	(
@@ -285,13 +285,15 @@ Fname {
     (e.метакод)(e.точка_отката)  =  (e.код)(e.новая_точка_отката)(e.chainname)
     compile and EVALUTE substitution!
 */
-SubstitutionBuild {
+SubstitutionBuildAndEval {
 	(e.code) (e.rollback)(e.new_prefrom)(e.new_to),
 		'label_del_'<RandomIdName> : e.new_del_rollback, // 
 		'label_nodel_'<RandomIdName> : e.new_label_nodel_rollback,
-		<NEW_CHAIN> : (e.context) (e.chname) e.init_chain_code
+		<NEW_CONTEXT> : (e.context) e.init_context_code,
+		<NEW_CHAIN (e.context)> : (e.chname) e.init_chain_code
 		=
 		(
+			e.init_context_code
 			e.init_chain_code  // new chain(); Context context;
 			<SubstituteCompile (e.context)(e.chname) e.code>  // append; append;
 			<EVAL_CHAIN (e.chname)(e.context)> // execute(chain)
@@ -311,7 +313,7 @@ SubstitutionBuild {
 */
 SubstitutionBuildNoEval {
 	(e.cxt) e.code,
-		<NEW_CHAIN> : (e.context) (e.chname) e.init_chain_code
+		<NEW_CHAIN (e.cxt)> : (e.chname) e.init_chain_code
 		=
 			(e.chname)
 			e.init_chain_code  // new chain(); Context context;

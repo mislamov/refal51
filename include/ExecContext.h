@@ -23,26 +23,28 @@
 
 #include "ExecStack.h"
 #include <list>
+#include <stack>
 
-struct ExecQueue {
+/*struct ExecQueue {
 	DataContainer* fn_call;
 	ExecQueue* next;
 	//inline void push(DataContainer* dc){ next=new ExecQueue(dc); }
 	inline ExecQueue(DataContainer* dc, ExecQueue* willnext=0){ fn_call=dc; next=willnext; }
-};
+};*/
 
-struct ChainQueue {
+typedef std::stack<DataContainer*> ExecQueue;
+
+/*struct ChainQueue {
 	DataChain* ch;
 	ChainQueue* next;
 	inline ChainQueue (DataChain *chain=0) {ch=chain; next=0;}
-};
+};*/
+
+typedef std::stack<DataChain*> ChainQueue;
 
 class ExecContext  {
-	ExecQueue* active;
-	ExecQueue* pre_active;
-	ExecQueue* topOfExecQueue;
-
-	ChainQueue* chains;
+	ExecQueue topOfExecQueue;
+	ChainQueue chains;
 
 public:
 	static long sys;
@@ -51,7 +53,7 @@ public:
 	ExecContext(const ExecContext&);
 	~ExecContext();
 
-	void prepareExecute(); // подготовка перед очередным функциональным вызовом
+	//void prepareExecute(); // подготовка перед очередным функциональным вызовом
 	void prepareSubstitute(); // подготовка перед постановкой
 	void pushExecuteCall(DataContainer*); // добавление вызова в очередь выполнения
 
@@ -63,18 +65,23 @@ public:
 	// создает новую цепочку для построения подстановки (как для условий, так и для правой части предложения)
 	inline DataChain* putChain(){
 		DataChain *ch = new DataChain();
-		ChainQueue *chainQueue = new ChainQueue(ch);
+		/*ChainQueue *chainQueue = new ChainQueue(ch);
 		chainQueue->next = chains;
-		chains = chainQueue;
+		chains = chainQueue;*/
+
+		chains.push(ch);
 		return ch;
 	}
 
 	// удаляет цепочку последней подстановки (если произошел откат)
 	inline void popChain(){
-		ChainQueue *chainQueue = chains;
+		/*ChainQueue *chainQueue = chains;
 		chains = chains->next;
 		chainQueue->ch->free();
-		delete chainQueue;
+		delete chainQueue;*/
+		ref_assert(! chains.empty());
+		chains.top()->free();
+		chains.pop();
 	}
 };
 

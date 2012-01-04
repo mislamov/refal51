@@ -20,79 +20,62 @@
 
 ExecContext::ExecContext(){
 	sys++;
-	topOfExecQueue = pre_active = new ExecQueue( 0 );
-	topOfExecQueue->next = active = new ExecQueue( 0 );
-	chains = new ChainQueue();
 }
 
 ExecContext::ExecContext(const ExecContext& ctx){
 	sys++;
-	active = ctx.active;
+	//active = ctx.active;
 	chains = ctx.chains;
-	pre_active = ctx.pre_active;
+	//pre_active = ctx.pre_active;
 	topOfExecQueue = ctx.topOfExecQueue;
 }
 
 ExecContext::~ExecContext(){
 	sys--;
-	while (topOfExecQueue){
-		pre_active = topOfExecQueue->next;
-		delete topOfExecQueue;
-		topOfExecQueue = pre_active;
+	while (! topOfExecQueue.empty()){
+		topOfExecQueue.pop();
 	}
 }
 
 long ExecContext::sys = 0;
 
-void ExecContext::prepareExecute(){
-	pre_active = topOfExecQueue;
-	active = pre_active->next;
-}
+
 
 void ExecContext::prepareSubstitute(){
 }
 
 void ExecContext::cleanChains(){
-	ChainQueue *chq;
-	if (chains->next==0) return;
-	if (chains->next->next!=0){
-		while (chains->next->next->ch){
-			chq = chains->next;
-			chains->ch->free();
-			std::cout << "\n\n\n\ndelete chains;\n\n\n\n";
-			delete chains;
-			chains = chq;
-		}
+	while (! chains.empty()){
+		DataChain* ch = chains.top();
+		ch->free();
+		chains.pop();
 	}
-	chq = chains->next;
-	chains = chains->next;
-	delete chq;
 }
 
 DataCursor ExecContext::getCurrentExec(){
-	ExecQueue *act = topOfExecQueue->next;
-	DataContainer *result = act->fn_call;
-	if (!result) return 0;
+	if (topOfExecQueue.empty()) return 0;
+
+	DataContainer *result = topOfExecQueue.top();
+	ref_assert(result);
 	//std::cout << "::current exec-function:: " << result->value.bracket_data.fname << "\n" << std::flush;
 	//std::cout << "::current exec-container->chain:: " << result->value.bracket_data.chain->debug() << "\n" << std::flush;
-	topOfExecQueue->next = act->next;
-	delete act;
 	return DataCursor(result);
 }
 
 void ExecContext::print_debug(){
-	ExecQueue
-		*iter = topOfExecQueue->next;
+	/*ExecQueue
+		*iter = topOfExecQueue->next;*/
 
-	std::cout << "\n[[[[\n";
-	while(iter->fn_call){
+	std::cout << "\n[[[[ NYR\n";
+	/*while(iter->fn_call){
 		std::cout << " ###  " << iter->fn_call->value.bracket_data.fname << "\n";
 		iter = iter->next;
 	}
-	std::cout << "\n]]]]\n";
+	std::cout << "\n]]]]\n"; */
 }
 
 void ExecContext::pushExecuteCall(DataContainer* exec){
 	//std::cout << "push to function stack: " << exec->value.bracket_data.fname << " {" << exec->value.bracket_data.chain << "}\n";
-	pre_active = pre_active->next = new ExecQueue(exec, active);
+	//topOfExecQueue->next = new ExecQueue(exec, topOfExecQueue->next);
+	topOfExecQueue.push(exec);
 }

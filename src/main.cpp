@@ -29,19 +29,19 @@
 
 std::string stringtime(struct tm *timeptr)
 {
-    char result[256];
-    strftime(result, 255, "%H:%M", timeptr);
-    return result;
+	char result[256];
+	strftime(result, 255, "%H:%M", timeptr);
+	return result;
 }
 
 void help(char *pname)
 {
-    std::cout << REFVERSION << "\n" << std::flush;
-    std::cout << "Usage: "<< pname <<" [-h|--help] [-v|--verbose] [-d|--debug] filename [arg1 arg2 ... argN]\n" << std::flush;
-    std::cout << "\t-h (or --help) to see this message\n" << std::flush;
-    std::cout << "\t-v (or --verbose) to see more information about program execution\n" << std::flush;
-    std::cout << "\t-d (or --debug) to loging debug information into *.debug file\n" << std::flush;
-    std::cout << "\t--createxml to create compiled *.xml file of program\n" << std::flush;
+	std::cout << REFVERSION << "\n" << std::flush;
+	std::cout << "Usage: "<< pname <<" [-h|--help] [-v|--verbose] [-d|--debug] filename [arg1 arg2 ... argN]\n" << std::flush;
+	std::cout << "\t-h (or --help) to see this message\n" << std::flush;
+	std::cout << "\t-v (or --verbose) to see more information about program execution\n" << std::flush;
+	std::cout << "\t-d (or --debug) to loging debug information into *.debug file\n" << std::flush;
+	std::cout << "\t--createxml to create compiled *.xml file of program\n" << std::flush;
 }
 
 
@@ -52,18 +52,22 @@ extern DataChain* Go(DataCursor arg_from, DataCursor arg_to, ExecContext *contex
 
 int main ( int , char **)
 {
-    DataChain::sys = 0;
-    DataContainer::sys = 0;
-    DataCursor::sys = 0;
+	DataChain::sys = 0;
+	DataContainer::sys = 0;
+	DataCursor::sys = 0;
 
-    ExecContext execContext;
-    DataChain *ch = text_to_chain("");
+	ExecContext execContext;
+	DataChain *ch = text_to_chain("");
 
-    execContext.prepareExecute();
-    DataChain* result = Go(ch->at_before_first(), ch->at_last(), &execContext);
+	//DataChain* result = Go(ch->at_before_first(), ch->at_last(), &execContext);
+	DataChain *result = new DataChain();
+	DataChain* DXFIRCVSCXGGBW = new DataChain(); 
+	DataContainer* DXFIRCVSCXGGBW_execbr = newRefExecBrackets(Go, DXFIRCVSCXGGBW, "Go");
+	result->append(DXFIRCVSCXGGBW_execbr);
+	execContext.pushExecuteCall(DXFIRCVSCXGGBW_execbr);
 
-    execute(execContext, result);
+	execute(execContext, result);
 
-    std::getchar();
-    return 0;
+	std::getchar();
+	return 0;
 }

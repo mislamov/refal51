@@ -96,10 +96,10 @@ void DataChain::free()
 				cont->free();
 			}
 			while (cur_after_last.container!=cur.container);
-
-			//std::cout << "del-ch: " << this << "\n";
-			delete this;
 		}
+					
+		//std::cout << "del-ch: " << this << "\n";
+		delete this;
 	}
 }
 

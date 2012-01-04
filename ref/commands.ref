@@ -233,16 +233,22 @@ Escape {
 }
 
 /*
-	 $void -> (e.newcontext) (e.chname) e.init_chain_code
+	 (e.context) -> (e.chname) e.init_chain_code
 */
 NEW_CHAIN {
-	$empty, 'chain_'<RandomIdName> : e.chname, 
-	'context_' <RandomIdName> : e.context
-	=	(e.context) 
+	(e.context), 'chain_'<RandomIdName> : e.chname
+	=	
 		(e.chname)
-		'ExecContext ' e.context '; \n'
 		'// new chain \n'
-		'DataChain *' e.chname ' = context->putChain(); \n'
+		'DataChain *' e.chname ' = ' e.context '->putChain(); \n'
+}
+
+/*
+	$empty -> (e.context) e.code
+*/
+NEW_CONTEXT {
+	$empty, 
+		'context_' <RandomIdName> : e.context  =  (e.context) 'ExecContext ' e.context '; \n' ;
 }
 
 /*

@@ -12,6 +12,15 @@ long DataContainer::sys = 0;
 void DataContainer::free(){
 	//return;
 	//std::cout << "::: del-cont: " << this << "\n";
+	// todo: вынести в те точки, в которых удаляется скобка (убрать проверку)
+	if (type==struct_bracket || type==exec_bracket){
+		ref_assert(value.bracket_data.chain);
+		value.bracket_data.chain->links--;
+		if (value.bracket_data.chain->links == 0){
+			value.bracket_data.chain->free();
+		}
+	}
+
 	delete this;
 }
 
@@ -34,15 +43,6 @@ DataContainer::DataContainer(const DataContainerType ttype, const DataContainerV
 DataContainer::~DataContainer()
 {
 	sys--; 
-
-	// todo: вынести из конструктора в те точки, в которых удаляется скобка (убрать проверку)
-	if (type==struct_bracket || type==exec_bracket){
-		ref_assert(value.bracket_data.chain);
-		value.bracket_data.chain->links--;
-		if (value.bracket_data.chain->links == 0){
-			value.bracket_data.chain->free();
-		}
-	}
 }
 
 

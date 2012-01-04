@@ -115,12 +115,12 @@ void DataCursor::replaceBy(DataChain *chain)
 	ref_assert(ab->prev->next == ab);
 
     // очистка от ненужных данных
-    if (chain) {
-		chain->free(); // удаление обертки результата функции
-	}
+    /*if (chain) {
+		chain->free(); // удаление обертки результата функции - удаляется при очистке стека чайнов
+	}*/
     DataChain * oldChain = container->value.bracket_data.chain;
     ref_assert(oldChain);
-    oldChain->free(); // удаление старой цепочки
+    //oldChain->free(); // удаление старой цепочки (будет удалена в след строке? )
     container->free();
 }
 
