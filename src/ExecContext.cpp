@@ -56,6 +56,7 @@ DataCursor ExecContext::getCurrentExec(){
 	if (topOfExecQueue.empty()) return 0;
 
 	DataContainer *result = topOfExecQueue.top();
+	topOfExecQueue.pop();
 	ref_assert(result);
 	//std::cout << "::current exec-function:: " << result->value.bracket_data.fname << "\n" << std::flush;
 	//std::cout << "::current exec-container->chain:: " << result->value.bracket_data.chain->debug() << "\n" << std::flush;

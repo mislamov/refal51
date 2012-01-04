@@ -194,13 +194,16 @@ VCOPY {
 	(e.ch)(e.varname)	=	e.ch'->append_copy(l_' @.varname ', r_' @.varname ', context); \n'
 }
 
+/*
+	(e.chain)(e.fname)(e.var)(e.context) e.arg_code -> (e.code_post) e.code
+*/
 EXEC {
 	(e.chain)(e.fname)(e.var)(e.context) e.code	=
+		(e.context '.pushExecuteCall(' e.var'_execbr);' '\n')
 		'DataChain* ' e.var ' = new DataChain(); \n'
 		'DataContainer* ' e.var'_execbr = newRefExecBrackets(' <Fname e.fname> ', ' e.var ', "'e.fname'");' '\n'
 		e.chain'->append('e.var'_execbr);' '\n'
 		e.code
-		<Print e.context '.pushExecuteCall(' e.var'_execbr);' '\n'>
 }
 
 BRACKET {
@@ -240,7 +243,7 @@ NEW_CHAIN {
 	=	
 		(e.chname)
 		'// new chain \n'
-		'DataChain *' e.chname ' = ' e.context '->putChain(); \n'
+		'DataChain *' e.chname ' = ' e.context '.putChain(); \n'
 }
 
 /*

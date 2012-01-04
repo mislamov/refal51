@@ -28,7 +28,7 @@ TreeToCode_template {
 TreeToCode_sentences {
 	t.order ("SENTENCE" ("LEFT-PART" e.leftpart)("RIGHT-PART" e.result)) e.e,
 				<TreeToCode_LeftPart (e.leftpart)('arg_from')('arg_to')('sentence_after_' t.order)> : (e.code_lp)(e.rollback_label),
-				<SubstitutionBuildNoEval ('context') e.result> : (e.result_name) e.code_rp
+				<SubstitutionBuildNoEval ('(*context)') e.result> : (e.result_name) e.code_rp
 				=
 						<DefSentence t.order (e.code_lp)(e.code_rp)(e.result_name)>
 						<TreeToCode_sentences <Add 1 t.order> e.e>;
@@ -317,7 +317,7 @@ SubstitutionBuildNoEval {
 		=
 			(e.chname)
 			e.init_chain_code  // new chain(); Context context;
-			<SubstituteCompile ('(*' e.cxt ')')(e.chname) e.code>  // append; append;
+			<SubstituteCompile (e.cxt)(e.chname) e.code>  // append; append;
 		;
 }
 
@@ -333,9 +333,12 @@ SubstituteCompile {
 
     (e.context)(e.ch) ("<" &SYMBOL.fn e.in) e.next,
         <RandomIdName> : e.v,
-        @.fn : (t. e.fname)	=				
-				<EXEC (e.ch)(e.fname)(e.v)(e.context) <SubstituteCompile (e.context)(e.v) e.in> >
-				<SubstituteCompile (e.context)(e.ch) e.next>;
+        @.fn : (t. e.fname),
+	<EXEC (e.ch)(e.fname)(e.v)(e.context) <SubstituteCompile (e.context)(e.v) e.in> > : (e.post) e.br_code
+				=
+				e.br_code
+				<SubstituteCompile (e.context)(e.ch) e.next>
+				e.post;
 
     (e.context)(e.ch) ("(" e.in) e.next,
         <RandomIdName> : e.v	=

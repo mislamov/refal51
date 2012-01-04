@@ -55,6 +55,8 @@ DataCursor&
 DataCursor DataCursor::operator-(const int& i)
 {
     ref_assert(i==1);
+	if (container==0){
+	}
     ref_assert(container!=0);
 
     DataCursor result = *this;
