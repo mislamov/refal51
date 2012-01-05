@@ -206,7 +206,7 @@ EXEC {
 
 		e.code
 
-		e.context '.pushExecuteCall(' e.var'_execbr); ' '// ' e.fname '\n'
+		e.context '->pushExecuteCall(' e.var'_execbr); ' '// ' e.fname '\n'
 
 }
 
@@ -247,7 +247,7 @@ NEW_CHAIN {
 	=	
 		(e.chname)
 		'// new chain \n'
-		'DataChain *' e.chname ' = ' e.context '.putChain(); \n'
+		'DataChain *' e.chname ' = ' e.context '->putChain(); \n'
 }
 
 /*
@@ -255,7 +255,9 @@ NEW_CHAIN {
 */
 NEW_CONTEXT {
 	$empty, 
-		'context_' <RandomIdName> : e.context  =  (e.context) 'ExecContext ' e.context '; \n' ;
+		'context_' <RandomIdName> : e.context  =  (e.context) 
+			'ExecContext ' e.context '_static' '; \n' 
+			'ExecContext *' e.context ' = &' e.context '_static; \n' ;			
 }
 
 /*
@@ -269,9 +271,9 @@ SET_CHAIN_CURSORS {
 }
 
 FREE_CHAIN {
-	e.chname	=
+	(e.context) e.chname	=
 		'// FREE_CHAIN ' e.chname '\n'
-		'context->popChain(); \n'
+		e.context '->popChain(); \n'
 }
 
 /*

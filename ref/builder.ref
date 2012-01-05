@@ -28,7 +28,7 @@ TreeToCode_template {
 TreeToCode_sentences {
 	t.order ("SENTENCE" ("LEFT-PART" e.leftpart)("RIGHT-PART" e.result)) e.e,
 				<TreeToCode_LeftPart (e.leftpart)('arg_from')('arg_to')('sentence_after_' t.order)> : (e.code_lp)(e.rollback_label),
-				<SubstitutionBuildNoEval ('(*context)') e.result> : (e.result_name) e.code_rp
+				<SubstitutionBuildNoEval ('context') e.result> : (e.result_name) e.code_rp
 				=
 						<DefSentence t.order (e.code_lp)(e.code_rp)(e.result_name)>
 						<TreeToCode_sentences <Add 1 t.order> e.e>;
@@ -290,7 +290,7 @@ SubstitutionBuildAndEval {
 		'label_del_'<RandomIdName> : e.new_del_rollback, // 
 		'label_nodel_'<RandomIdName> : e.new_label_nodel_rollback,
 		<NEW_CONTEXT> : (e.context) e.init_context_code,
-		<NEW_CHAIN (e.context)> : (e.chname) e.init_chain_code
+		<NEW_CHAIN ('context')> : (e.chname) e.init_chain_code
 		=
 		(
 			e.init_context_code
@@ -302,7 +302,7 @@ SubstitutionBuildAndEval {
 			<SET_CHAIN_CURSORS (e.chname)(e.new_prefrom)(e.new_to)>  // Cursor prefrom = chain->prefrom; to = chain->to;
 			<JMP e.new_label_nodel_rollback>
 			<LABEL e.new_del_rollback>  //  : del
-			<FREE_CHAIN e.chname>  // chain->free; delete chain
+			<FREE_CHAIN ('context') e.chname>  // chain->free; delete chain
 			<JMP e.rollback> // goto last matching
 			<LABEL e.new_label_nodel_rollback> // :next matching
 		)(e.new_del_rollback)(e.chname);

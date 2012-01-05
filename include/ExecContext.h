@@ -43,7 +43,7 @@ typedef std::list<DataContainer*> ExecQueue;
 typedef std::stack<DataChain*> ChainQueue;
 
 class ExecContext  {
-	ExecQueue topOfExecQueue;
+	ExecQueue execOrderQueue;
 	ExecQueue::iterator first_exec;
 
 	ChainQueue chains;

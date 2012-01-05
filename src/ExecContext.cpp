@@ -28,15 +28,15 @@ ExecContext::ExecContext(const ExecContext& ctx){
 	//active = ctx.active;
 	chains = ctx.chains;
 	//pre_active = ctx.pre_active;
-	topOfExecQueue = ctx.topOfExecQueue;
+	execOrderQueue = ctx.execOrderQueue;
 }
 
 ExecContext::~ExecContext(){
 	sys--;
-	/*while (! topOfExecQueue.empty()){
-		topOfExecQueue.pop();
+	/*while (! execOrderQueue.empty()){
+		execOrderQueue.pop();
 	}*/
-	topOfExecQueue.clear();
+	execOrderQueue.clear();
 }
 
 long ExecContext::sys = 0;
@@ -46,12 +46,13 @@ void ExecContext::prepareSubstitute(){
 }
 
 void ExecContext::prepareExecute(){
-	//if (! topOfExecQueue.empty())
-		first_exec = topOfExecQueue.begin();
+	//if (! execOrderQueue.empty())
+		first_exec = execOrderQueue.begin();
 }
 
 void ExecContext::cleanChains(){
-	while (! chains.empty()){
+	//while (! chains.empty()){
+	while (chains.size()>1){
 		DataChain* ch = chains.top();
 		ch->free();
 		chains.pop();
@@ -59,10 +60,10 @@ void ExecContext::cleanChains(){
 }
 
 DataCursor ExecContext::getCurrentExec(){
-	if (topOfExecQueue.empty()) return 0;
+	if (execOrderQueue.empty()) return 0;
 
-	DataContainer *result = topOfExecQueue.front();
-	topOfExecQueue.pop_front();
+	DataContainer *result = execOrderQueue.front();
+	execOrderQueue.pop_front();
 	ref_assert(result);
 	//std::cout << "::current exec-function:: " << result->value.bracket_data.fname << "\n" << std::flush;
 	//std::cout << "::current exec-container->chain:: " << result->value.bracket_data.chain->debug() << "\n" << std::flush;
@@ -71,7 +72,7 @@ DataCursor ExecContext::getCurrentExec(){
 
 void ExecContext::print_debug(){
 	/*ExecQueue
-		*iter = topOfExecQueue->next;*/
+		*iter = execOrderQueue->next;*/
 
 	std::cout << "\n[[[[ NYR\n";
 	/*while(iter->fn_call){
@@ -83,10 +84,10 @@ void ExecContext::print_debug(){
 
 void ExecContext::pushExecuteCall(DataContainer* exec){
 	//std::cout << "push to function stack: " << exec->value.bracket_data.fname << " {" << exec->value.bracket_data.chain << "}\n";
-	//topOfExecQueue->next = new ExecQueue(exec, topOfExecQueue->next);
-	if (topOfExecQueue.empty()){
-		topOfExecQueue.push_back(exec);
+	//execOrderQueue->next = new ExecQueue(exec, execOrderQueue->next);
+	if (execOrderQueue.empty()){
+		execOrderQueue.push_back(exec);
 	} else {
-		topOfExecQueue.insert(first_exec, exec);
+		execOrderQueue.insert(first_exec, exec);
 	}
 }
