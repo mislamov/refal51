@@ -32,7 +32,7 @@
 	inline ExecQueue(DataContainer* dc, ExecQueue* willnext=0){ fn_call=dc; next=willnext; }
 };*/
 
-typedef std::stack<DataContainer*> ExecQueue;
+typedef std::list<DataContainer*> ExecQueue;
 
 /*struct ChainQueue {
 	DataChain* ch;
@@ -44,6 +44,8 @@ typedef std::stack<DataChain*> ChainQueue;
 
 class ExecContext  {
 	ExecQueue topOfExecQueue;
+	ExecQueue::iterator first_exec;
+
 	ChainQueue chains;
 
 public:
@@ -53,7 +55,7 @@ public:
 	ExecContext(const ExecContext&);
 	~ExecContext();
 
-	//void prepareExecute(); // подготовка перед очередным функциональным вызовом
+	void prepareExecute(); // подготовка перед очередным функциональным вызовом
 	void prepareSubstitute(); // подготовка перед постановкой
 	void pushExecuteCall(DataContainer*); // добавление вызова в очередь выполнения
 

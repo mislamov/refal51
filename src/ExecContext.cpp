@@ -17,6 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "ExecContext.h"
+#include <list>
 
 ExecContext::ExecContext(){
 	sys++;
@@ -32,16 +33,21 @@ ExecContext::ExecContext(const ExecContext& ctx){
 
 ExecContext::~ExecContext(){
 	sys--;
-	while (! topOfExecQueue.empty()){
+	/*while (! topOfExecQueue.empty()){
 		topOfExecQueue.pop();
-	}
+	}*/
+	topOfExecQueue.clear();
 }
 
 long ExecContext::sys = 0;
 
 
-
 void ExecContext::prepareSubstitute(){
+}
+
+void ExecContext::prepareExecute(){
+	//if (! topOfExecQueue.empty())
+		first_exec = topOfExecQueue.begin();
 }
 
 void ExecContext::cleanChains(){
@@ -55,8 +61,8 @@ void ExecContext::cleanChains(){
 DataCursor ExecContext::getCurrentExec(){
 	if (topOfExecQueue.empty()) return 0;
 
-	DataContainer *result = topOfExecQueue.top();
-	topOfExecQueue.pop();
+	DataContainer *result = topOfExecQueue.front();
+	topOfExecQueue.pop_front();
 	ref_assert(result);
 	//std::cout << "::current exec-function:: " << result->value.bracket_data.fname << "\n" << std::flush;
 	//std::cout << "::current exec-container->chain:: " << result->value.bracket_data.chain->debug() << "\n" << std::flush;
@@ -78,5 +84,9 @@ void ExecContext::print_debug(){
 void ExecContext::pushExecuteCall(DataContainer* exec){
 	//std::cout << "push to function stack: " << exec->value.bracket_data.fname << " {" << exec->value.bracket_data.chain << "}\n";
 	//topOfExecQueue->next = new ExecQueue(exec, topOfExecQueue->next);
-	topOfExecQueue.push(exec);
+	if (topOfExecQueue.empty()){
+		topOfExecQueue.push_back(exec);
+	} else {
+		topOfExecQueue.insert(first_exec, exec);
+	}
 }

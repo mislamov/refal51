@@ -23,7 +23,7 @@ void execute(ExecContext &execContext, DataChain* expression){
 
 		BracketData  exb = br_exec.container->value.bracket_data;
 		//std::cout << "::: selected function : " << exb.fname << "\n";
-		//execContext.prepareExecute();
+		execContext.prepareExecute();
 		DataChain* ch = exb.fn(exb.chain->at_before_first(), exb.chain->at_last(), &execContext);
 		//std::cout << "::: replacing : <" << br_exec.container->value.bracket_data.fname << " ...>  -> " << "[" << (ch?ch->debug():"") << "]\n"; 
 		br_exec.replaceBy(ch );

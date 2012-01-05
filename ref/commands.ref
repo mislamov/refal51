@@ -199,11 +199,15 @@ VCOPY {
 */
 EXEC {
 	(e.chain)(e.fname)(e.var)(e.context) e.code	=
-		(e.context '.pushExecuteCall(' e.var'_execbr);' '\n')
+		()
 		'DataChain* ' e.var ' = new DataChain(); \n'
 		'DataContainer* ' e.var'_execbr = newRefExecBrackets(' <Fname e.fname> ', ' e.var ', "'e.fname'");' '\n'
 		e.chain'->append('e.var'_execbr);' '\n'
+
 		e.code
+
+		e.context '.pushExecuteCall(' e.var'_execbr); ' '// ' e.fname '\n'
+
 }
 
 BRACKET {

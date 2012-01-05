@@ -57,13 +57,13 @@ int main ( int , char **)
 	DataCursor::sys = 0;
 
 	ExecContext execContext;
-	DataChain *ch = text_to_chain("");
 
 	//DataChain* result = Go(ch->at_before_first(), ch->at_last(), &execContext);
 	DataChain *result = new DataChain();
 	DataChain* DXFIRCVSCXGGBW = new DataChain(); 
 	DataContainer* DXFIRCVSCXGGBW_execbr = newRefExecBrackets(Go, DXFIRCVSCXGGBW, "Go");
 	result->append(DXFIRCVSCXGGBW_execbr);
+	execContext.prepareExecute();
 	execContext.pushExecuteCall(DXFIRCVSCXGGBW_execbr);
 
 	execute(execContext, result);
