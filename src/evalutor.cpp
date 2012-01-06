@@ -14,7 +14,7 @@ void execute(ExecContext* execContext, DataChain* expression){
 		if (debug)
 			std::cout << "active-memory ::: " << (expression ? expression->debug() : "null") << "\n";
 
-		//std::cout << DataChain::sys << " :: " << DataCursor::sys << " :: " << DataContainer::sys << " :: " << ExecContext::sys << "\n";
+		std::cout << DataChain::sys << " :: " << DataCursor::sys << " :: " << DataContainer::sys << " :: " << ExecContext::sys << "\n";
 
 		br_exec = execContext->getCurrentExec();
 

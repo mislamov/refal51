@@ -7,8 +7,4 @@ DataChain* Go(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
 DataChain* Go2(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
-DataChain* WordsMissTable(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
-
-DataChain* CompletionTable(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
-
-DataChain* Question(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
+DataChain* Go3(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
