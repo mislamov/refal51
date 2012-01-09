@@ -121,6 +121,7 @@ DataContainer* newRefText(unistring str, int hash){
 		// принудительное создание данных
 		dt = new unichar[str.length()];
 		memcpy(dt, str.c_str(), str.length()*sizeof(unichar));
+		mapRefText[- rand()] = dt;
 	}
 
 	vv.text = dt;

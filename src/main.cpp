@@ -70,6 +70,7 @@ int main ( int , char **)
 
 	delete execContext;
 	freeMapRefText();
+	result->free();
 
 	std::getchar();
 	return 0;
