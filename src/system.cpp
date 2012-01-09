@@ -112,7 +112,7 @@ DataChain* Compare (DataCursor prebeg, DataCursor end, ExecContext *context){   
 	if (prebeg+1 != end) RUNTIMEERRORn("2 arguments expected");
 	if (prebeg.container->type != end.container->type)  RUNTIMEERRORn("different types arguments");
 	if (prebeg.container->type != integer)  RUNTIMEERRORn("2 integers expected");
-	return (new DataChain())->append(newRefText( thecompare(prebeg.container->value.num, end.container->value.num) ));
+	return (new DataChain())->append(newRefText( thecompare(prebeg.container->value.num, end.container->value.num), -__LINE__ ));
 };
 
 
@@ -123,7 +123,7 @@ DataChain* Implode (DataCursor prebeg, DataCursor end, ExecContext *context){
 	unistring chtxt = chain_to_text(prebeg, end);
     std::cout << chtxt << std::flush;
 
-	result->append(newRefWord(chtxt));
+	result->append(newRefWord(chtxt, -__LINE__));
 	std::cout << "]]]" << std::flush;
 	return result;
 };
@@ -225,7 +225,7 @@ DataChain* Card  (DataCursor prebeg, DataCursor end, ExecContext *context){
 	DataChain *result = (new DataChain())->append(new DataContainer(text, value, len));*/
 
 	DataChain *result = new DataChain();
-	result->append( newRefText(str) );
+	result->append( newRefText(str, -__LINE__) );
 	if (std::cin.eof()){
 		result->append( newRefInteger(0) );
 	}
@@ -310,6 +310,6 @@ DataChain* LCS (DataCursor prebeg, DataCursor end, ExecContext *context){
     unistring a = chain_to_text(chainA->at_before_first(), chainA->at_last());
     unistring b = chain_to_text(chainB->at_before_first(), chainB->at_last());
 
-	return (new DataChain())->append(newRefText(GetLargestCommonSubstring(a, b)));
+	return (new DataChain())->append(newRefText(GetLargestCommonSubstring(a, b), -__LINE__));
 };
 

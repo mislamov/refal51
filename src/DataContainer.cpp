@@ -6,6 +6,7 @@
 #include <string.h>
 #include <algorithm>
 #include <cstdio>
+#include <map>
 
 long DataContainer::sys = 0;
 
@@ -27,12 +28,12 @@ void DataContainer::free(){
 DataContainer::DataContainer(const DataContainerType ttype, const DataContainerValue vvalue, const size_t len)
 {
 	sys++;
-    //ctor
-    this->type = ttype;
-    this->value = vvalue;
-    this->leng = len;
+	//ctor
+	this->type = ttype;
+	this->value = vvalue;
+	this->leng = len;
 
-    this->next = this->prev = 0;
+	this->next = this->prev = 0;
 	// todo: вынести из конструктора в те точки, в которых создаеся скобка (убрать проверку)
 	if (ttype==struct_bracket || ttype==exec_bracket){
 		ref_assert(vvalue.bracket_data.chain);
@@ -47,67 +48,85 @@ DataContainer::~DataContainer()
 
 
 
-DataContainer* newRefWord(unistring wr) {
-    DataContainerValue vv;
-    size_t lnt = wr.length()+1;
+DataContainer* newRefWord(unistring wr, int hash) {
+	DataContainerValue vv;
+	size_t lnt = wr.length()+1;
 
-    char *vv_word_value = new char[lnt];
-    vv_word_value[lnt] = 0;
-    strncpy(vv_word_value, wr.c_str(), lnt);
+	char *vv_word_value = new char[lnt];
+	vv_word_value[lnt] = 0;
+	strncpy(vv_word_value, wr.c_str(), lnt);
 
-    vv.word.value = vv_word_value;
-    vv.word.leng  = lnt;
+	vv.word.value = vv_word_value;
+	vv.word.leng  = lnt;
 
-    DataContainer* resut = new DataContainer(word, vv);
-    resut->prev = resut->next = 0;
-    return resut;
+	DataContainer* resut = new DataContainer(word, vv);
+	resut->prev = resut->next = 0;
+	return resut;
 };
 
 size_t min(size_t a, size_t b){ return a>b?b:a; }
 
 DataContainer* newRefExecBrackets(rf_function fn, DataChain *chain, unistring fname){
-    DataContainerValue vv;
-    vv.bracket_data.fn = fn;
+	DataContainerValue vv;
+	vv.bracket_data.fn = fn;
 	strncpy(vv.bracket_data.fname, fname.c_str(), min(fname.length(), 255));
 	vv.bracket_data.fname[fname.length()] = 0;
-    vv.bracket_data.chain  = chain;
+	vv.bracket_data.chain  = chain;
 
-    DataContainer* resut = new DataContainer(exec_bracket, vv);
-    resut->prev = resut->next = 0;
-    return resut;
+	DataContainer* resut = new DataContainer(exec_bracket, vv);
+	resut->prev = resut->next = 0;
+	return resut;
 };
 
 DataContainer* newRefInteger(infint i){
-    DataContainerValue vv;
-    vv.num = i;
+	DataContainerValue vv;
+	vv.num = i;
 
-    DataContainer* resut = new DataContainer(integer, vv);
-    resut->prev = resut->next = 0;
-    return resut;
+	DataContainer* resut = new DataContainer(integer, vv);
+	resut->prev = resut->next = 0;
+	return resut;
 };
 
 DataContainer* newRefStructBrackets(DataChain *chain){
-    DataContainerValue vv;
-    vv.bracket_data.fn = 0;
-    vv.bracket_data.chain  = chain;
+	DataContainerValue vv;
+	vv.bracket_data.fn = 0;
+	vv.bracket_data.chain  = chain;
 
-    DataContainer* resut = new DataContainer(struct_bracket, vv);
-    resut->prev = resut->next = 0;
-    return resut;
+	DataContainer* resut = new DataContainer(struct_bracket, vv);
+	resut->prev = resut->next = 0;
+	return resut;
 };
 
-DataContainer* newRefText(unistring str){
+typedef std::map<int, unichar*> MapRefTextType;
+static MapRefTextType mapRefText;
+
+DataContainer* newRefText(unistring str, int hash){
 	if (str=="") return 0;
 
-    DataContainerValue vv;
+	DataContainerValue vv;
 
-	unichar *dt = new unichar[str.length()];
-	memcpy(dt, str.c_str(), str.length()*sizeof(unichar));
+	unichar *dt;
+
+	if (hash > 0){
+		dt = mapRefText[hash];
+
+		// поиск уже существующих данных	
+		if (!dt){ // past the end
+			dt = new unichar[str.length()];
+			memcpy(dt, str.c_str(), str.length()*sizeof(unichar));
+			mapRefText[hash] = dt;
+		}
+	} else {
+		// принудительное создание данных
+		dt = new unichar[str.length()];
+		memcpy(dt, str.c_str(), str.length()*sizeof(unichar));
+	}
+
 	vv.text = dt;
 
 	DataContainer* resut = new DataContainer(text, vv, str.length());
-    resut->prev = resut->next = 0;
-    return resut;
+	resut->prev = resut->next = 0;
+	return resut;
 
 };
 
@@ -138,7 +157,7 @@ bool equal(DataCursor cur1, DataCursor cur2){
 
 	switch (cont1->type){
 	case struct_bracket:
-				  return equal(cont1->value.bracket_data.chain, cont2->value.bracket_data.chain);
+		return equal(cont1->value.bracket_data.chain, cont2->value.bracket_data.chain);
 	case byte:    return cont1->value.byte==cont2->value.byte;
 	case integer: return cont1->value.num==cont2->value.num;
 	case real:	  return cont1->value.real==cont2->value.real;

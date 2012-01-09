@@ -41,7 +41,7 @@ DataChain *chain_KFNQDUXWFNFOZV = context->putChain();
 DataChain* SRTKJPREPGGXRP = new DataChain(); 
 DataContainer* SRTKJPREPGGXRP_execbr = newRefExecBrackets(Prout, SRTKJPREPGGXRP, "Prout");
 chain_KFNQDUXWFNFOZV->append(SRTKJPREPGGXRP_execbr);
-SRTKJPREPGGXRP->append(newRefText("Who is first? (1 - pc  2 - you)")); 
+SRTKJPREPGGXRP->append(newRefText("Who is first? (1 - pc  2 - you)", __LINE__)); 
 context->pushExecuteCall(SRTKJPREPGGXRP_execbr); // Prout
 DataChain* NRVYSTMWCYSYYC = new DataChain(); 
 DataContainer* NRVYSTMWCYSYYC_execbr = newRefExecBrackets(FirG, NRVYSTMWCYSYYC, "FirG");
@@ -82,15 +82,15 @@ DataContainer* VABOYGPOEYLFPB_execbr = newRefExecBrackets(Game, VABOYGPOEYLFPB, 
 chain_OOEFXZBCOEJUVP->append(VABOYGPOEYLFPB_execbr);
 DataChain* NPLJVRVIPYAMYE = new DataChain(); 
 VABOYGPOEYLFPB->append(newRefStructBrackets(NPLJVRVIPYAMYE)); 
-NPLJVRVIPYAMYE->append(newRefText("2")); 
+NPLJVRVIPYAMYE->append(newRefText("2", __LINE__)); 
 DataChain* HWQNQRQPMXUJJL = new DataChain(); 
 VABOYGPOEYLFPB->append(newRefStructBrackets(HWQNQRQPMXUJJL)); 
-HWQNQRQPMXUJJL->append(newRefText("1")); 
+HWQNQRQPMXUJJL->append(newRefText("1", __LINE__)); 
 DataChain* OOVAOWUXWHMSNC = new DataChain(); 
 VABOYGPOEYLFPB->append(newRefStructBrackets(OOVAOWUXWHMSNC)); 
 DataChain* BXCOKSFZKVATXD = new DataChain(); 
 VABOYGPOEYLFPB->append(newRefStructBrackets(BXCOKSFZKVATXD)); 
-BXCOKSFZKVATXD->append(newRefText("23456789")); 
+BXCOKSFZKVATXD->append(newRefText("23456789", __LINE__)); 
 context->pushExecuteCall(VABOYGPOEYLFPB_execbr); // Game
 return chain_OOEFXZBCOEJUVP;
 }
@@ -114,14 +114,14 @@ DataContainer* AUGZQRCDDIUTEI_execbr = newRefExecBrackets(Game, AUGZQRCDDIUTEI, 
 chain_MGQOOKETLYHNKO->append(AUGZQRCDDIUTEI_execbr);
 DataChain* OJWAYYZPVSCMPS = new DataChain(); 
 AUGZQRCDDIUTEI->append(newRefStructBrackets(OJWAYYZPVSCMPS)); 
-OJWAYYZPVSCMPS->append(newRefText("2")); 
+OJWAYYZPVSCMPS->append(newRefText("2", __LINE__)); 
 DataChain* AJLFVGUBFAAOVL = new DataChain(); 
 AUGZQRCDDIUTEI->append(newRefStructBrackets(AJLFVGUBFAAOVL)); 
 DataChain* ZYLNTRKDCPWSRT = new DataChain(); 
 AUGZQRCDDIUTEI->append(newRefStructBrackets(ZYLNTRKDCPWSRT)); 
 DataChain* ESJWHDIZCOBZCN = new DataChain(); 
 AUGZQRCDDIUTEI->append(newRefStructBrackets(ESJWHDIZCOBZCN)); 
-ESJWHDIZCOBZCN->append(newRefText("123456789")); 
+ESJWHDIZCOBZCN->append(newRefText("123456789", __LINE__)); 
 context->pushExecuteCall(AUGZQRCDDIUTEI_execbr); // Game
 return chain_MGQOOKETLYHNKO;
 }
@@ -331,7 +331,7 @@ DataChain *chain_EHBBCPXIFBXVFB = context->putChain();
 DataChain* CGKCFQCKCOTZGK = new DataChain(); 
 DataContainer* CGKCFQCKCOTZGK_execbr = newRefExecBrackets(Prout, CGKCFQCKCOTZGK, "Prout");
 chain_EHBBCPXIFBXVFB->append(CGKCFQCKCOTZGK_execbr);
-CGKCFQCKCOTZGK->append(newRefText("Nobody !!!.")); 
+CGKCFQCKCOTZGK->append(newRefText("Nobody !!!.", __LINE__)); 
 context->pushExecuteCall(CGKCFQCKCOTZGK_execbr); // Prout
 return chain_EHBBCPXIFBXVFB;
 }
@@ -356,7 +356,7 @@ DataChain *chain_YUPZWWEIQURPIX = context->putChain();
 DataChain* IQFLDUUVEOOWQC = new DataChain(); 
 DataContainer* IQFLDUUVEOOWQC_execbr = newRefExecBrackets(Prout, IQFLDUUVEOOWQC, "Prout");
 chain_YUPZWWEIQURPIX->append(IQFLDUUVEOOWQC_execbr);
-IQFLDUUVEOOWQC->append(newRefText("Winner X")); 
+IQFLDUUVEOOWQC->append(newRefText("Winner X", __LINE__)); 
 context->pushExecuteCall(IQFLDUUVEOOWQC_execbr); // Prout
 return chain_YUPZWWEIQURPIX;
 }
@@ -381,7 +381,7 @@ DataChain *chain_TBRECUYKABFCVK = context->putChain();
 DataChain* DZEZTOIDUKUHJZ = new DataChain(); 
 DataContainer* DZEZTOIDUKUHJZ_execbr = newRefExecBrackets(Prout, DZEZTOIDUKUHJZ, "Prout");
 chain_TBRECUYKABFCVK->append(DZEZTOIDUKUHJZ_execbr);
-DZEZTOIDUKUHJZ->append(newRefText("Winner O")); 
+DZEZTOIDUKUHJZ->append(newRefText("Winner O", __LINE__)); 
 context->pushExecuteCall(DZEZTOIDUKUHJZ_execbr); // Prout
 return chain_TBRECUYKABFCVK;
 }
@@ -475,25 +475,25 @@ DataChain *chain_YUBZAZCPKHKTKY = context->putChain();
 DataChain* DZIVCUYPURFMBI = new DataChain(); 
 DataContainer* DZIVCUYPURFMBI_execbr = newRefExecBrackets(Prout, DZIVCUYPURFMBI, "Prout");
 chain_YUBZAZCPKHKTKY->append(DZIVCUYPURFMBI_execbr);
-DZIVCUYPURFMBI->append(newRefText("hmm ...")); 
+DZIVCUYPURFMBI->append(newRefText("hmm ...", __LINE__)); 
 context->pushExecuteCall(DZIVCUYPURFMBI_execbr); // Prout
 DataChain* SGEKYRGZVXDHPO = new DataChain(); 
 DataContainer* SGEKYRGZVXDHPO_execbr = newRefExecBrackets(Game, SGEKYRGZVXDHPO, "Game");
 chain_YUBZAZCPKHKTKY->append(SGEKYRGZVXDHPO_execbr);
 DataChain* AMVAFYRARXSVKH = new DataChain(); 
 SGEKYRGZVXDHPO->append(newRefStructBrackets(AMVAFYRARXSVKH)); 
-AMVAFYRARXSVKH->append(newRefText("2")); 
+AMVAFYRARXSVKH->append(newRefText("2", __LINE__)); 
 DataChain* TQDIHERSIGBHZJ = new DataChain(); 
 DataContainer* TQDIHERSIGBHZJ_execbr = newRefExecBrackets(PlayerHod, TQDIHERSIGBHZJ, "PlayerHod");
 SGEKYRGZVXDHPO->append(TQDIHERSIGBHZJ_execbr);
-TQDIHERSIGBHZJ->append(newRefText("1")); 
+TQDIHERSIGBHZJ->append(newRefText("1", __LINE__)); 
 DataChain* ZUJXMMYSPNARAE = new DataChain(); 
 DataContainer* ZUJXMMYSPNARAE_execbr = newRefExecBrackets(GetHod, ZUJXMMYSPNARAE, "GetHod");
 TQDIHERSIGBHZJ->append(ZUJXMMYSPNARAE_execbr);
-ZUJXMMYSPNARAE->append(newRefText("1")); 
+ZUJXMMYSPNARAE->append(newRefText("1", __LINE__)); 
 DataChain* WKEGJCCVHHRJVB = new DataChain(); 
 ZUJXMMYSPNARAE->append(newRefStructBrackets(WKEGJCCVHHRJVB)); 
-WKEGJCCVHHRJVB->append(newRefText("1")); 
+WKEGJCCVHHRJVB->append(newRefText("1", __LINE__)); 
 ZUJXMMYSPNARAE->append_copy(l_12, r_12, context); 
 DataChain* JTSQDJOOTGPKNF = new DataChain(); 
 ZUJXMMYSPNARAE->append(newRefStructBrackets(JTSQDJOOTGPKNF)); 
@@ -565,15 +565,15 @@ DataContainer* LGRSMEAEARWTVJ_execbr = newRefExecBrackets(Game, LGRSMEAEARWTVJ, 
 chain_RHTNEGYIWXGCJW->append(LGRSMEAEARWTVJ_execbr);
 DataChain* SJBAOIOJLWHYPN = new DataChain(); 
 LGRSMEAEARWTVJ->append(newRefStructBrackets(SJBAOIOJLWHYPN)); 
-SJBAOIOJLWHYPN->append(newRefText("1")); 
+SJBAOIOJLWHYPN->append(newRefText("1", __LINE__)); 
 DataChain* VRUIHOSWKIFYGT = new DataChain(); 
 DataContainer* VRUIHOSWKIFYGT_execbr = newRefExecBrackets(PlayerHod, VRUIHOSWKIFYGT, "PlayerHod");
 LGRSMEAEARWTVJ->append(VRUIHOSWKIFYGT_execbr);
-VRUIHOSWKIFYGT->append(newRefText("2")); 
+VRUIHOSWKIFYGT->append(newRefText("2", __LINE__)); 
 DataChain* YDHACWYHSGEWZM = new DataChain(); 
 DataContainer* YDHACWYHSGEWZM_execbr = newRefExecBrackets(Prout, YDHACWYHSGEWZM, "Prout");
 VRUIHOSWKIFYGT->append(YDHACWYHSGEWZM_execbr);
-YDHACWYHSGEWZM->append(newRefText("Select number for 0:")); 
+YDHACWYHSGEWZM->append(newRefText("Select number for 0:", __LINE__)); 
 context->pushExecuteCall(YDHACWYHSGEWZM_execbr); // Prout
 DataChain* TGONZLTJHGAUHN = new DataChain(); 
 DataContainer* TGONZLTJHGAUHN_execbr = newRefExecBrackets(Card, TGONZLTJHGAUHN, "Card");
@@ -684,7 +684,7 @@ DataChain *chain_DZSXTTOBBGQNGV = context->putChain();
 DataChain* VPJGOJOGLMKXGB = new DataChain(); 
 DataContainer* VPJGOJOGLMKXGB_execbr = newRefExecBrackets(Prout, VPJGOJOGLMKXGB, "Prout");
 chain_DZSXTTOBBGQNGV->append(VPJGOJOGLMKXGB_execbr);
-VPJGOJOGLMKXGB->append(newRefText("step:")); 
+VPJGOJOGLMKXGB->append(newRefText("step:", __LINE__)); 
 VPJGOJOGLMKXGB->append_copy(l_h, r_h, context); 
 context->pushExecuteCall(VPJGOJOGLMKXGB_execbr); // Prout
 DataChain* FCPYPCKQCHBDDZ = new DataChain(); 
@@ -788,7 +788,7 @@ DataChain *chain_JXXWTLGGKYTBIO = context->putChain();
 DataChain* LYDNILQADOJSKK = new DataChain(); 
 DataContainer* LYDNILQADOJSKK_execbr = newRefExecBrackets(Prout, LYDNILQADOJSKK, "Prout");
 chain_JXXWTLGGKYTBIO->append(LYDNILQADOJSKK_execbr);
-LYDNILQADOJSKK->append(newRefText("step:")); 
+LYDNILQADOJSKK->append(newRefText("step:", __LINE__)); 
 LYDNILQADOJSKK->append_copy(l_h, r_h, context); 
 context->pushExecuteCall(LYDNILQADOJSKK_execbr); // Prout
 DataChain* VFXAHHJMBOCLJA = new DataChain(); 
@@ -888,7 +888,7 @@ FDUKXFFJPSSWYX->append(LIJJHEVRYXOZBA_execbr);
 LIJJHEVRYXOZBA->append_copy(l_e, r_e, context); 
 DataChain* FPFMOWGRGONUAT = new DataChain(); 
 LIJJHEVRYXOZBA->append(newRefStructBrackets(FPFMOWGRGONUAT)); 
-FPFMOWGRGONUAT->append(newRefText(">")); 
+FPFMOWGRGONUAT->append(newRefText(">", __LINE__)); 
 FPFMOWGRGONUAT->append_copy(l_not, r_not, context); 
 context->pushExecuteCall(LIJJHEVRYXOZBA_execbr); // WriteXO
 context->pushExecuteCall(EEDFUUJKOLXJOQ_execbr); // UseHod
@@ -1260,100 +1260,100 @@ DataChain *chain_JLIBITLLPLXELR = context->putChain();
 DataChain* DKEXDTQUVPTTEY = new DataChain(); 
 DataContainer* DKEXDTQUVPTTEY_execbr = newRefExecBrackets(Prout, DKEXDTQUVPTTEY, "Prout");
 chain_JLIBITLLPLXELR->append(DKEXDTQUVPTTEY_execbr);
-DKEXDTQUVPTTEY->append(newRefText("*===T===T===*")); 
+DKEXDTQUVPTTEY->append(newRefText("*===T===T===*", __LINE__)); 
 context->pushExecuteCall(DKEXDTQUVPTTEY_execbr); // Prout
 DataChain* HTLQLBBBVOQOZK = new DataChain(); 
 DataContainer* HTLQLBBBVOQOZK_execbr = newRefExecBrackets(Prout, HTLQLBBBVOQOZK, "Prout");
 chain_JLIBITLLPLXELR->append(HTLQLBBBVOQOZK_execbr);
-HTLQLBBBVOQOZK->append(newRefText("|")); 
+HTLQLBBBVOQOZK->append(newRefText("|", __LINE__)); 
 DataChain* YNAYYRBAQMYJHZ = new DataChain(); 
 DataContainer* YNAYYRBAQMYJHZ_execbr = newRefExecBrackets(XO, YNAYYRBAQMYJHZ, "XO");
 HTLQLBBBVOQOZK->append(YNAYYRBAQMYJHZ_execbr);
-YNAYYRBAQMYJHZ->append(newRefText("1")); 
+YNAYYRBAQMYJHZ->append(newRefText("1", __LINE__)); 
 YNAYYRBAQMYJHZ->append_copy(l_1, r_1, context); 
 context->pushExecuteCall(YNAYYRBAQMYJHZ_execbr); // XO
-HTLQLBBBVOQOZK->append(newRefText("|")); 
+HTLQLBBBVOQOZK->append(newRefText("|", __LINE__)); 
 DataChain* XNDSIYFSEXWBIO = new DataChain(); 
 DataContainer* XNDSIYFSEXWBIO_execbr = newRefExecBrackets(XO, XNDSIYFSEXWBIO, "XO");
 HTLQLBBBVOQOZK->append(XNDSIYFSEXWBIO_execbr);
-XNDSIYFSEXWBIO->append(newRefText("2")); 
+XNDSIYFSEXWBIO->append(newRefText("2", __LINE__)); 
 XNDSIYFSEXWBIO->append_copy(l_1, r_1, context); 
 context->pushExecuteCall(XNDSIYFSEXWBIO_execbr); // XO
-HTLQLBBBVOQOZK->append(newRefText("|")); 
+HTLQLBBBVOQOZK->append(newRefText("|", __LINE__)); 
 DataChain* EWQVQRTCDLPQMV = new DataChain(); 
 DataContainer* EWQVQRTCDLPQMV_execbr = newRefExecBrackets(XO, EWQVQRTCDLPQMV, "XO");
 HTLQLBBBVOQOZK->append(EWQVQRTCDLPQMV_execbr);
-EWQVQRTCDLPQMV->append(newRefText("3")); 
+EWQVQRTCDLPQMV->append(newRefText("3", __LINE__)); 
 EWQVQRTCDLPQMV->append_copy(l_1, r_1, context); 
 context->pushExecuteCall(EWQVQRTCDLPQMV_execbr); // XO
-HTLQLBBBVOQOZK->append(newRefText("|")); 
+HTLQLBBBVOQOZK->append(newRefText("|", __LINE__)); 
 context->pushExecuteCall(HTLQLBBBVOQOZK_execbr); // Prout
 DataChain* JIFVGYMKGOTZJM = new DataChain(); 
 DataContainer* JIFVGYMKGOTZJM_execbr = newRefExecBrackets(Prout, JIFVGYMKGOTZJM, "Prout");
 chain_JLIBITLLPLXELR->append(JIFVGYMKGOTZJM_execbr);
-JIFVGYMKGOTZJM->append(newRefText("*===I===I===*")); 
+JIFVGYMKGOTZJM->append(newRefText("*===I===I===*", __LINE__)); 
 context->pushExecuteCall(JIFVGYMKGOTZJM_execbr); // Prout
 DataChain* NZQTMRPNDEVNMT = new DataChain(); 
 DataContainer* NZQTMRPNDEVNMT_execbr = newRefExecBrackets(Prout, NZQTMRPNDEVNMT, "Prout");
 chain_JLIBITLLPLXELR->append(NZQTMRPNDEVNMT_execbr);
-NZQTMRPNDEVNMT->append(newRefText("|")); 
+NZQTMRPNDEVNMT->append(newRefText("|", __LINE__)); 
 DataChain* HJITSSPAQNJRDO = new DataChain(); 
 DataContainer* HJITSSPAQNJRDO_execbr = newRefExecBrackets(XO, HJITSSPAQNJRDO, "XO");
 NZQTMRPNDEVNMT->append(HJITSSPAQNJRDO_execbr);
-HJITSSPAQNJRDO->append(newRefText("4")); 
+HJITSSPAQNJRDO->append(newRefText("4", __LINE__)); 
 HJITSSPAQNJRDO->append_copy(l_1, r_1, context); 
 context->pushExecuteCall(HJITSSPAQNJRDO_execbr); // XO
-NZQTMRPNDEVNMT->append(newRefText("|")); 
+NZQTMRPNDEVNMT->append(newRefText("|", __LINE__)); 
 DataChain* YJWPYATMLEYQSV = new DataChain(); 
 DataContainer* YJWPYATMLEYQSV_execbr = newRefExecBrackets(XO, YJWPYATMLEYQSV, "XO");
 NZQTMRPNDEVNMT->append(YJWPYATMLEYQSV_execbr);
-YJWPYATMLEYQSV->append(newRefText("5")); 
+YJWPYATMLEYQSV->append(newRefText("5", __LINE__)); 
 YJWPYATMLEYQSV->append_copy(l_1, r_1, context); 
 context->pushExecuteCall(YJWPYATMLEYQSV_execbr); // XO
-NZQTMRPNDEVNMT->append(newRefText("|")); 
+NZQTMRPNDEVNMT->append(newRefText("|", __LINE__)); 
 DataChain* KPAMSVBMVXRLLI = new DataChain(); 
 DataContainer* KPAMSVBMVXRLLI_execbr = newRefExecBrackets(XO, KPAMSVBMVXRLLI, "XO");
 NZQTMRPNDEVNMT->append(KPAMSVBMVXRLLI_execbr);
-KPAMSVBMVXRLLI->append(newRefText("6")); 
+KPAMSVBMVXRLLI->append(newRefText("6", __LINE__)); 
 KPAMSVBMVXRLLI->append_copy(l_1, r_1, context); 
 context->pushExecuteCall(KPAMSVBMVXRLLI_execbr); // XO
-NZQTMRPNDEVNMT->append(newRefText("|")); 
+NZQTMRPNDEVNMT->append(newRefText("|", __LINE__)); 
 context->pushExecuteCall(NZQTMRPNDEVNMT_execbr); // Prout
 DataChain* VFEDKJIGAVYXJV = new DataChain(); 
 DataContainer* VFEDKJIGAVYXJV_execbr = newRefExecBrackets(Prout, VFEDKJIGAVYXJV, "Prout");
 chain_JLIBITLLPLXELR->append(VFEDKJIGAVYXJV_execbr);
-VFEDKJIGAVYXJV->append(newRefText("*===I===I===*")); 
+VFEDKJIGAVYXJV->append(newRefText("*===I===I===*", __LINE__)); 
 context->pushExecuteCall(VFEDKJIGAVYXJV_execbr); // Prout
 DataChain* EQVRBACUIGAIPY = new DataChain(); 
 DataContainer* EQVRBACUIGAIPY_execbr = newRefExecBrackets(Prout, EQVRBACUIGAIPY, "Prout");
 chain_JLIBITLLPLXELR->append(EQVRBACUIGAIPY_execbr);
-EQVRBACUIGAIPY->append(newRefText("|")); 
+EQVRBACUIGAIPY->append(newRefText("|", __LINE__)); 
 DataChain* HBBXIPBZNCWHRB = new DataChain(); 
 DataContainer* HBBXIPBZNCWHRB_execbr = newRefExecBrackets(XO, HBBXIPBZNCWHRB, "XO");
 EQVRBACUIGAIPY->append(HBBXIPBZNCWHRB_execbr);
-HBBXIPBZNCWHRB->append(newRefText("7")); 
+HBBXIPBZNCWHRB->append(newRefText("7", __LINE__)); 
 HBBXIPBZNCWHRB->append_copy(l_1, r_1, context); 
 context->pushExecuteCall(HBBXIPBZNCWHRB_execbr); // XO
-EQVRBACUIGAIPY->append(newRefText("|")); 
+EQVRBACUIGAIPY->append(newRefText("|", __LINE__)); 
 DataChain* LIRIZXOQPTQQWE = new DataChain(); 
 DataContainer* LIRIZXOQPTQQWE_execbr = newRefExecBrackets(XO, LIRIZXOQPTQQWE, "XO");
 EQVRBACUIGAIPY->append(LIRIZXOQPTQQWE_execbr);
-LIRIZXOQPTQQWE->append(newRefText("8")); 
+LIRIZXOQPTQQWE->append(newRefText("8", __LINE__)); 
 LIRIZXOQPTQQWE->append_copy(l_1, r_1, context); 
 context->pushExecuteCall(LIRIZXOQPTQQWE_execbr); // XO
-EQVRBACUIGAIPY->append(newRefText("|")); 
+EQVRBACUIGAIPY->append(newRefText("|", __LINE__)); 
 DataChain* AAFJEQIOZPYFAU = new DataChain(); 
 DataContainer* AAFJEQIOZPYFAU_execbr = newRefExecBrackets(XO, AAFJEQIOZPYFAU, "XO");
 EQVRBACUIGAIPY->append(AAFJEQIOZPYFAU_execbr);
-AAFJEQIOZPYFAU->append(newRefText("9")); 
+AAFJEQIOZPYFAU->append(newRefText("9", __LINE__)); 
 AAFJEQIOZPYFAU->append_copy(l_1, r_1, context); 
 context->pushExecuteCall(AAFJEQIOZPYFAU_execbr); // XO
-EQVRBACUIGAIPY->append(newRefText("|")); 
+EQVRBACUIGAIPY->append(newRefText("|", __LINE__)); 
 context->pushExecuteCall(EQVRBACUIGAIPY_execbr); // Prout
 DataChain* UQMVHXKMNXMSYA = new DataChain(); 
 DataContainer* UQMVHXKMNXMSYA_execbr = newRefExecBrackets(Prout, UQMVHXKMNXMSYA, "Prout");
 chain_JLIBITLLPLXELR->append(UQMVHXKMNXMSYA_execbr);
-UQMVHXKMNXMSYA->append(newRefText("*===I===I===*")); 
+UQMVHXKMNXMSYA->append(newRefText("*===I===I===*", __LINE__)); 
 context->pushExecuteCall(UQMVHXKMNXMSYA_execbr); // Prout
 return chain_JLIBITLLPLXELR;
 }
@@ -1430,7 +1430,7 @@ label_WWTBKDOGKEMHIB_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_WYCZTWZZVEWXOT = context->putChain(); 
-chain_WYCZTWZZVEWXOT->append(newRefText("-X-")); 
+chain_WYCZTWZZVEWXOT->append(newRefText("-X-", __LINE__)); 
 return chain_WYCZTWZZVEWXOT;
 }
 sentence_after_1: 
@@ -1497,7 +1497,7 @@ label_CUFDIAMHTKBXOT_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_VFICHQNIVFJZAU = context->putChain(); 
-chain_VFICHQNIVFJZAU->append(newRefText("-O-")); 
+chain_VFICHQNIVFJZAU->append(newRefText("-O-", __LINE__)); 
 return chain_VFICHQNIVFJZAU;
 }
 sentence_after_2: 
@@ -1552,7 +1552,7 @@ sentence_after_2:
 // new chain 
 DataChain *chain_LWJDRLTBSCIEDP = context->putChain(); 
 chain_LWJDRLTBSCIEDP->append_copy(l_1, r_1, context); 
-chain_LWJDRLTBSCIEDP->append(newRefText("  ")); 
+chain_LWJDRLTBSCIEDP->append(newRefText("  ", __LINE__)); 
 return chain_LWJDRLTBSCIEDP;
 }
 sentence_after_3: 
@@ -1624,7 +1624,7 @@ sentence_after_1:
 // new chain 
 DataChain *chain_WXKEWPZHBJSUTH = context->putChain(); 
 chain_WXKEWPZHBJSUTH->append_copy(l_A, r_A, context); 
-chain_WXKEWPZHBJSUTH->append(newRefText("=")); 
+chain_WXKEWPZHBJSUTH->append(newRefText("=", __LINE__)); 
 chain_WXKEWPZHBJSUTH->append_copy(l_AA, r_AA, context); 
 return chain_WXKEWPZHBJSUTH;
 }
@@ -1691,11 +1691,11 @@ DataContainer* PRSKWGXULSUCKB_execbr = newRefExecBrackets(Switch, PRSKWGXULSUCKB
 chain_RYHGDMLXUKWYZC->append(PRSKWGXULSUCKB_execbr);
 PRSKWGXULSUCKB->append_copy(l_G, r_G, context); 
 PRSKWGXULSUCKB->append_copy(l_G, r_G, context); 
-PRSKWGXULSUCKB->append(newRefText("=")); 
+PRSKWGXULSUCKB->append(newRefText("=", __LINE__)); 
 DataChain* SEPJEISZSGCEZW = new DataChain(); 
 DataContainer* SEPJEISZSGCEZW_execbr = newRefExecBrackets(Maix, SEPJEISZSGCEZW, "Maix");
 PRSKWGXULSUCKB->append(SEPJEISZSGCEZW_execbr);
-SEPJEISZSGCEZW->append(newRefText("a")); 
+SEPJEISZSGCEZW->append(newRefText("a", __LINE__)); 
 SEPJEISZSGCEZW->append_copy(l_AA, r_AA, context); 
 SEPJEISZSGCEZW->append_copy(l_BB, r_BB, context); 
 DataChain* APQRVLWIGROVJC = new DataChain(); 
@@ -1777,7 +1777,7 @@ DataContainer* KMSYQCPUIVAHQA_execbr = newRefExecBrackets(Switch, KMSYQCPUIVAHQA
 chain_HUTIFKLGKLRNUW->append(KMSYQCPUIVAHQA_execbr);
 KMSYQCPUIVAHQA->append_copy(l_G, r_G, context); 
 KMSYQCPUIVAHQA->append_copy(l_G, r_G, context); 
-KMSYQCPUIVAHQA->append(newRefText("=")); 
+KMSYQCPUIVAHQA->append(newRefText("=", __LINE__)); 
 KMSYQCPUIVAHQA->append_copy(l_AA, r_AA, context); 
 KMSYQCPUIVAHQA->append_copy(l_e, r_e, context); 
 context->pushExecuteCall(KMSYQCPUIVAHQA_execbr); // Switch
@@ -1851,7 +1851,7 @@ DataContainer* CZTOZOABNANHRR_execbr = newRefExecBrackets(Switch, CZTOZOABNANHRR
 chain_PRWVHSHZYAVQYE->append(CZTOZOABNANHRR_execbr);
 CZTOZOABNANHRR->append_copy(l_G, r_G, context); 
 CZTOZOABNANHRR->append_copy(l_G, r_G, context); 
-CZTOZOABNANHRR->append(newRefText("=")); 
+CZTOZOABNANHRR->append(newRefText("=", __LINE__)); 
 CZTOZOABNANHRR->append_copy(l_BB, r_BB, context); 
 CZTOZOABNANHRR->append_copy(l_e, r_e, context); 
 context->pushExecuteCall(CZTOZOABNANHRR_execbr); // Switch
@@ -1925,11 +1925,11 @@ DataContainer* CCEFKBEMGSDYMZ_execbr = newRefExecBrackets(Switch, CCEFKBEMGSDYMZ
 chain_WJNGJNCPXRJVBV->append(CCEFKBEMGSDYMZ_execbr);
 CCEFKBEMGSDYMZ->append_copy(l_G, r_G, context); 
 CCEFKBEMGSDYMZ->append_copy(l_s, r_s, context); 
-CCEFKBEMGSDYMZ->append(newRefText("=")); 
+CCEFKBEMGSDYMZ->append(newRefText("=", __LINE__)); 
 DataChain* MMKWDEHFKRUQBY = new DataChain(); 
 DataContainer* MMKWDEHFKRUQBY_execbr = newRefExecBrackets(Maix, MMKWDEHFKRUQBY, "Maix");
 CCEFKBEMGSDYMZ->append(MMKWDEHFKRUQBY_execbr);
-MMKWDEHFKRUQBY->append(newRefText("i")); 
+MMKWDEHFKRUQBY->append(newRefText("i", __LINE__)); 
 MMKWDEHFKRUQBY->append_copy(l_AA, r_AA, context); 
 MMKWDEHFKRUQBY->append_copy(l_BB, r_BB, context); 
 DataChain* VECMPESROMDXLL = new DataChain(); 
@@ -1959,7 +1959,7 @@ DataChain *chain_UBRYYESHQLZMRE = context->putChain();
 DataChain* WQNKQITXGIIGQU = new DataChain(); 
 DataContainer* WQNKQITXGIIGQU_execbr = newRefExecBrackets(Prout, WQNKQITXGIIGQU, "Prout");
 chain_UBRYYESHQLZMRE->append(WQNKQITXGIIGQU_execbr);
-WQNKQITXGIIGQU->append(newRefText("Sw unk: ")); 
+WQNKQITXGIIGQU->append(newRefText("Sw unk: ", __LINE__)); 
 WQNKQITXGIIGQU->append_copy(l_e, r_e, context); 
 context->pushExecuteCall(WQNKQITXGIIGQU_execbr); // Prout
 return chain_UBRYYESHQLZMRE;
@@ -2496,7 +2496,7 @@ label_QAMNFHWFGEOHSK_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_IPBNCIZOCKAADA = context->putChain(); 
-chain_IPBNCIZOCKAADA->append(newRefText("#")); 
+chain_IPBNCIZOCKAADA->append(newRefText("#", __LINE__)); 
 DataChain* LLJREQTKHUDBLP = new DataChain(); 
 DataContainer* LLJREQTKHUDBLP_execbr = newRefExecBrackets(Lins, LLJREQTKHUDBLP, "Lins");
 chain_IPBNCIZOCKAADA->append(LLJREQTKHUDBLP_execbr);
@@ -2714,7 +2714,7 @@ DataChain* AntiStrategy(DataCursor arg_from, DataCursor arg_to, ExecContext *con
 // подстановка 
 // new chain 
 DataChain *chain_YTFJYNQMGZAGBK = context->putChain(); 
-chain_YTFJYNQMGZAGBK->append(newRefText("123")); 
+chain_YTFJYNQMGZAGBK->append(newRefText("123", __LINE__)); 
 return chain_YTFJYNQMGZAGBK;
 }
 sentence_after_1: 
@@ -2732,7 +2732,7 @@ sentence_after_1:
 // подстановка 
 // new chain 
 DataChain *chain_FULDVRXLONVKXZ = context->putChain(); 
-chain_FULDVRXLONVKXZ->append(newRefText("456")); 
+chain_FULDVRXLONVKXZ->append(newRefText("456", __LINE__)); 
 return chain_FULDVRXLONVKXZ;
 }
 sentence_after_2: 
@@ -2750,7 +2750,7 @@ sentence_after_2:
 // подстановка 
 // new chain 
 DataChain *chain_PJIKVPAUDVKXGL = context->putChain(); 
-chain_PJIKVPAUDVKXGL->append(newRefText("789")); 
+chain_PJIKVPAUDVKXGL->append(newRefText("789", __LINE__)); 
 return chain_PJIKVPAUDVKXGL;
 }
 sentence_after_3: 
@@ -2768,7 +2768,7 @@ sentence_after_3:
 // подстановка 
 // new chain 
 DataChain *chain_ZIFAWFTZQGEMNH = context->putChain(); 
-chain_ZIFAWFTZQGEMNH->append(newRefText("147")); 
+chain_ZIFAWFTZQGEMNH->append(newRefText("147", __LINE__)); 
 return chain_ZIFAWFTZQGEMNH;
 }
 sentence_after_4: 
@@ -2786,7 +2786,7 @@ sentence_after_4:
 // подстановка 
 // new chain 
 DataChain *chain_OWDZSFQHKPLFBY = context->putChain(); 
-chain_OWDZSFQHKPLFBY->append(newRefText("258")); 
+chain_OWDZSFQHKPLFBY->append(newRefText("258", __LINE__)); 
 return chain_OWDZSFQHKPLFBY;
 }
 sentence_after_5: 
@@ -2804,7 +2804,7 @@ sentence_after_5:
 // подстановка 
 // new chain 
 DataChain *chain_VOCDENQMWILXXZ = context->putChain(); 
-chain_VOCDENQMWILXXZ->append(newRefText("369")); 
+chain_VOCDENQMWILXXZ->append(newRefText("369", __LINE__)); 
 return chain_VOCDENQMWILXXZ;
 }
 sentence_after_6: 
@@ -2822,7 +2822,7 @@ sentence_after_6:
 // подстановка 
 // new chain 
 DataChain *chain_XIISYZWNHXYFVY = context->putChain(); 
-chain_XIISYZWNHXYFVY->append(newRefText("159")); 
+chain_XIISYZWNHXYFVY->append(newRefText("159", __LINE__)); 
 return chain_XIISYZWNHXYFVY;
 }
 sentence_after_7: 
@@ -2840,7 +2840,7 @@ sentence_after_7:
 // подстановка 
 // new chain 
 DataChain *chain_MXIISNEBPYWSGQ = context->putChain(); 
-chain_MXIISNEBPYWSGQ->append(newRefText("357")); 
+chain_MXIISNEBPYWSGQ->append(newRefText("357", __LINE__)); 
 return chain_MXIISNEBPYWSGQ;
 }
 sentence_after_8: 
@@ -3008,7 +3008,7 @@ CHJWZWMOZECRZN->append_copy(l_eee, r_eee, context);
 DataChain* OCQPKTLMWXWTNU = new DataChain(); 
 CHJWZWMOZECRZN->append(newRefStructBrackets(OCQPKTLMWXWTNU)); 
 OCQPKTLMWXWTNU->append_copy(l_3, r_3, context); 
-OCQPKTLMWXWTNU->append(newRefText(">")); 
+OCQPKTLMWXWTNU->append(newRefText(">", __LINE__)); 
 OCQPKTLMWXWTNU->append_copy(l_s, r_s, context); 
 OCQPKTLMWXWTNU->append_copy(l_4, r_4, context); 
 context->pushExecuteCall(CHJWZWMOZECRZN_execbr); // Analiz
@@ -3025,7 +3025,7 @@ DataChain* WLPBHYFFHBAVHF = new DataChain();
 AMQELRWBGBIJIL->append(newRefStructBrackets(WLPBHYFFHBAVHF)); 
 WLPBHYFFHBAVHF->append_copy(l_3, r_3, context); 
 WLPBHYFFHBAVHF->append_copy(l_s, r_s, context); 
-WLPBHYFFHBAVHF->append(newRefText(">")); 
+WLPBHYFFHBAVHF->append(newRefText(">", __LINE__)); 
 WLPBHYFFHBAVHF->append_copy(l_4, r_4, context); 
 context->pushExecuteCall(AMQELRWBGBIJIL_execbr); // WriteXO
 return chain_LGEXKTRMHDDAPS;
@@ -3129,7 +3129,7 @@ DataChain* KQTAXJLRBRUKKK = new DataChain();
 DataContainer* KQTAXJLRBRUKKK_execbr = newRefExecBrackets(Lenw, KQTAXJLRBRUKKK, "Lenw");
 KQDAUPTYVJAFZZ->append(KQTAXJLRBRUKKK_execbr);
 KQTAXJLRBRUKKK->append_copy(l_1, r_1, context); 
-KQTAXJLRBRUKKK->append(newRefText("1")); 
+KQTAXJLRBRUKKK->append(newRefText("1", __LINE__)); 
 context->pushExecuteCall(KQTAXJLRBRUKKK_execbr); // Lenw
 context->pushExecuteCall(KQDAUPTYVJAFZZ_execbr); // First1
 DataChain* IGJMXQRBAZLPDE = new DataChain(); 
@@ -3138,7 +3138,7 @@ ZXXOOLNVLAYGUO->append(IGJMXQRBAZLPDE_execbr);
 DataChain* VPEZPBWSHVPCKL = new DataChain(); 
 DataContainer* VPEZPBWSHVPCKL_execbr = newRefExecBrackets(Lenw, VPEZPBWSHVPCKL, "Lenw");
 IGJMXQRBAZLPDE->append(VPEZPBWSHVPCKL_execbr);
-VPEZPBWSHVPCKL->append(newRefText("2")); 
+VPEZPBWSHVPCKL->append(newRefText("2", __LINE__)); 
 VPEZPBWSHVPCKL->append_copy(l_2, r_2, context); 
 context->pushExecuteCall(VPEZPBWSHVPCKL_execbr); // Lenw
 context->pushExecuteCall(IGJMXQRBAZLPDE_execbr); // First1
@@ -3172,7 +3172,7 @@ label_DQGIVLQPIRQVWQ_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_DRNWWTQKDOZFPK = context->putChain(); 
-chain_DRNWWTQKDOZFPK->append(newRefText("1=")); 
+chain_DRNWWTQKDOZFPK->append(newRefText("1=", __LINE__)); 
 chain_DRNWWTQKDOZFPK->append(newRefInteger(2000000)); 
 return chain_DRNWWTQKDOZFPK;
 }
@@ -3203,7 +3203,7 @@ label_DUULIFZDPOHCGU_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_YSPDAAOXRAOJOT = context->putChain(); 
-chain_YSPDAAOXRAOJOT->append(newRefText("2=")); 
+chain_YSPDAAOXRAOJOT->append(newRefText("2=", __LINE__)); 
 chain_YSPDAAOXRAOJOT->append(newRefInteger(2000000)); 
 return chain_YSPDAAOXRAOJOT;
 }
@@ -3217,7 +3217,7 @@ sentence_after_3:
 // подстановка 
 // new chain 
 DataChain *chain_JUFSTURTJHUDPE = context->putChain(); 
-chain_JUFSTURTJHUDPE->append(newRefText("1=")); 
+chain_JUFSTURTJHUDPE->append(newRefText("1=", __LINE__)); 
 chain_JUFSTURTJHUDPE->append(newRefInteger(1)); 
 return chain_JUFSTURTJHUDPE;
 }
@@ -3237,7 +3237,7 @@ DataChain *chain_TSGRZUIGUSNWLY = context->putChain();
 DataChain* RVFNKKMSDBUHVH = new DataChain(); 
 DataContainer* RVFNKKMSDBUHVH_execbr = newRefExecBrackets(Prout, RVFNKKMSDBUHVH, "Prout");
 chain_TSGRZUIGUSNWLY->append(RVFNKKMSDBUHVH_execbr);
-RVFNKKMSDBUHVH->append(newRefText("Length error symbols!!! : ")); 
+RVFNKKMSDBUHVH->append(newRefText("Length error symbols!!! : ", __LINE__)); 
 context->pushExecuteCall(RVFNKKMSDBUHVH_execbr); // Prout
 DataChain* FQTDVTNLEWFQUU = new DataChain(); 
 DataContainer* FQTDVTNLEWFQUU_execbr = newRefExecBrackets(Print, FQTDVTNLEWFQUU, "Print");
@@ -3339,7 +3339,7 @@ DataChain* IfDiv(DataCursor arg_from, DataCursor arg_to, ExecContext *context){
 // подстановка 
 // new chain 
 DataChain *chain_OCMERJMZIUDTSQ = context->putChain(); 
-chain_OCMERJMZIUDTSQ->append(newRefText("1=")); 
+chain_OCMERJMZIUDTSQ->append(newRefText("1=", __LINE__)); 
 DataChain* QOZVEJNRTIBVNJ = new DataChain(); 
 DataContainer* QOZVEJNRTIBVNJ_execbr = newRefExecBrackets(Div, QOZVEJNRTIBVNJ, "/");
 chain_OCMERJMZIUDTSQ->append(QOZVEJNRTIBVNJ_execbr);
@@ -3385,7 +3385,7 @@ sentence_after_1:
 // подстановка 
 // new chain 
 DataChain *chain_EDQJRLTMYMHYSO = context->putChain(); 
-chain_EDQJRLTMYMHYSO->append(newRefText("1=")); 
+chain_EDQJRLTMYMHYSO->append(newRefText("1=", __LINE__)); 
 DataChain* ICWUOHFEREBEAC = new DataChain(); 
 DataContainer* ICWUOHFEREBEAC_execbr = newRefExecBrackets(Div, ICWUOHFEREBEAC, "/");
 chain_EDQJRLTMYMHYSO->append(ICWUOHFEREBEAC_execbr);
@@ -3418,7 +3418,7 @@ DataChain* NextPl(DataCursor arg_from, DataCursor arg_to, ExecContext *context){
 // подстановка 
 // new chain 
 DataChain *chain_QDHXWJHIUDGHYX = context->putChain(); 
-chain_QDHXWJHIUDGHYX->append(newRefText("2")); 
+chain_QDHXWJHIUDGHYX->append(newRefText("2", __LINE__)); 
 return chain_QDHXWJHIUDGHYX;
 }
 sentence_after_1: 
@@ -3436,7 +3436,7 @@ sentence_after_1:
 // подстановка 
 // new chain 
 DataChain *chain_VSAPDSHAKGDVHC = context->putChain(); 
-chain_VSAPDSHAKGDVHC->append(newRefText("1")); 
+chain_VSAPDSHAKGDVHC->append(newRefText("1", __LINE__)); 
 return chain_VSAPDSHAKGDVHC;
 }
 sentence_after_2: 
@@ -3455,7 +3455,7 @@ DataChain *chain_FMCEZTGJCMHXLH = context->putChain();
 DataChain* ASQKAUQLNFHGGT = new DataChain(); 
 DataContainer* ASQKAUQLNFHGGT_execbr = newRefExecBrackets(Print, ASQKAUQLNFHGGT, "Print");
 chain_FMCEZTGJCMHXLH->append(ASQKAUQLNFHGGT_execbr);
-ASQKAUQLNFHGGT->append(newRefText("NextPl uncn.: ")); 
+ASQKAUQLNFHGGT->append(newRefText("NextPl uncn.: ", __LINE__)); 
 ASQKAUQLNFHGGT->append_copy(l_e, r_e, context); 
 context->pushExecuteCall(ASQKAUQLNFHGGT_execbr); // Print
 return chain_FMCEZTGJCMHXLH;
@@ -3539,7 +3539,7 @@ label_QNBDIFZLUJQVNF_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_YUGTEDOGFURKXI = context->putChain(); 
-chain_YUGTEDOGFURKXI->append(newRefText("11")); 
+chain_YUGTEDOGFURKXI->append(newRefText("11", __LINE__)); 
 DataChain* YQUFOTIAJMWHYI = new DataChain(); 
 DataContainer* YQUFOTIAJMWHYI_execbr = newRefExecBrackets(Optima211, YQUFOTIAJMWHYI, "Optima211");
 chain_YUGTEDOGFURKXI->append(YQUFOTIAJMWHYI_execbr);
@@ -3576,7 +3576,7 @@ label_LTHMOEVLWLRXPW_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_RQPIZTEUOXGTHF = context->putChain(); 
-chain_RQPIZTEUOXGTHF->append(newRefText("1")); 
+chain_RQPIZTEUOXGTHF->append(newRefText("1", __LINE__)); 
 DataChain* XSMXJRWPSURSGW = new DataChain(); 
 DataContainer* XSMXJRWPSURSGW_execbr = newRefExecBrackets(Optima211, XSMXJRWPSURSGW, "Optima211");
 chain_RQPIZTEUOXGTHF->append(XSMXJRWPSURSGW_execbr);
@@ -3649,7 +3649,7 @@ label_RUEECXKQKRUDLM_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_THIDZYQAZFNOVK = context->putChain(); 
-chain_THIDZYQAZFNOVK->append(newRefText("147")); 
+chain_THIDZYQAZFNOVK->append(newRefText("147", __LINE__)); 
 DataChain* TQCOTCHCOLINEI = new DataChain(); 
 DataContainer* TQCOTCHCOLINEI_execbr = newRefExecBrackets(Strategy, TQCOTCHCOLINEI, "Strategy");
 chain_THIDZYQAZFNOVK->append(TQCOTCHCOLINEI_execbr);
@@ -3685,7 +3685,7 @@ label_YTYMRJSCYOEIVD_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_GTAOQMEMJLHGOX = context->putChain(); 
-chain_GTAOQMEMJLHGOX->append(newRefText("15")); 
+chain_GTAOQMEMJLHGOX->append(newRefText("15", __LINE__)); 
 DataChain* PRURTYMKKTDBNO = new DataChain(); 
 DataContainer* PRURTYMKKTDBNO_execbr = newRefExecBrackets(Strategy, PRURTYMKKTDBNO, "Strategy");
 chain_GTAOQMEMJLHGOX->append(PRURTYMKKTDBNO_execbr);
@@ -3721,7 +3721,7 @@ label_XWTTGEEQIMLHCZ_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_VOZIMHXXQHDUIQ = context->putChain(); 
-chain_VOZIMHXXQHDUIQ->append(newRefText("168")); 
+chain_VOZIMHXXQHDUIQ->append(newRefText("168", __LINE__)); 
 DataChain* EDLNGWGOOOUPNE = new DataChain(); 
 DataContainer* EDLNGWGOOOUPNE_execbr = newRefExecBrackets(Strategy, EDLNGWGOOOUPNE, "Strategy");
 chain_VOZIMHXXQHDUIQ->append(EDLNGWGOOOUPNE_execbr);
@@ -3757,7 +3757,7 @@ label_DKSDGPMHHDAQBS_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_DYFOECQQNLEMKI = context->putChain(); 
-chain_DYFOECQQNLEMKI->append(newRefText("24")); 
+chain_DYFOECQQNLEMKI->append(newRefText("24", __LINE__)); 
 DataChain* MIPECEHLBTMBWN = new DataChain(); 
 DataContainer* MIPECEHLBTMBWN_execbr = newRefExecBrackets(Strategy, MIPECEHLBTMBWN, "Strategy");
 chain_DYFOECQQNLEMKI->append(MIPECEHLBTMBWN_execbr);
@@ -3793,7 +3793,7 @@ label_KDXYMECLSSHVKM_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_WCPAMEVWTYGFPH = context->putChain(); 
-chain_WCPAMEVWTYGFPH->append(newRefText("2578")); 
+chain_WCPAMEVWTYGFPH->append(newRefText("2578", __LINE__)); 
 DataChain* IFUBTTNWNPHDBY = new DataChain(); 
 DataContainer* IFUBTTNWNPHDBY_execbr = newRefExecBrackets(Strategy, IFUBTTNWNPHDBY, "Strategy");
 chain_WCPAMEVWTYGFPH->append(IFUBTTNWNPHDBY_execbr);
@@ -3829,7 +3829,7 @@ label_TWODCLRJPRSEQW_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_RMCDPOMJRYLEDH = context->putChain(); 
-chain_RMCDPOMJRYLEDH->append(newRefText("26")); 
+chain_RMCDPOMJRYLEDH->append(newRefText("26", __LINE__)); 
 DataChain* UFHWKHZKTNKYTG = new DataChain(); 
 DataContainer* UFHWKHZKTNKYTG_execbr = newRefExecBrackets(Strategy, UFHWKHZKTNKYTG, "Strategy");
 chain_RMCDPOMJRYLEDH->append(UFHWKHZKTNKYTG_execbr);
@@ -3865,7 +3865,7 @@ label_JPMMGVXJCNJGZU_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_PVTXDONPEASHNR = context->putChain(); 
-chain_PVTXDONPEASHNR->append(newRefText("348")); 
+chain_PVTXDONPEASHNR->append(newRefText("348", __LINE__)); 
 DataChain* OHUVOGLDXHSPRN = new DataChain(); 
 DataContainer* OHUVOGLDXHSPRN_execbr = newRefExecBrackets(Strategy, OHUVOGLDXHSPRN, "Strategy");
 chain_PVTXDONPEASHNR->append(OHUVOGLDXHSPRN_execbr);
@@ -3901,7 +3901,7 @@ label_GSOQDJFQTEXYRW_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_EKFGRCYVZSAHPS = context->putChain(); 
-chain_EKFGRCYVZSAHPS->append(newRefText("35")); 
+chain_EKFGRCYVZSAHPS->append(newRefText("35", __LINE__)); 
 DataChain* ZOBRIXWXKPICLQ = new DataChain(); 
 DataContainer* ZOBRIXWXKPICLQ_execbr = newRefExecBrackets(Strategy, ZOBRIXWXKPICLQ, "Strategy");
 chain_EKFGRCYVZSAHPS->append(ZOBRIXWXKPICLQ_execbr);
@@ -3937,7 +3937,7 @@ label_LJTKVNBIMPDKYE_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_RBXJCRTUVTXFKI = context->putChain(); 
-chain_RBXJCRTUVTXFKI->append(newRefText("367")); 
+chain_RBXJCRTUVTXFKI->append(newRefText("367", __LINE__)); 
 DataChain* DXHOAFYESYVIZV = new DataChain(); 
 DataContainer* DXHOAFYESYVIZV_execbr = newRefExecBrackets(Strategy, DXHOAFYESYVIZV, "Strategy");
 chain_RBXJCRTUVTXFKI->append(DXHOAFYESYVIZV_execbr);
@@ -4128,7 +4128,7 @@ label_NDOSIYHTYAVOXH_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_MPARMJDSPXYWXE = context->putChain(); 
-chain_MPARMJDSPXYWXE->append(newRefText("1")); 
+chain_MPARMJDSPXYWXE->append(newRefText("1", __LINE__)); 
 return chain_MPARMJDSPXYWXE;
 }
 sentence_after_1: 
@@ -4217,7 +4217,7 @@ label_KVNEHRJSTZFLVY_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_ERTLPBJCSXQLGY = context->putChain(); 
-chain_ERTLPBJCSXQLGY->append(newRefText("2")); 
+chain_ERTLPBJCSXQLGY->append(newRefText("2", __LINE__)); 
 return chain_ERTLPBJCSXQLGY;
 }
 sentence_after_2: 
@@ -4262,7 +4262,7 @@ sentence_after_2:
 // подстановка 
 // new chain 
 DataChain *chain_VZWZTJRWOVTTLN = context->putChain(); 
-chain_VZWZTJRWOVTTLN->append(newRefText("0")); 
+chain_VZWZTJRWOVTTLN->append(newRefText("0", __LINE__)); 
 return chain_VZWZTJRWOVTTLN;
 }
 sentence_after_3: 
@@ -4426,7 +4426,7 @@ DataContainer* WVTTGECAJYLQVU_execbr = newRefExecBrackets(PolnAnaliz, WVTTGECAJY
 chain_IPQZEVBYKTBVTP->append(WVTTGECAJYLQVU_execbr);
 DataChain* IZFSOAYXZILJZE = new DataChain(); 
 WVTTGECAJYLQVU->append(newRefStructBrackets(IZFSOAYXZILJZE)); 
-IZFSOAYXZILJZE->append(newRefText("2")); 
+IZFSOAYXZILJZE->append(newRefText("2", __LINE__)); 
 DataChain* GBLCATMVEFQRZX = new DataChain(); 
 WVTTGECAJYLQVU->append(newRefStructBrackets(GBLCATMVEFQRZX)); 
 GBLCATMVEFQRZX->append_copy(l_1, r_1, context); 
@@ -4545,7 +4545,7 @@ DataContainer* YRGHRWPQINXMRI_execbr = newRefExecBrackets(PolnAnaliz, YRGHRWPQIN
 chain_DSYQNCSDJSDCXX->append(YRGHRWPQINXMRI_execbr);
 DataChain* DXPDPQUNVKWXRY = new DataChain(); 
 YRGHRWPQINXMRI->append(newRefStructBrackets(DXPDPQUNVKWXRY)); 
-DXPDPQUNVKWXRY->append(newRefText("1")); 
+DXPDPQUNVKWXRY->append(newRefText("1", __LINE__)); 
 DataChain* KXTLXYPPFMAJFH = new DataChain(); 
 YRGHRWPQINXMRI->append(newRefStructBrackets(KXTLXYPPFMAJFH)); 
 KXTLXYPPFMAJFH->append_copy(l_1, r_1, context); 
@@ -4576,7 +4576,7 @@ DataChain *chain_YRYHCWWIARUHII = context->putChain();
 DataChain* BUJOPGRQNPIUGK = new DataChain(); 
 DataContainer* BUJOPGRQNPIUGK_execbr = newRefExecBrackets(Prout, BUJOPGRQNPIUGK, "Prout");
 chain_YRYHCWWIARUHII->append(BUJOPGRQNPIUGK_execbr);
-BUJOPGRQNPIUGK->append(newRefText("No point: ")); 
+BUJOPGRQNPIUGK->append(newRefText("No point: ", __LINE__)); 
 BUJOPGRQNPIUGK->append_copy(l_e, r_e, context); 
 context->pushExecuteCall(BUJOPGRQNPIUGK_execbr); // Prout
 return chain_YRYHCWWIARUHII;
@@ -4868,7 +4868,7 @@ label_XFSMQHIBNGJTGR_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_FNUQNPMHDVKZEB = context->putChain(); 
-chain_FNUQNPMHDVKZEB->append(newRefText("2")); 
+chain_FNUQNPMHDVKZEB->append(newRefText("2", __LINE__)); 
 return chain_FNUQNPMHDVKZEB;
 }
 sentence_after_1: 
@@ -5021,7 +5021,7 @@ label_JWSDGCOFGLCQGD_firststep:
 // подстановка 
 // new chain 
 DataChain *chain_JNWRWEBGELZBGI = context->putChain(); 
-chain_JNWRWEBGELZBGI->append(newRefText("1")); 
+chain_JNWRWEBGELZBGI->append(newRefText("1", __LINE__)); 
 return chain_JNWRWEBGELZBGI;
 }
 sentence_after_2: 
@@ -5191,9 +5191,9 @@ context->pushExecuteCall(ANLZOSCTFNYSZK_execbr); // AntiStrategy
 context->pushExecuteCall(FYIDTTGGSDYJBV_execbr); // Lins
 DataChain* LRNZRKUXYJPWWM = new DataChain(); 
 KVMVQEXPJFGVPI->append(newRefStructBrackets(LRNZRKUXYJPWWM)); 
-LRNZRKUXYJPWWM->append(newRefText("1")); 
+LRNZRKUXYJPWWM->append(newRefText("1", __LINE__)); 
 KVMVQEXPJFGVPI->append_copy(l_1, r_1, context); 
-KVMVQEXPJFGVPI->append(newRefWord("e2")); 
+KVMVQEXPJFGVPI->append(newRefWord("e2", __LINE__)); 
 DataChain* INHPLXGXWULGXH = new DataChain(); 
 KVMVQEXPJFGVPI->append(newRefStructBrackets(INHPLXGXWULGXH)); 
 INHPLXGXWULGXH->append_copy(l_n, r_n, context); 
@@ -5367,9 +5367,9 @@ context->pushExecuteCall(LOYEMCYCFCPYUW_execbr); // AntiStrategy
 context->pushExecuteCall(PQTIBDVTHMPOAQ_execbr); // Lins
 DataChain* KZEBCJAEDSBVQQ = new DataChain(); 
 GCNOYZMMYOVRTE->append(newRefStructBrackets(KZEBCJAEDSBVQQ)); 
-KZEBCJAEDSBVQQ->append(newRefText("2")); 
+KZEBCJAEDSBVQQ->append(newRefText("2", __LINE__)); 
 GCNOYZMMYOVRTE->append_copy(l_1, r_1, context); 
-GCNOYZMMYOVRTE->append(newRefWord("e2")); 
+GCNOYZMMYOVRTE->append(newRefWord("e2", __LINE__)); 
 DataChain* IJQLGJYCJPKPXF = new DataChain(); 
 GCNOYZMMYOVRTE->append(newRefStructBrackets(IJQLGJYCJPKPXF)); 
 IJQLGJYCJPKPXF->append_copy(l_n, r_n, context); 
@@ -5556,7 +5556,7 @@ DataContainer* IEXGRJXJMDWBQY_execbr = newRefExecBrackets(PolnAnaliz, IEXGRJXJMD
 chain_XSEWQYCKWEXZPM->append(IEXGRJXJMDWBQY_execbr);
 DataChain* UIPXARRBPHNZWK = new DataChain(); 
 IEXGRJXJMDWBQY->append(newRefStructBrackets(UIPXARRBPHNZWK)); 
-UIPXARRBPHNZWK->append(newRefText("2")); 
+UIPXARRBPHNZWK->append(newRefText("2", __LINE__)); 
 DataChain* BCLGBVOCYUZUTZ = new DataChain(); 
 IEXGRJXJMDWBQY->append(newRefStructBrackets(BCLGBVOCYUZUTZ)); 
 BCLGBVOCYUZUTZ->append_copy(l_1, r_1, context); 
@@ -5674,7 +5674,7 @@ DataContainer* TQWFYIAISTVHBZ_execbr = newRefExecBrackets(PolnAnaliz, TQWFYIAIST
 chain_FYWRWSDAGMVYQH->append(TQWFYIAISTVHBZ_execbr);
 DataChain* VROOVJFTEGSKJR = new DataChain(); 
 TQWFYIAISTVHBZ->append(newRefStructBrackets(VROOVJFTEGSKJR)); 
-VROOVJFTEGSKJR->append(newRefText("1")); 
+VROOVJFTEGSKJR->append(newRefText("1", __LINE__)); 
 DataChain* JYNGLSSHITXZGF = new DataChain(); 
 TQWFYIAISTVHBZ->append(newRefStructBrackets(JYNGLSSHITXZGF)); 
 JYNGLSSHITXZGF->append_copy(l_1, r_1, context); 
@@ -5988,7 +5988,7 @@ DSVWYXGHQILWNC->append_copy(l_Y, r_Y, context);
 DataChain* NKIJCAPBYQUXVE = new DataChain(); 
 VWJGPLBQZJBBLL->append(newRefStructBrackets(NKIJCAPBYQUXVE)); 
 NKIJCAPBYQUXVE->append_copy(l_1, r_1, context); 
-NKIJCAPBYQUXVE->append(newRefText(">")); 
+NKIJCAPBYQUXVE->append(newRefText(">", __LINE__)); 
 NKIJCAPBYQUXVE->append_copy(l_sss, r_sss, context); 
 NKIJCAPBYQUXVE->append_copy(l_2, r_2, context); 
 context->pushExecuteCall(VWJGPLBQZJBBLL_execbr); // Analiz
@@ -6008,7 +6008,7 @@ DataChain* WINBUMVKTIZKXN = new DataChain();
 JECIZVVIZTCBDO->append(newRefStructBrackets(WINBUMVKTIZKXN)); 
 WINBUMVKTIZKXN->append_copy(l_1, r_1, context); 
 WINBUMVKTIZKXN->append_copy(l_sss, r_sss, context); 
-WINBUMVKTIZKXN->append(newRefText(">")); 
+WINBUMVKTIZKXN->append(newRefText(">", __LINE__)); 
 WINBUMVKTIZKXN->append_copy(l_2, r_2, context); 
 context->pushExecuteCall(JECIZVVIZTCBDO_execbr); // PolnAnaliz
 return chain_HTLFSPJHCGFASD;
@@ -6054,7 +6054,7 @@ chain_IBYANRAAHOAWOM->append(XZORZGVKTIAZLZ_execbr);
 XZORZGVKTIAZLZ->append_copy(l_sIY, r_sIY, context); 
 DataChain* YNKMWBCRUJPDZQ = new DataChain(); 
 XZORZGVKTIAZLZ->append(newRefStructBrackets(YNKMWBCRUJPDZQ)); 
-YNKMWBCRUJPDZQ->append(newRefText(">")); 
+YNKMWBCRUJPDZQ->append(newRefText(">", __LINE__)); 
 YNKMWBCRUJPDZQ->append_copy(l_1, r_1, context); 
 context->pushExecuteCall(XZORZGVKTIAZLZ_execbr); // PolnAnaliz
 return chain_IBYANRAAHOAWOM;

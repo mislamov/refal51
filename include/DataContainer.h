@@ -63,7 +63,7 @@ private:
 };
 
 
-DataContainer* newRefWord(unistring wr);
+DataContainer* newRefWord(unistring wr, int hash);
 
 DataContainer* newRefExecBrackets(rf_function fn, DataChain *chain, unistring fname);
 
@@ -71,7 +71,7 @@ DataContainer* newRefInteger(infint);
 
 DataContainer* newRefStructBrackets(DataChain *chain);
 
-DataContainer* newRefText(unistring str);
+DataContainer* newRefText(unistring str, int hash);
 
 
 bool equal(DataChain *ch1, DataChain *ch2);

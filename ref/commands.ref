@@ -224,9 +224,9 @@ VALUE {
 }
 
 SubstCompileSYMBOL {
-    ("word" t.w) =  'newRefWord("' <Escape <Explode t.w>> '")' ;
+    ("word" t.w) =  'newRefWord("' <Escape <Explode t.w>> '", __LINE__)' ;
     ("int" t.w)  =  'newRefInteger(' t.w ')' ;
-    ("text" e.t) =  'newRefText("' <Escape e.t> '")' ;
+    ("text" e.t) =  'newRefText("' <Escape e.t> '", __LINE__)' ;  // todo: придумать другое решение при использовании библиотечности
 }
 
 Escape {
