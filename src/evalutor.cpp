@@ -25,7 +25,12 @@ void execute(ExecContext* execContext, DataChain* expression){
 		//std::cout << "::: selected function : " << exb.fname << "\n";
 		execContext->prepareExecute();
 		DataChain* ch = exb.fn(exb.chain->at_before_first(), exb.chain->at_last(), execContext);
-		//std::cout << "::: replacing : <" << br_exec.container->value.bracket_data.fname << " ...>  -> " << "[" << (ch?ch->debug():"") << "]\n"; 
+				
+		if (std::string(br_exec.container->value.bracket_data.fname)=="Ifmust_")
+		{
+			std::cout << "::: replacing : <" << br_exec.container->value.bracket_data.fname << " " << br_exec.container->value.bracket_data.chain->debug() << ">  -> " << "[" << (ch?ch->debug():"") << "]\n"; 
+		}
+		
 		br_exec.replaceBy(ch );
 		execContext->cleanChains();
 	}

@@ -11,6 +11,8 @@ DataChain* FirG(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
 DataChain* Game(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
+DataChain* Game_(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
+
 DataChain* GameIfWin(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
 DataChain* Game1(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
@@ -43,15 +45,21 @@ DataChain* WriteXO1(DataCursor arg_from, DataCursor arg_to, ExecContext *context
 
 DataChain* First1(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
+DataChain* Length_(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
+
 DataChain* Length(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
 DataChain* DivS(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
+
+DataChain* IfDiv_(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
 DataChain* IfDiv(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
 DataChain* NextPl(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
 DataChain* Optima21(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
+
+DataChain* Optima211_(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
 DataChain* Optima211(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
@@ -61,12 +69,22 @@ DataChain* Ifwin(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
 DataChain* Ifwin1(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
+DataChain* Analiz_(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
+
 DataChain* Analiz(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
+
+DataChain* PolnAnaliz_(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
 DataChain* PolnAnaliz(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
+DataChain* Ifmust_(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
+
 DataChain* Ifmust(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
+
+DataChain* StepShag_(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
 DataChain* StepShag(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
 
-DataChain* PolnAnalizEny(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
+DataChain* PolnAnalizAny_(DataCursor arg_from, DataCursor arg_to, ExecContext *context);
+
+DataChain* PolnAnalizAny(DataCursor arg_from, DataCursor arg_to, ExecContext *context);

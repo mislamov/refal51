@@ -247,7 +247,7 @@ unistring chain_to_text(DataCursor prebeg, DataCursor end)
 			str << " (";
 			str << i.container->value.bracket_data.chain->debug();
 			str << ") ";
-			str << "{" << i.container << "} ";
+			//str << "{" << i.container << "} ";
 			break;
 		case exec_bracket:
 			str << " <";
@@ -305,7 +305,7 @@ unistring DataChain::debug()
 			ref_assert(i.container->value.bracket_data.chain);
 			str << i.container->value.bracket_data.chain->debug();
 			str << " ) ";
-			str << "{" << i.container << "->" << i.container->value.bracket_data.chain << "} ";
+			//str << "{" << i.container << "->" << i.container->value.bracket_data.chain << "} ";
 			break;
 		case exec_bracket:
 			str << " < ";

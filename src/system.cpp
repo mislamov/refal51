@@ -112,7 +112,9 @@ DataChain* Compare (DataCursor prebeg, DataCursor end, ExecContext *context){   
 	if (prebeg+1 != end) RUNTIMEERRORn("2 arguments expected");
 	if (prebeg.container->type != end.container->type)  RUNTIMEERRORn("different types arguments");
 	if (prebeg.container->type != integer)  RUNTIMEERRORn("2 integers expected");
-	return (new DataChain())->append(newRefText( thecompare(prebeg.container->value.num, end.container->value.num), -__LINE__ ));
+	DataChain *resch = new DataChain();
+	resch->append(newRefText( thecompare(prebeg.container->value.num, end.container->value.num), -__LINE__ ));
+	return resch;
 };
 
 

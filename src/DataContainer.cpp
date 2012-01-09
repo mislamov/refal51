@@ -50,9 +50,9 @@ DataContainer::~DataContainer()
 
 DataContainer* newRefWord(unistring wr, int hash) {
 	DataContainerValue vv;
-	size_t lnt = wr.length()+1;
+	size_t lnt = wr.length();
 
-	char *vv_word_value = new char[lnt];
+	char *vv_word_value = new char[lnt+1];
 	vv_word_value[lnt] = 0;
 	strncpy(vv_word_value, wr.c_str(), lnt);
 
@@ -107,7 +107,8 @@ DataContainer* newRefText(unistring str, int hash){
 
 	unichar *dt;
 
-	if (hash > 0){
+	if (false){
+	//if (hash > 0){
 		dt = mapRefText[hash];
 
 		// поиск уже существующих данных	

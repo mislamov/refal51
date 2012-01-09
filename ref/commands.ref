@@ -112,7 +112,7 @@ EQSYM {
 
 	("word" e.value)(e.var)(e.border)(e.rollback_label)
 	=
-                '\t' 'if ('e.var '.container->type != word || !memcmp('e.var '.container->value.word.value, "' e.value '", 'e.var '.container->value.word.leng)) goto ' e.rollback_label ';\n';
+                '\t' 'if ('e.var '.container->type != word || 0!=memcmp('e.var '.container->value.word.value, "' e.value '", 'e.var '.container->value.word.leng)) goto ' e.rollback_label ';\n';
 
 /*
 	(t.type e.val)(e.var)(e.border)(e.rollback_label)
