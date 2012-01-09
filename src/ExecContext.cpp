@@ -51,8 +51,8 @@ void ExecContext::prepareExecute(){
 }
 
 void ExecContext::cleanChains(){
-	//while (! chains.empty()){
-	while (chains.size()>1){
+	while (! chains.empty()){
+	//while (chains.size()>1){  -  при вычислении условий первым чайном оказывается уже ненужный результат подстановки условия
 		DataChain* ch = chains.top();
 		ch->free();
 		chains.pop();

@@ -20,9 +20,8 @@
 #define REF_CORE_H_INCLUDED
 
 #define REFVERSION "D-Refal 0.2.0 alpha  Copyright (c) 2008-2011 Marat Islamov"
-#define TESTCODE
-#define DEBUG
-//#define xDEBUG  // garbage collector
+//#define TESTCODE
+//#define DEBUG
 //#define UNICODE
 
 #ifdef UNICODE
