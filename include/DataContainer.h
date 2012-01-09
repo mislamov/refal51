@@ -72,6 +72,7 @@ DataContainer* newRefInteger(infint);
 DataContainer* newRefStructBrackets(DataChain *chain);
 
 DataContainer* newRefText(unistring str, int hash);
+void freeMapRefText();
 
 
 bool equal(DataChain *ch1, DataChain *ch2);

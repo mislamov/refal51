@@ -130,6 +130,13 @@ DataContainer* newRefText(unistring str, int hash){
 
 };
 
+void freeMapRefText(){
+	for (MapRefTextType::iterator it = mapRefText.begin(), itend = mapRefText.end(); it!=itend; ++it){
+		delete[] (*it).second;
+	}
+	mapRefText.clear();
+}
+
 DataContainer* DataContainer::copy(ExecContext *context){
 	return new DataContainer(type, value, leng);
 };

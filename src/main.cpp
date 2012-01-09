@@ -69,6 +69,7 @@ int main ( int , char **)
 	execute(execContext, result);
 
 	delete execContext;
+	freeMapRefText();
 
 	std::getchar();
 	return 0;
