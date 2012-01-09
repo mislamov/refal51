@@ -1,4 +1,5 @@
 #include "DataChain.h"
+#include "ExecContext.h"
 
 #include "direfal.h"
 
@@ -201,9 +202,11 @@ unistring buffer_to_unistring(char* buff, size_t len)
 	return std::string(buff);
 }
 
-DataChain* text_to_chain(unistring str)
+DataChain* text_to_chain(unistring str, ExecContext *context)
 {
-	DataChain* ch = new DataChain();
+	//DataChain* ch = new DataChain();
+	DataChain *ch = (context==0) ? new DataChain() : context->putChain();
+
 	if (str!="")
 	{
 		DataContainerValue vv;

@@ -38,7 +38,8 @@ class DataChain
 };
 
 unistring buffer_to_unistring(char* buff, size_t len);
-DataChain* text_to_chain(unistring);
+DataChain* text_to_chain(unistring, ExecContext *context);
+inline DataChain* text_to_chain(unistring s){ return text_to_chain(s, 0); };
 unistring chain_to_text(DataCursor prebeg, DataCursor end);
 
 

@@ -107,8 +107,8 @@ DataContainer* newRefText(unistring str, int hash){
 
 	unichar *dt;
 
-	if (false){
-	//if (hash > 0){
+	//if (false){
+	if (hash > 0){
 		dt = mapRefText[hash];
 
 		// поиск уже существующих данных	

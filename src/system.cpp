@@ -37,7 +37,7 @@ DataChain* Div  (DataCursor prebeg, DataCursor end, ExecContext *context){
 	if (prebeg+1 != end) RUNTIMEERRORn("2 arguments expected");
 	if (prebeg.container->type != end.container->type)  RUNTIMEERRORn("different types arguments");
 	if (prebeg.container->type != integer)  RUNTIMEERRORn("2 integers expected");
-	return (new DataChain())->append(newRefInteger( prebeg.container->value.num / end.container->value.num ));
+	return (context->putChain())->append(newRefInteger( prebeg.container->value.num / end.container->value.num ));
 };
 
 DataChain* Mul  (DataCursor prebeg, DataCursor end, ExecContext *context){
@@ -45,7 +45,7 @@ DataChain* Mul  (DataCursor prebeg, DataCursor end, ExecContext *context){
 	if (prebeg+1 != end) RUNTIMEERRORn("2 arguments expected");
 	if (prebeg.container->type != end.container->type)  RUNTIMEERRORn("different types arguments");
 	if (prebeg.container->type != integer)  RUNTIMEERRORn("2 integers expected");
-	return (new DataChain())->append(newRefInteger( prebeg.container->value.num * end.container->value.num ));
+	return (context->putChain())->append(newRefInteger( prebeg.container->value.num * end.container->value.num ));
 };
 
 DataChain* Sum  (DataCursor prebeg, DataCursor end, ExecContext *context){
@@ -57,7 +57,7 @@ DataChain* Mod  (DataCursor prebeg, DataCursor end, ExecContext *context){
 	if (prebeg+1 != end) RUNTIMEERRORn("2 arguments expected");
 	if (prebeg.container->type != end.container->type)  RUNTIMEERRORn("different types arguments");
 	if (prebeg.container->type != integer)  RUNTIMEERRORn("2 integers expected");
-	return (new DataChain())->append(newRefInteger( prebeg.container->value.num % end.container->value.num ));
+	return (context->putChain())->append(newRefInteger( prebeg.container->value.num % end.container->value.num ));
 };
 
 DataChain* Trunc(DataCursor prebeg, DataCursor end, ExecContext *context){  SYSTEMERRORn("NYR");  };
@@ -100,7 +100,7 @@ infint Lenw_sys (DataCursor prebeg, DataCursor end, ExecContext *context){
 };
 
 DataChain* Lenw (DataCursor prebeg, DataCursor end, ExecContext *context){
-	return (new DataChain())->append(newRefInteger( Lenw_sys(prebeg, end, context) ));
+	return (context->putChain())->append(newRefInteger( Lenw_sys(prebeg, end, context) ));
 };
 
 inline unistring thecompare(infint a, infint b){
@@ -112,7 +112,7 @@ DataChain* Compare (DataCursor prebeg, DataCursor end, ExecContext *context){   
 	if (prebeg+1 != end) RUNTIMEERRORn("2 arguments expected");
 	if (prebeg.container->type != end.container->type)  RUNTIMEERRORn("different types arguments");
 	if (prebeg.container->type != integer)  RUNTIMEERRORn("2 integers expected");
-	DataChain *resch = new DataChain();
+	DataChain *resch = context->putChain();
 	resch->append(newRefText( thecompare(prebeg.container->value.num, end.container->value.num), -__LINE__ ));
 	return resch;
 };
@@ -120,7 +120,7 @@ DataChain* Compare (DataCursor prebeg, DataCursor end, ExecContext *context){   
 
 DataChain* Implode (DataCursor prebeg, DataCursor end, ExecContext *context){
     std::cout << "[[[" << std::flush;
-	DataChain *result =  new DataChain();
+	DataChain *result =  context->putChain();
 
 	unistring chtxt = chain_to_text(prebeg, end);
     std::cout << chtxt << std::flush;
@@ -139,7 +139,7 @@ DataChain* ExplodeAll (DataCursor prebeg, DataCursor end, ExecContext *context){
 
 DataChain* Add   (DataCursor prebeg, DataCursor end, ExecContext *context){
 	++prebeg;
-	DataChain *result = new DataChain();
+	DataChain *result = context->putChain();
 	DataContainerValue value;
 	value.num = prebeg.container->value.num;
 
@@ -160,7 +160,7 @@ DataChain* Sub   (DataCursor prebeg, DataCursor end, ExecContext *context){
 		SYSTEMERRORn("Function Sub: bad arguments! ");
 	}
 
-	DataChain *result = new DataChain();
+	DataChain *result = context->putChain();
 	DataContainerValue value;
 	value.num = prebeg.container->value.num - end.container->value.num;
 	result->append(new DataContainer(integer, value));
@@ -196,7 +196,7 @@ DataChain* Mount (DataCursor prebeg, DataCursor end, ExecContext *context){
       is.read (buffer,length);
       is.close();
 
-      DataChain *result = text_to_chain(buffer_to_unistring(buffer, length));
+      DataChain *result = text_to_chain(buffer_to_unistring(buffer, length), context);
 
       delete[] buffer;
       return result;
@@ -217,16 +217,16 @@ DataChain* Card  (DataCursor prebeg, DataCursor end, ExecContext *context){
 	if (prebeg != end) RUNTIMEERRORn("unexpected argument");
 
 	unistring str = readline(std::cin);
-	if (str.length()==0) return std::cin.eof() ? (new DataChain())->append(newRefInteger(0)) : 0;
+	if (str.length()==0) return std::cin.eof() ? (context->putChain())->append(newRefInteger(0)) : 0;
 
 	/*DataContainerValue value;
 	size_t len = str.length();
 	unichar *line = new unichar[len];
 	strncpy(line, str.c_str(), len);
 	value.text = line;
-	DataChain *result = (new DataChain())->append(new DataContainer(text, value, len));*/
+	DataChain *result = (context->putChain())->append(new DataContainer(text, value, len));*/
 
-	DataChain *result = new DataChain();
+	DataChain *result = context->putChain();
 	result->append( newRefText(str, -__LINE__) );
 	if (std::cin.eof()){
 		result->append( newRefInteger(0) );
@@ -244,7 +244,7 @@ DataChain* ProutDebug (DataCursor prebeg, DataCursor end, ExecContext *context){
 DataChain* StdErr(DataCursor prebeg, DataCursor end, ExecContext *context){  SYSTEMERRORn("NYR");  };
 DataChain* Print (DataCursor prebeg, DataCursor end, ExecContext *context){
 	if (prebeg==end) return 0;
-	DataChain *chain = new DataChain();
+	DataChain *chain = context->putChain();
 	chain->append_copy(prebeg, end, context);
 	std::cout << chain_to_text(prebeg, end) << "\n" << std::flush;
 	return chain;
@@ -312,6 +312,6 @@ DataChain* LCS (DataCursor prebeg, DataCursor end, ExecContext *context){
     unistring a = chain_to_text(chainA->at_before_first(), chainA->at_last());
     unistring b = chain_to_text(chainB->at_before_first(), chainB->at_last());
 
-	return (new DataChain())->append(newRefText(GetLargestCommonSubstring(a, b), -__LINE__));
+	return (context->putChain())->append(newRefText(GetLargestCommonSubstring(a, b), -__LINE__));
 };
 
