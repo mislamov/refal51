@@ -1,0 +1,6 @@
+$ENTRY Go {  =  <Prout <Run 'hello, max'>>; }
+
+Run {
+	'hello, ' e.name = <Prout 'name = ' e.name>;
+	e.else = <Prout 'no'>;
+}
