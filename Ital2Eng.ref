@@ -1,17 +1,17 @@
-$ENTRY Go { = <Prout 'Translator! Known words: gatto, cavalli, rana, porco...   CTRL+Z - exit'><Job <Card>>  }
+$ENTRY Go { = <Prout 'Translator! Known words: gatto, cavalli, rana, porco...   CTRL+Z _ exit'><Job <Card>>  }
    
 
 Job {
      0 = ;                  /* end of file */
-     e.X = <Prout <Trans-line e.X>>
+     e.X = <Prout <Trans_line e.X>>
           <Job <Card>>; }
    
 
-Trans-line {
-     ' 'e.X = <Trans-line e.X>;
+Trans_line {
+     ' 'e.X = <Trans_line e.X>;
      e.Word' 'e.Rest =
                  <Trans (e.Word) <Table>>' '
-                 <Trans-line e.Rest>;
+                 <Trans_line e.Rest>;
       = ;
      e.Word = <Trans (e.Word) <Table>>' '; }
 

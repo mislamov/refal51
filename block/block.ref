@@ -1,0 +1,13 @@
+$ENTRY Go {  =  <Run <Card1>>; }
+
+Run {
+	'hello, ' e.name,
+		e.name : {
+			'max' = <Prout 'hi, Max'>;
+			'm' e.2 = <Prout 'Man from M'>;
+			'o' e.3 = <Prout 'Man from O'>;
+			e.2 = <Prout 'i don"t know you! Say "hello, <yourname>"'><Run <Card1>>;
+		};
+	'exit' = ;
+	e.else = <Prout 'start your line from "hello, "'><Go>;
+}
