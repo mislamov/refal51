@@ -115,14 +115,17 @@ EQSYM {
 	("text" s.value)(e.var)(e.border)(e.rollback_label),
 		<RandomIdName> : e.alphas
 	=
+                <INC (e.var)(e.border)(e.rollback_label)>
                 '\t' 'if (' e.var '.container->type != text || *(' e.var '.container->value.text + 'e.var'.index) != \'' @.value '\') goto ' e.rollback_label ';\n';
 
 	("int" e.value)(e.var)(e.border)(e.rollback_label)
 	=
+                <INC (e.var)(e.border)(e.rollback_label)>
                 '\t' 'if ('e.var '.container->type != integer || 'e.var '.container->value.num != ' e.value ') goto ' e.rollback_label ';\n';
 
 	("word" e.value)(e.var)(e.border)(e.rollback_label)
 	=
+                <INC (e.var)(e.border)(e.rollback_label)>
                 '\t' 'if ('e.var '.container->type != word || 0!=memcmp('e.var '.container->value.word.value, "' e.value '", 'e.var '.container->value.word.leng)) goto ' e.rollback_label ';\n';
 
 /*

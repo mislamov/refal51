@@ -261,7 +261,6 @@ TreeToCode_Pattern {
 		'//// [ `a` <any> ] \n'
 		<DEF e.r_tmp>
                 <SET (e.r_tmp)(e.arg_prefrom)>
-                <INC (e.r_tmp)(e.arg_to)(e.rollback_label)>
                 <EQSYM @.s ( e.r_tmp )(e.arg_to)( e.rollback_label )>
 		@.next_code
                 )(e.next_rollback);
