@@ -8,10 +8,12 @@ bool INC (DataCursor &l, DataCursor r){
 
 bool SLIDE(DataCursor &curr, const DataCursor end, DataCursor l, const DataCursor r){
 	if (l==r) return true; // сравнение с пусто подцепочкой
-	do {
-		//todo: обязательно оптимизировать! можно сравнивать целыми контейнерами,
-		++curr;
+	++l;
+	//todo: обязательно оптимизировать! можно сравнивать целыми контейнерами,
+	while (equal(curr, l) && curr!=end && l!=r) // все должно совпадать
+	{
 		++l;
-	} while (equal(curr, l) && curr!=end && l!=r); // все должно совпадать
+		++curr;
+	}
 	return (l==r && equal(curr, r));
 }

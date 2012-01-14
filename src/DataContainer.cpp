@@ -158,7 +158,7 @@ bool equal(DataChain *ch1, DataChain *ch2){
 };
 
 
-bool equal(DataCursor cur1, DataCursor cur2){
+bool equal(const DataCursor &cur1, const DataCursor &cur2){
 	DataContainer *cont1 = cur1.container;
 	DataContainer *cont2 = cur2.container;
 

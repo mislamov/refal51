@@ -1,3 +1,5 @@
+@echo off
+
 del refal2.exe
 del src\res.cc
 

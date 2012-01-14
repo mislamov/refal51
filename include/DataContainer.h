@@ -76,7 +76,7 @@ void freeMapRefText();
 
 
 bool equal(DataChain *ch1, DataChain *ch2);
-bool equal(DataCursor cur1, DataCursor cur2);
+bool equal(const DataCursor &cur1, const DataCursor &cur2);
 /*
 inline bool equal(
 	const DataContainerType &cont1_type,

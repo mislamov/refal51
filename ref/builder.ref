@@ -12,7 +12,7 @@ TreeToCode {
 }
 
 TreeToCode_function {
-	t.name e.e  =  <DefFunction t.name (<TreeToCode_sentences 1 e.e>)>
+	t.name e.e  =  <DefFunction t.name (<TreeToCode_sentences 1 ('arg_from')('arg_to') e.e>)>
 }
 
 TreeToCode_template {
@@ -25,16 +25,26 @@ TreeToCode_template {
 					>
 }
 
+// t.order (e.arg_from)(e.arg_to) e.metacode -> e.code
 TreeToCode_sentences {
-	t.order ("SENTENCE" ("LEFT-PART" e.leftpart)("RIGHT-PART" e.result)) e.e,
-				<TreeToCode_LeftPart (e.leftpart)('arg_from')('arg_to')('sentence_after_' t.order)> : (e.code_lp)(e.rollback_label),
+	t.order (e.arg_from)(e.arg_to) ("SENTENCE" ("LEFT-PART" e.leftpart)("RIGHT-PART" e.result)) e.e,
+				<TreeToCode_LeftPart (e.leftpart)(e.arg_from)(e.arg_to)('sentence_after_' t.order)> : (e.code_lp)(e.rollback_label),
 				<SubstitutionBuildNoEval ('context') e.result> : (e.result_name) e.code_rp
 				=
 						<DefSentence t.order (e.code_lp)(e.code_rp)(e.result_name)>
-						<TreeToCode_sentences <Add 1 t.order> e.e>;
+						<TreeToCode_sentences <Add 1 t.order> (e.arg_from)(e.arg_to) e.e>;
+						
+	t.order	(e.arg_from)(e.arg_to) ("SENTENCE" ("LEFT-PART" e.leftpart)("BLOCK" ("PATTERN" e.resultPattern) e.block_meta_code)) e.e,
+				<TreeToCode_LeftPart (@.leftpart)(e.arg_from)(e.arg_to)('sentence_after_' t.order)> : (e.code_lp)(e.rollback_label),
+				<TreeToCode_Block (@.resultPattern)(e.block_meta_code)(e.rollback_label)> : e.code_block
+				=
+						<DefSentenceBlock t.order (e.code_lp)(e.code_block)>
+						<TreeToCode_sentences <Add 1 t.order> (e.arg_from)(e.arg_to) e.e>;
+						
 
-	0 = <Prout 'ERROR! EMPTY SENTENCE LIST'><Exit>;
-	t.else	=	<ReturnFail>;
+
+	0 (e.arg_from)(e.arg_to) = <Prout 'ERROR! EMPTY SENTENCE LIST'><Exit>;
+	t.else	e.e =	<ReturnFail>;
 }
 
 
@@ -55,6 +65,24 @@ TreeToCode_LeftPart {
 		=
 			<TreeToCode_Pattern (e.pattern)( e.arg_prefrom )( e.arg_to ) (e.rollback_label)>;
 	
+}
+
+// (e.subst)(e.block_meta_code)(e.rollback_label)  ->  @.code_block
+TreeToCode_Block {
+	(e.subst)(e.block_meta_code)(e.rollback_label),
+		// подстановка для блока
+		<RandomIdName> : e.arg_from,
+		<RandomIdName> : e.arg_to,    
+		<SubstitutionBuildAndEval (e.subst)(e.rollback_label)(e.arg_from)(e.arg_to)>  : (e.subst_code) (e.rollback_RP) (e.chainname),
+		// блок
+		<TreeToCode_sentences 1000 (e.arg_from)(e.arg_to) @.block_meta_code> : e.block_code		// todo: номер предложения используется для меток. Обеспечиьт уникальность
+		= 
+			e.subst_code
+			'\n'
+			e.block_code
+			'\n'
+		;
+		
 }
 
 
@@ -282,7 +310,7 @@ Fname {
 
 
 /*
-    (e.метакод)(e.точка_отката)  =  (e.код)(e.новая_точка_отката)(e.chainname)
+    (e.метакод)(e.точка_отката)(e.new_prefrom)(e.new_to)  =  (e.код)(e.новая_точка_отката)(e.chainname)
     compile and EVALUTE substitution!
 */
 SubstitutionBuildAndEval {

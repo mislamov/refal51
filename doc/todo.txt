@@ -5,3 +5,8 @@
 повторители
 
 dynamic evalution
+
+-----------
+known bugs:
+- newRefWord mem leaks
+- external input data mem leaks (<Card>, <Mount>, <SocketRead>)

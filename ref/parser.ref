@@ -19,7 +19,7 @@ SEMANTIC {
 	&FUNCTION.f  e.next
 			=
 				("FUNCTION" @.f::name
-					<Sentences FUNCTION.f::body>
+					<Sentences () FUNCTION.f::body>
 				)
 				<SEMANTIC e.next>;
 
@@ -39,26 +39,38 @@ SEMANTIC {
 };
 
 // Семантический анализ списка предложений
-Sentences_ { e.e, <Sentences_ e.e> : e.result = e.result <Prout '<Sentences  ' e.e '> -->  ' e.result>; }
+Sentences_ { e.e, <Sentences_ <Print e.e>> : e.result = e.result <Prout '<Sentences  ' e.e '> -->  ' e.result>; }
 Sentences {
-	{' '|} =;
+	(e.ext_vars) {' '|} =;
 
-	SENTENCE.sent ";" E.next,
+	// LEFT_PART.left_part "," PATTERN.pattern ":" ("{" BLOCK.block)
+	
+	
+	(e.ext_vars) SENTENCE_WITH_BLOCK.sent {";"|} E.next,
+		<PatternAnalise     (e.ext_vars)( )         @.sent::left_part::pattern>    : (e.variables)(e.resultPattern),
+		<ConditionsAnalise  (e.variables)()  <CondToList @.sent::left_part::conditions>> : (e.variables2)(e.resultConditions),
+		<PatternAnalise     (e.variables2)()        @.sent::pattern>    : (e.variables3)(e.resultPattern2),
+		<Sentences (e.variables3)  @.sent::block> : e.block_meta_code
+		=	("SENTENCE" ("LEFT-PART" e.resultPattern  e.resultConditions)("BLOCK" ("PATTERN" @.resultPattern2) e.block_meta_code)) 
+			<Sentences (e.ext_vars) E.next>;
+
+	(e.ext_vars) SENTENCE.sent ";" E.next,
 		@.sent : LEFT_PART.left_part "=" RIGHT_PART.right_part,
 		<PatternAnalise     ( )( )         LEFT_PART.left_part::pattern>    : (e.variables)(e.resultPattern),
 		<ConditionsAnalise  (e.variables)()  <CondToList LEFT_PART.left_part::conditions>> : (e.variables2)(e.resultConditions),
 		<SubstitutAnalise   (e.variables2)() RIGHT_PART.right_part> : (e.variables3)(e.resultConstitute)
-		=	("SENTENCE" ("LEFT-PART" e.resultPattern  e.resultConditions)("RIGHT-PART" e.resultConstitute)) <Sentences E.next>;
+		=	("SENTENCE" ("LEFT-PART" e.resultPattern  e.resultConditions)("RIGHT-PART" e.resultConstitute)) <Sentences (e.ext_vars) E.next>;
+		
 
-	e.sent ";" E.else =
-			<ProutError 'bad sentence: ' @.sent>
+	(e.ext_vars) e.sent ";" E.else =
+			<ProutError 'bad sentence[1]: ' @.sent>
 			<ProutError <FindErrorInSentence e.sent>>
 			<Exit 9>
-			<Sentences @.else>;
+			<Sentences (e.ext_vars) @.else>;
 
-	SENTENCE.sent = <Sentences  @.sent ";">;
+	(e.ext_vars) SENTENCE.sent = <Sentences (e.ext_vars) @.sent ";">;
 
-	e.else = <ProutError 'bad sentence: ' @.else><Exit 9>;
+	e.else = <ProutError 'bad sentence[2]: ' @.else><Exit 9>;
 };
 
 // получение из списка условий - списка ссылок на условия

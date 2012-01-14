@@ -50,13 +50,24 @@ DefSentence {
 
 			'return ' e.chainname ';' '\n'
 			'}' '\n' 
-			'sentence_after_' t.order ': ' '\n'
+			'sentence_after_' t.order ': ' '\n';
+}
+
+DefSentenceBlock {
+	t.order (e.left_code)(e.block_code) =
+			'\n' '{' '\n' 
+			'// сопоставление \n'
+			e.left_code
+			'\n'
+			'// передача управления блоку \n'
+			e.block_code
+			'}' '\n' 
+			'sentence_after_' t.order ': ' '\n';
 }
 
 ReturnFail {
 	=	
 	'\n'  
-	'fail: \n'
 	'// подготовка к возвращению неуспеха' '\n' 'std::cout << "fail!" << __LINE__ << "\\n";' '\n' 'return 0;' '\n';
 
 }

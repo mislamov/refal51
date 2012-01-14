@@ -15,6 +15,7 @@ Template TEMPLATE ::=
 //Template BLOCK ::= SENTENCE.head ";" {' '|} { BLOCK. |}.tail ;
 Template BLOCK ::= e.block ;
 Template SENTENCE   ::=  LEFT_PART.left_part "=" RIGHT_PART.right_part ;
+Template SENTENCE_WITH_BLOCK ::= LEFT_PART.left_part "," PATTERN.pattern ":" {' '|} ("{" e.block) ;
 
 
 Template LEFT_PART  ::=  PATTERN.pattern { IFs. |}.conditions ;
